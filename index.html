@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Treino de Boxe</title>
+</head>
+<body>
+
+    <h1>🥊 Calculadora de Treino de Boxe</h1>
+
+    <label>Peso (kg):</label>
+    <br>
+    <input type="number" id="peso">
+    <br><br>
+
+    <label>Altura (m):</label>
+    <br>
+    <input type="number" id="altura" step="0.01">
+    <br><br>
+
+    <button onclick="calcularIMC()">
+        Calcular IMC
+    </button>
+
+    <h2 id="resultado"></h2>
+
+    <script>
+        function calcularIMC() {
+            let peso = document.getElementById("peso").value;
+            let altura = document.getElementById("altura").value;
+
+            let imc = peso / (altura * altura);
+
+            document.getElementById("resultado").innerHTML =
+                "Seu IMC é: " + imc.toFixed(2);
+        }
+    </script>
+
+</body>
+</html>
