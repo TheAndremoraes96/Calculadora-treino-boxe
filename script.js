@@ -1,120 +1,50 @@
-console.log("BoxTimer Pro carregado");
+console.log("BoxTimer carregado");
 
 // ================= IMC =================
 
-function calcularIMC() {
+window.calcularIMC = function () {
 
     let peso = Number(document.getElementById("peso").value);
     let altura = Number(document.getElementById("altura").value);
+    let objetivo = document.getElementById("objetivo").value;
+
+    console.log("peso:", peso);
+    console.log("altura:", altura);
 
     if (!peso || !altura) {
         document.getElementById("resultado").innerText =
-            "Preencha peso e altura corretamente";
+            "Preencha peso e altura";
         return;
     }
 
-    let objetivo = document.getElementById("objetivo").value;
-    let preferencia = document.getElementById("preferencia").value;
-    let orcamento = document.getElementById("orcamento").value;
-
     let imc = peso / (altura * altura);
 
-    let classificacao = getClassificacao(imc);
+    let classificacao = "";
 
-    let dieta = gerarDieta(objetivo, orcamento);
+    if (imc < 18.5) classificacao = "Abaixo do peso";
+    else if (imc < 25) classificacao = "Normal";
+    else if (imc < 30) classificacao = "Sobrepeso";
+    else classificacao = "Obesidade";
 
     document.getElementById("resultado").innerHTML =
-        `IMC: ${imc.toFixed(2)} - ${classificacao}`;
+        "IMC: " + imc.toFixed(2) + " - " + classificacao;
 
-    document.getElementById("dieta").innerText = dieta;
-
-    salvarHistorico(imc, classificacao, objetivo);
-
-    renderHistorico();
-
-    atualizarTema(objetivo);
-}
-
-
-// ================= CLASSIFICAÇÃO =================
-
-function getClassificacao(imc) {
-    if (imc < 18.5) return "Abaixo do peso";
-    if (imc < 25) return "Normal";
-    if (imc < 30) return "Sobrepeso";
-    return "Obesidade";
-}
+    document.getElementById("dieta").innerText =
+        gerarDieta(objetivo);
+};
 
 
 // ================= DIETA =================
 
-function gerarDieta(objetivo, orcamento) {
+function gerarDieta(objetivo) {
 
-    const base = {
-        hipertrofia: {
-            economico: ["Ovos", "Frango (coxa)", "Arroz", "Feijão", "Banana"],
-            padrao: ["Frango", "Carne", "Whey", "Arroz", "Batata doce"]
-        },
-        emagrecimento: {
-            economico: ["Ovos", "Frango", "Couve", "Arroz (pouco)"],
-            padrao: ["Peixe", "Frango", "Saladas", "Legumes"]
-        },
-        manutencao: {
-            economico: ["Ovos", "Arroz", "Feijão", "Banana"],
-            padrao: ["Frango", "Arroz", "Feijão", "Legumes"]
-        }
+    const dieta = {
+        hipertrofia: ["Ovos", "Frango", "Arroz", "Banana", "Aveia"],
+        emagrecimento: ["Frango", "Salada", "Legumes", "Peixe"],
+        manutencao: ["Arroz", "Feijão", "Frango", "Ovos"]
     };
 
-    return "🍽️ Dieta:\n- " + base[objetivo][orcamento].join("\n- ");
-}
-
-
-// ================= TEMA =================
-
-function atualizarTema(objetivo) {
-
-    document.body.className = "";
-
-    if (objetivo === "hipertrofia") document.body.style.background = "#0b1b2b";
-    if (objetivo === "emagrecimento") document.body.style.background = "#2b0b0b";
-    if (objetivo === "manutencao") document.body.style.background = "#0b2b1a";
-}
-
-
-// ================= HISTÓRICO =================
-
-function salvarHistorico(imc, classificacao, objetivo) {
-
-    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
-
-    dados.push({
-        data: new Date().toLocaleString(),
-        imc,
-        classificacao,
-        objetivo
-    });
-
-    localStorage.setItem("imcHistorico", JSON.stringify(dados));
-}
-
-
-// ================= RENDER HISTÓRICO =================
-
-function renderHistorico() {
-
-    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
-
-    let html = "";
-
-    dados.slice().reverse().forEach(d => {
-        html += `
-        <div>
-            📅 ${d.data} | IMC: ${d.imc.toFixed(2)} | ${d.objetivo}
-        </div>
-        `;
-    });
-
-    document.getElementById("historico").innerHTML = html;
+    return "🍽️ Dieta:\n- " + dieta[objetivo].join("\n- ");
 }
 
 
@@ -123,37 +53,37 @@ function renderHistorico() {
 let tempo = 180;
 let round = 1;
 let maxRounds = 12;
-let emDescanso = false;
-let timer;
+let descanso = false;
+let intervalo;
 
 function iniciarTimer() {
 
-    clearInterval(timer);
+    clearInterval(intervalo);
 
-    timer = setInterval(() => {
+    intervalo = setInterval(() => {
 
         let m = Math.floor(tempo / 60);
         let s = tempo % 60;
 
         document.getElementById("timer").innerText =
-            `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+            `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 
         tempo--;
 
         if (tempo < 0) {
 
-            if (!emDescanso) {
-                emDescanso = true;
+            if (!descanso) {
+                descanso = true;
                 tempo = 60;
                 document.getElementById("status").innerText = "DESCANSO";
             } else {
-                emDescanso = false;
+                descanso = false;
                 round++;
                 tempo = 180;
 
                 document.getElementById("status").innerText = "LUTA";
                 document.getElementById("round").innerText =
-                    `ROUND ${round} / ${maxRounds}`;
+                    "ROUND " + round + " / " + maxRounds;
             }
         }
 
@@ -161,16 +91,16 @@ function iniciarTimer() {
 }
 
 function pararTimer() {
-    clearInterval(timer);
+    clearInterval(intervalo);
 }
 
 function reiniciarTimer() {
     round = 1;
     tempo = 180;
-    emDescanso = false;
+    descanso = false;
 
     document.getElementById("round").innerText =
-        `ROUND ${round} / ${maxRounds}`;
+        "ROUND 1 / " + maxRounds;
 
     document.getElementById("timer").innerText = "03:00";
 }
