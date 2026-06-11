@@ -1,76 +1,81 @@
+// ================================
+// 🥊 BOX TIMER PRO + IMC SYSTEM
+// ================================
+
+
+// ================= IMC =================
+
 function calcularIMC() {
 
-    let peso = document.getElementById("peso").value;
-    let altura = document.getElementById("altura").value;
+    let peso = parseFloat(document.getElementById("peso").value);
+    let altura = parseFloat(document.getElementById("altura").value);
     let objetivo = document.getElementById("objetivo").value;
+
+    if (!peso || !altura) return;
 
     let imc = peso / (altura * altura);
 
-    let classificacao = "";
-    let dieta = "";
+    let classificacao = getClassificacao(imc);
+    let dieta = gerarDieta(objetivo);
 
-    // 📊 CLASSIFICAÇÃO DO IMC
-    if (imc < 18.5) {
-        classificacao = "Abaixo do peso";
-    } else if (imc < 25) {
-        classificacao = "Peso normal";
-    } else if (imc < 30) {
-        classificacao = "Sobrepeso";
-    } else {
-        classificacao = "Obesidade";
-    }
-
-    // 🍽️ LÓGICA DE DIETA POR OBJETIVO + IMC
-    if (objetivo === "hipertrofia") {
-
-        dieta = `
-        🍽️ Hipertrofia:
-        - Ovos
-        - Frango
-        - Arroz
-        - Aveia
-        - Banana
-        - Batata-doce
-        `;
-
-    } else if (objetivo === "emagrecimento") {
-
-        dieta = `
-        🍽️ Emagrecimento:
-        - Frango
-        - Peixe
-        - Ovos
-        - Saladas
-        - Brócolis
-        - Couve
-        `;
-
-    } else {
-
-        dieta = `
-        🍽️ Manutenção:
-        - Arroz
-        - Feijão
-        - Frango
-        - Ovos
-        - Legumes
-        - Frutas
-        `;
-    }
-
-    // 📌 OUTPUT NA TELA
     document.getElementById("resultado").innerHTML =
         "IMC: " + imc.toFixed(2) +
         "<br>Classificação: " + classificacao;
 
-    document.getElementById("dieta").innerHTML =
-        dieta;
+    document.getElementById("dieta").innerText = dieta;
 }
 
 
-// ================================
-// 🥊 BOX TIMER PRO
-// ================================
+// 📊 CLASSIFICAÇÃO IMC
+function getClassificacao(imc) {
+
+    if (imc < 18.5) return "Abaixo do peso";
+    if (imc < 25) return "Peso normal";
+    if (imc < 30) return "Sobrepeso";
+    return "Obesidade";
+}
+
+
+// 🍽️ DIETA POR OBJETIVO
+function gerarDieta(objetivo) {
+
+    if (objetivo === "hipertrofia") {
+        return `
+🍽️ Hipertrofia:
+- Ovos
+- Frango
+- Arroz
+- Aveia
+- Banana
+- Batata-doce
+        `;
+    }
+
+    if (objetivo === "emagrecimento") {
+        return `
+🍽️ Emagrecimento:
+- Frango
+- Peixe
+- Ovos
+- Saladas
+- Brócolis
+- Couve
+        `;
+    }
+
+    return `
+🍽️ Manutenção:
+- Arroz
+- Feijão
+- Frango
+- Ovos
+- Legumes
+- Frutas
+    `;
+}
+
+
+// ================= TIMER =================
 
 let tempo = 180;
 let contador;
@@ -92,7 +97,7 @@ function tocarCampainha() {
 }
 
 
-// 🔥 ATUALIZAR ROUND
+// 🔥 ATUALIZA ROUND
 function atualizarRound() {
 
     document.getElementById("round").innerHTML =
@@ -105,15 +110,14 @@ function iniciarTimer() {
 
     clearInterval(contador);
 
-    contador = setInterval(function () {
+    contador = setInterval(() => {
 
         let minutos = Math.floor(tempo / 60);
         let segundos = tempo % 60;
 
         document.getElementById("timer").innerHTML =
-            minutos.toString().padStart(2, "0") +
-            ":" +
-            segundos.toString().padStart(2, "0");
+            String(minutos).padStart(2, "0") + ":" +
+            String(segundos).padStart(2, "0");
 
         tempo--;
 
@@ -125,8 +129,7 @@ function iniciarTimer() {
 
                 tocarCampainha();
 
-                document.getElementById("status").innerHTML =
-                    "🧊 DESCANSO";
+                document.getElementById("status").innerHTML = "🧊 DESCANSO";
 
                 emDescanso = true;
                 tempo = 60;
@@ -144,20 +147,16 @@ function iniciarTimer() {
                     document.getElementById("status").innerHTML =
                         "🏆 TREINO FINALIZADO";
 
-                    document.getElementById("timer").innerHTML =
-                        "00:00";
-
+                    document.getElementById("timer").innerHTML = "00:00";
                     return;
                 }
 
                 emDescanso = false;
 
                 tocarCampainha();
-
                 atualizarRound();
 
-                document.getElementById("status").innerHTML =
-                    "🥊 LUTA";
+                document.getElementById("status").innerHTML = "🥊 LUTA";
 
                 tempo = 180;
 
@@ -169,13 +168,13 @@ function iniciarTimer() {
 }
 
 
-// ⏹️ PARAR
+// ⏹️ PARAR TIMER
 function pararTimer() {
     clearInterval(contador);
 }
 
 
-// 🔄 REINICIAR
+// 🔄 REINICIAR TIMER
 function reiniciarTimer() {
 
     clearInterval(contador);
@@ -186,13 +185,10 @@ function reiniciarTimer() {
 
     atualizarRound();
 
-    document.getElementById("status").innerHTML =
-        "🥊 LUTA";
-
-    document.getElementById("timer").innerHTML =
-        "03:00";
+    document.getElementById("status").innerHTML = "🥊 LUTA";
+    document.getElementById("timer").innerHTML = "03:00";
 }
 
 
-// inicializa
+// INIT
 atualizarRound();
