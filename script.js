@@ -22,10 +22,19 @@ function calcularIMC() {
         "<br>Classificação: " + classificacao;
 }
 
-let tempo = 180; // 3 minutos
+let tempo = 180;
 let contador;
+
 let round = 1;
+let maxRounds = 12;
+
 let emDescanso = false;
+
+function atualizarRound() {
+
+    document.getElementById("round").innerHTML =
+        "🔥 ROUND " + round + " / " + maxRounds + " 🔥";
+}
 
 function iniciarTimer() {
 
@@ -49,25 +58,38 @@ function iniciarTimer() {
 
             if (!emDescanso) {
 
-                emDescanso = true;
-
-                document.getElementById("round").innerHTML =
+                document.getElementById("status").innerHTML =
                     "🧊 DESCANSO";
 
-                tempo = 60; // 1 minuto
+                emDescanso = true;
+
+                tempo = 60;
 
                 iniciarTimer();
 
             } else {
 
-                emDescanso = false;
-
                 round++;
 
-                document.getElementById("round").innerHTML =
-                    "🔥 ROUND " + round + " 🔥";
+                if (round > maxRounds) {
 
-                tempo = 180; // 3 minutos
+                    document.getElementById("status").innerHTML =
+                        "🏆 TREINO FINALIZADO";
+
+                    document.getElementById("timer").innerHTML =
+                        "00:00";
+
+                    return;
+                }
+
+                emDescanso = false;
+
+                atualizarRound();
+
+                document.getElementById("status").innerHTML =
+                    "🥊 LUTA";
+
+                tempo = 180;
 
                 iniciarTimer();
             }
@@ -84,13 +106,17 @@ function reiniciarTimer() {
 
     clearInterval(contador);
 
-    tempo = 180;
     round = 1;
+    tempo = 180;
     emDescanso = false;
 
-    document.getElementById("round").innerHTML =
-        "🔥 ROUND 1 🔥";
+    atualizarRound();
+
+    document.getElementById("status").innerHTML =
+        "🥊 LUTA";
 
     document.getElementById("timer").innerHTML =
         "03:00";
 }
+
+atualizarRound();
