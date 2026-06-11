@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -10,11 +9,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body id="appBody">
 
     <h1>🥊 BoxTimer Pro</h1>
 
-    <h2>IMC do Atleta</h2>
+    <h2>IMC + Plano do Atleta</h2>
 
     <input type="number" id="peso" placeholder="Peso (kg)">
     <input type="number" id="altura" placeholder="Altura (m)" step="0.01">
@@ -27,20 +26,29 @@
         <option value="manutencao">Manutenção</option>
     </select>
 
+    <select id="orcamento">
+        <option value="economico">Econômico</option>
+        <option value="padrao">Padrão</option>
+    </select>
+
     <br><br>
 
     <button onclick="calcularIMC()">Calcular IMC</button>
 
     <h2 id="resultado"></h2>
-
     <pre id="dieta"></pre>
 
     <hr>
 
-    <h2>🥊 Timer</h2>
+    <h2>📈 Histórico</h2>
+    <div id="historico"></div>
+
+    <hr>
+
+    <h2>🥊 BoxTimer Pro</h2>
 
     <h3 id="round">ROUND 1 / 12</h3>
-    <h3 id="status">LUTA</h3>
+    <h3 id="status">🥊 LUTA</h3>
 
     <div id="timer">03:00</div>
 
@@ -52,3 +60,4 @@
 </body>
 
 </html>
+
