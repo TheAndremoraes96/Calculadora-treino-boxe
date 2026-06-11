@@ -23,7 +23,6 @@ function calcularIMC() {
 }
 let tempo = 180;
 let contador;
-
 function iniciarTimer() {
 
     clearInterval(contador);
@@ -60,26 +59,19 @@ function reiniciarTimer() {
 
     document.getElementById("timer").innerHTML = "03:00";
 }
+et tempo = 180;
+let contador;
 
 function iniciarTimer() {
-
-    let contador = setInterval(function () {
-
-        let minutos = Math.floor(tempo / 60);
-        let segundos = tempo % 60;
-
-        document.getElementById("timer").innerHTML =
-            minutos.toString().padStart(2, "0") +
-            ":" +
-            segundos.toString().padStart(2, "0");
-
-        tempo--;
-
-        if (tempo < 0) {
-            clearInterval(contador);
-            alert("Round encerrado!");
-        }
-
-    }, 1000);
-
+...
 }
+
+function pararTimer() {
+...
+}
+
+function reiniciarTimer() {
+...
+}
+
+
