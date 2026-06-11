@@ -24,7 +24,8 @@ function calcularIMC() {
 
 let tempo = 5;
 let contador;
-let round =1;
+let round = 1;
+
 function iniciarTimer() {
 
     clearInterval(contador);
@@ -41,21 +42,21 @@ function iniciarTimer() {
 
         tempo--;
 
-    if (tempo < 0) {
+        if (tempo < 0) {
 
-    clearInterval(contador);
+            clearInterval(contador);
 
-    round++;
+            round++;
 
-    document.getElementById("round").innerHTML =
-        "🔥 ROUND " + round + " 🔥";
+            document.getElementById("round").textContent =
+                "🔥 ROUND " + round + " 🔥";
 
-    tempo = 180;
+            document.getElementById("timer").textContent = "00:05";
 
-    document.getElementById("timer").innerHTML = "03:00";
+            tempo = 5;
 
-    alert("Round encerrado!");
-}
+            alert("Round encerrado!");
+        }
 
     }, 1000);
 }
@@ -68,7 +69,11 @@ function reiniciarTimer() {
 
     clearInterval(contador);
 
-    tempo = 180;
+    tempo = 5;
+    round = 1;
 
-    document.getElementById("timer").innerHTML = "03:00";
+    document.getElementById("round").textContent =
+        "🔥 ROUND 1 🔥";
+
+    document.getElementById("timer").textContent = "00:05";
 }
