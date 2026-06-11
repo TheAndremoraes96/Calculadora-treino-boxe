@@ -1,63 +1,90 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🥊 BoxTimer Pro</title>
+  <meta charset="UTF-8">
+  <title>BoxTimer Pro</title>
 
-    <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      padding: 20px;
+      transition: 0.3s;
+    }
+
+    .card {
+      background: #f2f2f2;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    input, select {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+    }
+
+    #timer {
+      font-size: 30px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
-<body id="appBody">
+<body>
 
-    <h1>🥊 BoxTimer Pro</h1>
+<h1>🥊 BoxTimer Pro</h1>
 
-    <h2>IMC + Plano do Atleta</h2>
+<!-- IMC -->
+<div class="card">
+  <h2>📊 IMC</h2>
 
-    <input type="number" id="peso" placeholder="Peso (kg)">
-    <input type="number" id="altura" placeholder="Altura (m)" step="0.01">
+  <input id="peso" placeholder="Peso (kg)">
+  <input id="altura" placeholder="Altura (ex: 1.75)">
 
-    <br><br>
+  <select id="objetivo">
+    <option value="hipertrofia">Hipertrofia</option>
+    <option value="emagrecimento">Emagrecimento</option>
+    <option value="manutencao">Manutenção</option>
+  </select>
 
-    <select id="objetivo">
-        <option value="hipertrofia">Hipertrofia</option>
-        <option value="emagrecimento">Emagrecimento</option>
-        <option value="manutencao">Manutenção</option>
-    </select>
+  <button onclick="calcular()">Calcular</button>
 
-    <select id="orcamento">
-        <option value="economico">Econômico</option>
-        <option value="padrao">Padrão</option>
-    </select>
+  <p id="resultado"></p>
+</div>
 
-    <br><br>
+<!-- DIETA -->
+<div class="card">
+  <h2>🍽️ Dieta</h2>
+  <p id="dieta"></p>
+</div>
 
-    <button onclick="calcularIMC()">Calcular IMC</button>
+<!-- TIMER -->
+<div class="card">
+  <h2>🥊 Timer de Round</h2>
 
-    <h2 id="resultado"></h2>
-    <pre id="dieta"></pre>
+  <div id="timer">00:00</div>
 
-    <hr>
+  <button onclick="startRound()">Iniciar Round (2 min)</button>
+  <button onclick="resetTimer()">Reset</button>
+</div>
 
-    <h2>📈 Histórico</h2>
-    <div id="historico"></div>
+<!-- HISTÓRICO -->
+<div class="card">
+  <h2>📈 Histórico</h2>
+  <canvas id="grafico"></canvas>
+</div>
 
-    <hr>
+<script src="script.js"></script>
 
-    <h2>🥊 BoxTimer Pro</h2>
-
-    <h3 id="round">ROUND 1 / 12</h3>
-    <h3 id="status">🥊 LUTA</h3>
-
-    <div id="timer">03:00</div>
-
-    <button onclick="iniciarTimer()">Iniciar</button>
-    <button onclick="pararTimer()">Parar</button>
-    <button onclick="reiniciarTimer()">Reiniciar</button>
-
-    <script src="script.js"></script>
 </body>
-
 </html>
-
