@@ -2,11 +2,14 @@ function calcularIMC() {
 
     let peso = document.getElementById("peso").value;
     let altura = document.getElementById("altura").value;
+    let objetivo = document.getElementById("objetivo").value;
 
     let imc = peso / (altura * altura);
 
     let classificacao = "";
+    let dieta = "";
 
+    // 📊 CLASSIFICAÇÃO DO IMC
     if (imc < 18.5) {
         classificacao = "Abaixo do peso";
     } else if (imc < 25) {
@@ -17,10 +20,57 @@ function calcularIMC() {
         classificacao = "Obesidade";
     }
 
+    // 🍽️ LÓGICA DE DIETA POR OBJETIVO + IMC
+    if (objetivo === "hipertrofia") {
+
+        dieta = `
+        🍽️ Hipertrofia:
+        - Ovos
+        - Frango
+        - Arroz
+        - Aveia
+        - Banana
+        - Batata-doce
+        `;
+
+    } else if (objetivo === "emagrecimento") {
+
+        dieta = `
+        🍽️ Emagrecimento:
+        - Frango
+        - Peixe
+        - Ovos
+        - Saladas
+        - Brócolis
+        - Couve
+        `;
+
+    } else {
+
+        dieta = `
+        🍽️ Manutenção:
+        - Arroz
+        - Feijão
+        - Frango
+        - Ovos
+        - Legumes
+        - Frutas
+        `;
+    }
+
+    // 📌 OUTPUT NA TELA
     document.getElementById("resultado").innerHTML =
         "IMC: " + imc.toFixed(2) +
         "<br>Classificação: " + classificacao;
+
+    document.getElementById("dieta").innerHTML =
+        dieta;
 }
+
+
+// ================================
+// 🥊 BOX TIMER PRO
+// ================================
 
 let tempo = 180;
 let contador;
@@ -30,6 +80,8 @@ let maxRounds = 12;
 
 let emDescanso = false;
 
+
+// 🔔 CAMPANHA
 function tocarCampainha() {
 
     const audio = new Audio(
@@ -39,12 +91,16 @@ function tocarCampainha() {
     audio.play();
 }
 
+
+// 🔥 ATUALIZAR ROUND
 function atualizarRound() {
 
     document.getElementById("round").innerHTML =
         "🔥 ROUND " + round + " / " + maxRounds + " 🔥";
 }
 
+
+// ▶️ INICIAR TIMER
 function iniciarTimer() {
 
     clearInterval(contador);
@@ -73,7 +129,6 @@ function iniciarTimer() {
                     "🧊 DESCANSO";
 
                 emDescanso = true;
-
                 tempo = 60;
 
                 iniciarTimer();
@@ -113,10 +168,14 @@ function iniciarTimer() {
     }, 1000);
 }
 
+
+// ⏹️ PARAR
 function pararTimer() {
     clearInterval(contador);
 }
 
+
+// 🔄 REINICIAR
 function reiniciarTimer() {
 
     clearInterval(contador);
@@ -134,4 +193,6 @@ function reiniciarTimer() {
         "03:00";
 }
 
+
+// inicializa
 atualizarRound();
