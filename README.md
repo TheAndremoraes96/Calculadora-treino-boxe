@@ -40,3 +40,4 @@ v1.2
 - Contador de golpes
 - Estatísticas de treino
 - Histórico de sessões
+
