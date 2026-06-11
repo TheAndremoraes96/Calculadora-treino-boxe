@@ -9,8 +9,12 @@ const firebaseConfig = {
     appId: "XXXX"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+// proteção caso Firebase não esteja configurado ainda
+if (typeof firebase !== "undefined") {
+    firebase.initializeApp(firebaseConfig);
+}
+
+const db = typeof firebase !== "undefined" ? firebase.database() : null;
 
 
 // ================= IMC =================
@@ -23,10 +27,15 @@ function calcularIMC() {
     let preferencia = document.getElementById("preferencia").value;
     let orcamento = document.getElementById("orcamento").value;
 
+    if (!peso || !altura) {
+        document.getElementById("resultado").innerHTML =
+            "⚠️ Preencha peso e altura corretamente";
+        return;
+    }
+
     let imc = peso / (altura * altura);
 
     let classificacao = getClassificacao(imc);
-
     let dieta = gerarDieta(objetivo, preferencia, orcamento);
 
     document.getElementById("resultado").innerHTML =
@@ -105,7 +114,9 @@ function salvarHistorico(imc, classificacao, objetivo) {
 
     localStorage.setItem("imcHistorico", JSON.stringify(dados));
 
-    db.ref("atletas").push(registro);
+    if (db) {
+        db.ref("atletas").push(registro);
+    }
 }
 
 
@@ -128,7 +139,7 @@ function renderHistorico() {
 }
 
 
-// ================= GRÁFICO REAL =================
+// ================= GRÁFICO =================
 
 function renderGrafico() {
 
@@ -152,7 +163,9 @@ function renderGrafico() {
         }))
     };
 
-    window.renderChart?.("grafico-imc", chart);
+    if (window.renderChart) {
+        window.renderChart("grafico-imc", chart);
+    }
 }
 
 
@@ -189,7 +202,8 @@ function iniciarTimer() {
                 round++;
                 tempo = 180;
                 document.getElementById("status").innerText = "LUTA";
-                document.getElementById("round").innerText = ROUND ${round} / ${maxRounds};
+                document.getElementById("round").innerText =
+                    ROUND ${round} / ${maxRounds};
             }
         }
 
@@ -204,6 +218,9 @@ function reiniciarTimer() {
     round = 1;
     tempo = 180;
     emDescanso = false;
+
+    document.getElementById("round").innerText =
+        ROUND ${round} / ${maxRounds};
 }
 
 
