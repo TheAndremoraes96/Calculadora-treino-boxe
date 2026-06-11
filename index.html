@@ -19,11 +19,13 @@
     <label>Peso (kg):</label>
     <br>
     <input type="number" id="peso">
+
     <br><br>
 
     <label>Altura (m):</label>
     <br>
     <input type="number" id="altura" step="0.01">
+
     <br><br>
 
     <label>Objetivo:</label>
@@ -32,6 +34,16 @@
         <option value="hipertrofia">Hipertrofia</option>
         <option value="emagrecimento">Emagrecimento</option>
         <option value="manutencao">Manutenção</option>
+    </select>
+
+    <br><br>
+
+    <label>Preferência alimentar:</label>
+    <br>
+    <select id="preferencia">
+        <option value="carnivoro">Carnívoro</option>
+        <option value="pescetariano">Pescetariano</option>
+        <option value="fit">Fit leve</option>
     </select>
 
     <br><br>
@@ -45,22 +57,26 @@
 
     <hr>
 
-    <!-- ================= HISTÓRICO ================= -->
-    <h2>📊 Histórico de Evolução do Atleta</h2>
+    <!-- ================= GRÁFICO ================= -->
+    <h2>📊 Evolução do IMC</h2>
 
-    <button onclick="limparHistorico()">
-        Limpar Histórico
-    </button>
+    <div id="grafico-imc"></div>
+
+    <hr>
+
+    <!-- ================= HISTÓRICO ================= -->
+    <h2>📈 Histórico</h2>
 
     <div id="historico"></div>
+
+    <button onclick="limparHistorico()">Limpar Histórico</button>
 
     <hr>
 
     <!-- ================= TIMER ================= -->
-    <h2>🥊 BoxTimer Pro - Treino</h2>
+    <h2>🥊 BoxTimer Pro</h2>
 
     <h3 id="round">🔥 ROUND 1 / 12 🔥</h3>
-
     <h3 id="status">🥊 LUTA</h3>
 
     <div id="timer">03:00</div>
