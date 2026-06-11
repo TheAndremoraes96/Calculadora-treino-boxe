@@ -25,15 +25,27 @@
     <input type="number" id="altura" step="0.01">
     <br><br>
 
+    <label>Objetivo:</label>
+    <br>
+    <select id="objetivo">
+        <option value="hipertrofia">Hipertrofia</option>
+        <option value="emagrecimento">Emagrecimento</option>
+        <option value="manutencao">Manutenção</option>
+    </select>
+
+    <br><br>
+
     <button onclick="calcularIMC()">
-        Calcular IMC
+        Calcular IMC + Plano
     </button>
 
     <h2 id="resultado"></h2>
 
+    <h3 id="dieta"></h3>
+
     <hr>
 
-    <h2>🥊 Cronômetro de Treino</h2>
+    <h2>🥊 BoxTimer Pro - Treino</h2>
 
     <h3 id="round">🔥 ROUND 1 / 12 🔥</h3>
 
@@ -50,7 +62,7 @@
     </button>
 
     <button onclick="reiniciarTimer()">
-        Reiniciar Treino
+        Reiniciar
     </button>
 
     <script src="script.js"></script>
