@@ -1,62 +1,80 @@
 # 🥊 BoxTimer Pro
 
-Sistema de treino de boxe com cálculo de IMC e cronômetro inteligente de rounds.
+Sistema de treino de boxe com IMC, plano alimentar e histórico de evolução do atleta.
 
 ---
 
 ## 🚀 Funcionalidades
 
-### 📊 IMC do atleta
+### 📊 IMC + Plano alimentar
 - Cálculo automático de IMC
-- Classificação:
-  - Abaixo do peso
-  - Peso normal
-  - Sobrepeso
-  - Obesidade
+- Classificação do estado físico
+- Plano alimentar baseado no objetivo
 
-### 🍽️ Plano alimentar
-Baseado no objetivo do atleta:
+### 🎯 Objetivos suportados
 - Hipertrofia
 - Emagrecimento
 - Manutenção
 
-### 🥊 Timer de boxe
-- 12 rounds configurados
+---
+
+### 📈 Histórico de evolução do atleta
+
+O sistema agora salva automaticamente:
+
+- IMC
+- Classificação
+- Objetivo
+- Data do registro
+
+Tudo é armazenado no navegador usando `localStorage`.
+
+---
+
+### 🥊 BoxTimer profissional
+- 12 rounds automáticos
 - 3 minutos de luta
-- 1 minuto de descanso automático
+- 1 minuto de descanso
 - Campainha sonora
-- Reinício automático de rounds
+- Controle automático de ciclo
 
 ---
 
-## ⚙️ Tecnologias
-- HTML
-- CSS
-- JavaScript puro (Vanilla JS)
+## 💾 Persistência de dados
 
----
+O histórico do atleta é salvo localmente no navegador, permitindo:
 
-## 🎯 Objetivo do projeto
-
-Simular um sistema real usado em treinos de boxe:
-- Controle de performance
-- Estrutura de rounds
-- Monitoramento físico básico (IMC)
-- Direcionamento alimentar simples
+- acompanhamento de evolução
+- comparações ao longo do tempo
+- análise de progresso físico
 
 ---
 
 ## 🧠 Evoluções futuras
 
-- Calorias automáticas
-- Plano de treino diário
-- Histórico do atleta
-- Salvamento local (localStorage)
-- Interface estilo aplicativo mobile
-- Dashboard do treinador
+- Gráfico de evolução do IMC
+- Login de alunos
+- Banco de dados real (Firebase ou backend)
+- Plano de treino automático
+- Calorias diárias estimadas (TDEE)
 
 ---
 
-## 👨‍💻 Autor
+## ⚙️ Tecnologias
 
-Projeto em evolução contínua focado em treino de boxe + programação prática.
+- HTML
+- CSS
+- JavaScript puro
+- localStorage (persistência local)
+
+---
+
+## 👨‍💻 Objetivo do projeto
+
+Transformar um simples cronômetro de treino em um sistema real de acompanhamento de atletas de boxe.
+
+---
+
+## 🥊 Status
+
+Projeto em evolução contínua para uso como ferramenta de treino profissional.
