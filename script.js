@@ -1,50 +1,105 @@
-console.log("BoxTimer carregado");
+console.log("BoxTimer Pro ativo");
 
 // ================= IMC =================
 
-window.calcularIMC = function () {
+function calcularIMC() {
 
     let peso = Number(document.getElementById("peso").value);
     let altura = Number(document.getElementById("altura").value);
     let objetivo = document.getElementById("objetivo").value;
-
-    console.log("peso:", peso);
-    console.log("altura:", altura);
+    let orcamento = document.getElementById("orcamento").value;
 
     if (!peso || !altura) {
         document.getElementById("resultado").innerText =
-            "Preencha peso e altura";
+            "Preencha peso e altura corretamente";
         return;
     }
 
     let imc = peso / (altura * altura);
 
-    let classificacao = "";
+    let classificacao = getClassificacao(imc);
 
-    if (imc < 18.5) classificacao = "Abaixo do peso";
-    else if (imc < 25) classificacao = "Normal";
-    else if (imc < 30) classificacao = "Sobrepeso";
-    else classificacao = "Obesidade";
+    let dieta = gerarDieta(objetivo, orcamento);
 
     document.getElementById("resultado").innerHTML =
         "IMC: " + imc.toFixed(2) + " - " + classificacao;
 
-    document.getElementById("dieta").innerText =
-        gerarDieta(objetivo);
-};
+    document.getElementById("dieta").innerText = dieta;
+
+    salvarHistorico(imc, classificacao, objetivo);
+
+    renderHistorico();
+}
 
 
-// ================= DIETA =================
+// ================= CLASSIFICAÇÃO =================
 
-function gerarDieta(objetivo) {
+function getClassificacao(imc) {
 
-    const dieta = {
-        hipertrofia: ["Ovos", "Frango", "Arroz", "Banana", "Aveia"],
-        emagrecimento: ["Frango", "Salada", "Legumes", "Peixe"],
-        manutencao: ["Arroz", "Feijão", "Frango", "Ovos"]
+    if (imc < 18.5) return "Abaixo do peso";
+    if (imc < 25) return "Normal";
+    if (imc < 30) return "Sobrepeso";
+    return "Obesidade";
+}
+
+
+// ================= DIETA (COM ECONÔMICO + PADRÃO) =================
+
+function gerarDieta(objetivo, orcamento) {
+
+    const base = {
+        hipertrofia: {
+            economico: ["Ovos", "Frango (coxa)", "Arroz", "Feijão", "Banana"],
+            padrao: ["Frango", "Carne", "Whey", "Arroz", "Batata doce"]
+        },
+        emagrecimento: {
+            economico: ["Ovos", "Frango", "Couve", "Arroz (pouco)"],
+            padrao: ["Peixe", "Frango", "Saladas", "Legumes"]
+        },
+        manutencao: {
+            economico: ["Ovos", "Arroz", "Feijão", "Banana"],
+            padrao: ["Frango", "Arroz", "Feijão", "Legumes"]
+        }
     };
 
-    return "🍽️ Dieta:\n- " + dieta[objetivo].join("\n- ");
+    return "🍽️ Dieta:\n- " + base[objetivo][orcamento].join("\n- ");
+}
+
+
+// ================= HISTÓRICO LOCAL =================
+
+function salvarHistorico(imc, classificacao, objetivo) {
+
+    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
+
+    dados.push({
+        data: new Date().toLocaleString(),
+        imc,
+        classificacao,
+        objetivo
+    });
+
+    localStorage.setItem("imcHistorico", JSON.stringify(dados));
+}
+
+
+// ================= RENDER HISTÓRICO =================
+
+function renderHistorico() {
+
+    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
+
+    let html = "";
+
+    dados.slice().reverse().forEach(d => {
+        html += `
+        <div>
+            📅 ${d.data} | IMC: ${d.imc.toFixed(2)} | ${d.objetivo}
+        </div>
+        `;
+    });
+
+    document.getElementById("historico").innerHTML = html;
 }
 
 
@@ -81,7 +136,7 @@ function iniciarTimer() {
                 round++;
                 tempo = 180;
 
-                document.getElementById("status").innerText = "LUTA";
+                document.getElementById("status").innerText = "🥊 LUTA";
                 document.getElementById("round").innerText =
                     "ROUND " + round + " / " + maxRounds;
             }
