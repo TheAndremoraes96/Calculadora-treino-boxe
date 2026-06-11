@@ -22,9 +22,10 @@ function calcularIMC() {
         "<br>Classificação: " + classificacao;
 }
 
-let tempo = 180;
+let tempo = 180; // 3 minutos
 let contador;
 let round = 1;
+let emDescanso = false;
 
 function iniciarTimer() {
 
@@ -46,16 +47,30 @@ function iniciarTimer() {
 
             clearInterval(contador);
 
-            round++;
+            if (!emDescanso) {
 
-            document.getElementById("round").textContent =
-                "🔥 ROUND " + round + " 🔥";
+                emDescanso = true;
 
-            document.getElementById("timer").textContent = "03:00";
+                document.getElementById("round").innerHTML =
+                    "🧊 DESCANSO";
 
-            tempo = 180;
+                tempo = 60; // 1 minuto
 
-            alert("Round encerrado!");
+                iniciarTimer();
+
+            } else {
+
+                emDescanso = false;
+
+                round++;
+
+                document.getElementById("round").innerHTML =
+                    "🔥 ROUND " + round + " 🔥";
+
+                tempo = 180; // 3 minutos
+
+                iniciarTimer();
+            }
         }
 
     }, 1000);
@@ -69,11 +84,13 @@ function reiniciarTimer() {
 
     clearInterval(contador);
 
-    tempo = 5;
+    tempo = 180;
     round = 1;
+    emDescanso = false;
 
-    document.getElementById("round").textContent =
+    document.getElementById("round").innerHTML =
         "🔥 ROUND 1 🔥";
 
-    document.getElementById("timer").textContent = "00:05";
+    document.getElementById("timer").innerHTML =
+        "03:00";
 }
