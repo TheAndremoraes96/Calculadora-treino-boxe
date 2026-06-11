@@ -51,7 +51,7 @@ function iniciarTimer() {
             document.getElementById("round").textContent =
                 "🔥 ROUND " + round + " 🔥";
 
-            document.getElementById("timer").textContent = "00:05";
+            document.getElementById("timer").textContent = "03:00";
 
             tempo = 180;
 
