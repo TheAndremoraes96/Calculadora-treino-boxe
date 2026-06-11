@@ -1,28 +1,48 @@
-console.log("BoxTimer Pro carregado com sucesso");
+console.log("BoxTimer Pro carregado");
 
-// ================= IMC =================
+// ================= IMC + PLANO =================
 
 function calcularIMC() {
+    const nome = document.getElementById("nome").value || "Atleta";
+    const idade = Number(document.getElementById("idade").value);
     const peso = Number(document.getElementById("peso").value);
     const altura = Number(document.getElementById("altura").value);
+    const sexo = document.getElementById("sexo").value;
     const objetivo = document.getElementById("objetivo").value;
     const preferencia = document.getElementById("preferencia").value;
     const orcamento = document.getElementById("orcamento").value;
+    const frequencia = Number(document.getElementById("frequencia").value);
 
-    if (!peso || !altura || altura <= 0) {
+    if (!peso || !altura || !idade || altura <= 0) {
         document.getElementById("resultado").innerText =
-            "⚠️ Preencha peso e altura corretamente.";
+            "⚠️ Preencha peso, altura e idade corretamente.";
         return;
     }
 
     const imc = peso / (altura * altura);
     const classificacao = getClassificacao(imc);
-    const dieta = gerarDieta(objetivo, preferencia, orcamento);
+    const calorias = calcularCalorias(peso, altura, idade, sexo, objetivo, frequencia);
+    const proteina = calcularProteina(peso, objetivo);
+    const agua = peso * 35;
+
+    const plano = gerarPlanoAlimentar(
+        nome,
+        objetivo,
+        preferencia,
+        orcamento,
+        calorias,
+        proteina,
+        agua
+    );
 
     document.getElementById("resultado").innerHTML =
-        `IMC: ${imc.toFixed(2)} <br> Classificação: ${classificacao}`;
+        `IMC: ${imc.toFixed(2)} <br>
+         Classificação: ${classificacao} <br>
+         Calorias estimadas: ${calorias} kcal/dia <br>
+         Proteína estimada: ${proteina}g/dia <br>
+         Água estimada: ${(agua / 1000).toFixed(1)}L/dia`;
 
-    document.getElementById("dieta").innerText = dieta;
+    document.getElementById("dieta").innerText = plano;
 
     salvarHistorico(imc, classificacao, objetivo, preferencia, orcamento);
     renderHistorico();
@@ -37,83 +57,202 @@ function getClassificacao(imc) {
     return "Obesidade";
 }
 
-// ================= DIETA =================
+function calcularCalorias(peso, altura, idade, sexo, objetivo, frequencia) {
+    const alturaCm = altura * 100;
 
-function gerarDieta(objetivo, preferencia, orcamento) {
-    const alimentos = {
+    let tmb;
+
+    if (sexo === "masculino") {
+        tmb = 10 * peso + 6.25 * alturaCm - 5 * idade + 5;
+    } else {
+        tmb = 10 * peso + 6.25 * alturaCm - 5 * idade - 161;
+    }
+
+    let fatorAtividade = 1.4;
+
+    if (frequencia === 4) fatorAtividade = 1.5;
+    if (frequencia === 5) fatorAtividade = 1.6;
+    if (frequencia >= 6) fatorAtividade = 1.7;
+
+    let calorias = tmb * fatorAtividade;
+
+    if (objetivo === "hipertrofia") calorias += 300;
+    if (objetivo === "emagrecimento") calorias -= 400;
+
+    return Math.round(calorias);
+}
+
+function calcularProteina(peso, objetivo) {
+    if (objetivo === "hipertrofia") return Math.round(peso * 2);
+    if (objetivo === "emagrecimento") return Math.round(peso * 1.8);
+    return Math.round(peso * 1.6);
+}
+
+// ================= PLANO ALIMENTAR =================
+
+function gerarPlanoAlimentar(nome, objetivo, preferencia, orcamento, calorias, proteina, agua) {
+    const alimentos = getAlimentos(objetivo, preferencia, orcamento);
+
+    return `
+🥊 Plano alimentar personalizado - ${nome}
+
+Objetivo: ${formatarTexto(objetivo)}
+Preferência alimentar: ${formatarTexto(preferencia)}
+Orçamento: ${formatarTexto(orcamento)}
+
+Meta aproximada:
+- Calorias: ${calorias} kcal/dia
+- Proteína: ${proteina}g/dia
+- Água: ${(agua / 1000).toFixed(1)}L por dia
+
+========================
+🍽️ REFEIÇÕES DO DIA
+========================
+
+07:00 - Café da manhã
+- ${alimentos.cafe.join("\n- ")}
+
+10:00 - Lanche da manhã
+- ${alimentos.lancheManha.join("\n- ")}
+
+13:00 - Almoço
+- ${alimentos.almoco.join("\n- ")}
+
+16:30 - Pré-treino
+- ${alimentos.preTreino.join("\n- ")}
+
+19:00 - Pós-treino
+- ${alimentos.posTreino.join("\n- ")}
+
+21:00 - Jantar
+- ${alimentos.jantar.join("\n- ")}
+
+22:30 - Ceia
+- ${alimentos.ceia.join("\n- ")}
+
+========================
+⚠️ Observação importante
+========================
+Este plano é uma referência educativa para organização alimentar.
+Para dieta exata, exames, restrições, doenças ou suplementação, procure um nutricionista.
+`;
+}
+
+function getAlimentos(objetivo, preferencia, orcamento) {
+    const planos = {
         hipertrofia: {
-            carnivoro: {
-                economico: ["Ovos", "Frango coxa/sobrecoxa", "Arroz", "Feijão", "Banana", "Aveia", "Macarrão", "Leite"],
-                padrao: ["Peito de frango", "Carne vermelha magra", "Ovos", "Whey protein", "Batata-doce", "Arroz", "Aveia", "Pasta de amendoim"]
+            economico: {
+                cafe: ["3 ovos", "60g de aveia", "1 banana", "250ml de leite"],
+                lancheManha: ["1 banana", "30g de amendoim"],
+                almoco: ["200g de arroz", "150g de feijão", "180g de frango", "Salada"],
+                preTreino: ["150g de batata-doce ou macarrão", "2 ovos"],
+                posTreino: ["200g de arroz", "180g de frango"],
+                jantar: ["150g de arroz", "150g de feijão", "150g de frango ou ovos"],
+                ceia: ["250ml de leite", "40g de aveia"]
             },
-            pescetariano: {
-                economico: ["Sardinha", "Ovos", "Arroz", "Feijão", "Banana", "Aveia", "Macarrão"],
-                padrao: ["Atum", "Salmão", "Ovos", "Arroz", "Batata-doce", "Iogurte natural", "Aveia"]
-            },
-            fit: {
-                economico: ["Ovos", "Frango", "Arroz", "Feijão", "Banana", "Couve", "Aveia"],
-                padrao: ["Frango", "Ovos", "Arroz integral", "Batata-doce", "Legumes", "Iogurte natural", "Aveia"]
-            },
-            vegetariano: {
-                economico: ["Ovos", "Feijão", "Arroz", "Lentilha", "Banana", "Aveia", "Amendoim"],
-                padrao: ["Ovos", "Grão-de-bico", "Lentilha", "Iogurte natural", "Queijo branco", "Aveia", "Castanhas"]
+            padrao: {
+                cafe: ["3 ovos", "70g de aveia", "1 banana", "30g de whey"],
+                lancheManha: ["170g de iogurte natural", "30g de castanhas"],
+                almoco: ["200g de arroz", "200g de peito de frango", "120g de feijão", "Legumes"],
+                preTreino: ["200g de batata-doce", "1 banana"],
+                posTreino: ["30g de whey", "150g de arroz ou batata"],
+                jantar: ["180g de carne magra", "150g de arroz", "Legumes"],
+                ceia: ["Iogurte natural", "30g de pasta de amendoim"]
             }
         },
 
         emagrecimento: {
-            carnivoro: {
-                economico: ["Ovos", "Frango", "Couve", "Repolho", "Pepino", "Arroz em pequena quantidade", "Feijão em pequena quantidade"],
-                padrao: ["Peito de frango", "Carne magra", "Ovos", "Brócolis", "Abobrinha", "Saladas", "Legumes"]
+            economico: {
+                cafe: ["2 ovos", "1 banana", "Café sem açúcar"],
+                lancheManha: ["1 fruta"],
+                almoco: ["100g de arroz", "80g de feijão", "150g de frango", "Salada à vontade"],
+                preTreino: ["1 banana ou 80g de batata-doce"],
+                posTreino: ["150g de frango", "Legumes"],
+                jantar: ["2 ovos", "Salada", "100g de legumes"],
+                ceia: ["Chá sem açúcar ou 1 iogurte natural"]
             },
-            pescetariano: {
-                economico: ["Sardinha", "Ovos", "Couve", "Repolho", "Pepino", "Feijão em pequena quantidade"],
-                padrao: ["Peixe", "Atum", "Ovos", "Brócolis", "Saladas", "Legumes", "Couve-flor"]
-            },
-            fit: {
-                economico: ["Ovos", "Frango", "Couve", "Repolho", "Abobrinha", "Arroz em pequena quantidade"],
-                padrao: ["Frango", "Ovos", "Saladas", "Brócolis", "Legumes", "Batata-doce em pequena quantidade"]
-            },
-            vegetariano: {
-                economico: ["Ovos", "Feijão em pequena quantidade", "Lentilha", "Couve", "Repolho", "Pepino"],
-                padrao: ["Ovos", "Grão-de-bico", "Lentilha", "Saladas", "Legumes", "Iogurte natural"]
+            padrao: {
+                cafe: ["2 ovos", "40g de aveia", "1 fruta"],
+                lancheManha: ["170g de iogurte natural"],
+                almoco: ["120g de arroz integral", "160g de frango ou peixe", "Salada à vontade"],
+                preTreino: ["100g de batata-doce"],
+                posTreino: ["150g de peixe ou frango", "Legumes"],
+                jantar: ["150g de proteína magra", "Salada", "Legumes"],
+                ceia: ["Iogurte natural ou chá"]
             }
         },
 
         manutencao: {
-            carnivoro: {
-                economico: ["Ovos", "Frango", "Arroz", "Feijão", "Banana", "Legumes da época"],
-                padrao: ["Frango", "Carne", "Ovos", "Arroz", "Feijão", "Legumes", "Frutas"]
+            economico: {
+                cafe: ["2 ovos", "40g de aveia", "1 banana"],
+                lancheManha: ["1 fruta", "20g de amendoim"],
+                almoco: ["150g de arroz", "120g de feijão", "150g de frango", "Legumes"],
+                preTreino: ["1 banana", "30g de aveia"],
+                posTreino: ["120g de arroz", "150g de frango ou ovos"],
+                jantar: ["120g de arroz", "100g de feijão", "150g de proteína"],
+                ceia: ["250ml de leite ou 1 fruta"]
             },
-            pescetariano: {
-                economico: ["Sardinha", "Ovos", "Arroz", "Feijão", "Banana", "Legumes da época"],
-                padrao: ["Peixe", "Atum", "Ovos", "Arroz", "Feijão", "Legumes", "Frutas"]
-            },
-            fit: {
-                economico: ["Ovos", "Frango", "Arroz", "Feijão", "Banana", "Couve"],
-                padrao: ["Frango", "Ovos", "Arroz integral", "Feijão", "Legumes", "Frutas", "Aveia"]
-            },
-            vegetariano: {
-                economico: ["Ovos", "Arroz", "Feijão", "Lentilha", "Banana", "Aveia"],
-                padrao: ["Ovos", "Grão-de-bico", "Lentilha", "Iogurte natural", "Queijo branco", "Legumes", "Frutas"]
+            padrao: {
+                cafe: ["2 ovos", "50g de aveia", "1 fruta", "Iogurte natural"],
+                lancheManha: ["Castanhas 25g", "1 fruta"],
+                almoco: ["150g de arroz", "150g de frango ou peixe", "100g de feijão", "Legumes"],
+                preTreino: ["100g de batata-doce", "1 banana"],
+                posTreino: ["150g de proteína", "120g de arroz"],
+                jantar: ["150g de carne/frango/peixe", "Legumes", "100g de arroz"],
+                ceia: ["Iogurte natural ou queijo branco"]
             }
         }
     };
 
-    const lista = alimentos[objetivo][preferencia][orcamento];
+    let plano = planos[objetivo][orcamento];
 
-    return `
-🍽️ Plano alimentar
+    if (preferencia === "vegetariano") {
+        plano = substituirPorVegetariano(plano);
+    }
 
-Objetivo: ${formatarTexto(objetivo)}
-Preferência: ${formatarTexto(preferencia)}
-Orçamento: ${formatarTexto(orcamento)}
+    if (preferencia === "pescetariano") {
+        plano = substituirPorPescetariano(plano);
+    }
 
-Sugestões:
-- ${lista.join("\n- ")}
+    if (preferencia === "fit") {
+        plano = substituirPorFit(plano);
+    }
 
-⚠️ Observação:
-Essas são sugestões básicas. Para dieta clínica, procure um nutricionista.
-`;
+    return plano;
+}
+
+function substituirPorVegetariano(plano) {
+    return trocarProteinas(plano, ["ovos", "lentilha", "grão-de-bico", "feijão", "iogurte natural", "queijo branco"]);
+}
+
+function substituirPorPescetariano(plano) {
+    return trocarProteinas(plano, ["sardinha", "atum", "peixe", "ovos"]);
+}
+
+function substituirPorFit(plano) {
+    return trocarProteinas(plano, ["frango", "ovos", "peixe", "iogurte natural"]);
+}
+
+function trocarProteinas(plano, opcoes) {
+    const novoPlano = JSON.parse(JSON.stringify(plano));
+
+    Object.keys(novoPlano).forEach(refeicao => {
+        novoPlano[refeicao] = novoPlano[refeicao].map(item => {
+            if (
+                item.includes("frango") ||
+                item.includes("carne") ||
+                item.includes("peito") ||
+                item.includes("proteína") ||
+                item.includes("peixe")
+            ) {
+                return item + ` (substituição possível: ${opcoes.join(", ")})`;
+            }
+
+            return item;
+        });
+    });
+
+    return novoPlano;
 }
 
 function formatarTexto(texto) {
@@ -133,8 +272,7 @@ function atualizarTema(objetivo) {
 }
 
 function atualizarTemaPorSelect() {
-    const objetivo = document.getElementById("objetivo").value;
-    atualizarTema(objetivo);
+    atualizarTema(document.getElementById("objetivo").value);
 }
 
 // ================= HISTÓRICO =================
@@ -142,16 +280,15 @@ function atualizarTemaPorSelect() {
 function salvarHistorico(imc, classificacao, objetivo, preferencia, orcamento) {
     const historico = JSON.parse(localStorage.getItem("historicoIMC")) || [];
 
-    const registro = {
+    historico.push({
         data: new Date().toLocaleString("pt-BR"),
         imc: Number(imc.toFixed(2)),
         classificacao,
         objetivo,
         preferencia,
         orcamento
-    };
+    });
 
-    historico.push(registro);
     localStorage.setItem("historicoIMC", JSON.stringify(historico));
 }
 
@@ -188,18 +325,16 @@ function limparHistorico() {
     renderGrafico();
 }
 
-// ================= GRÁFICO CANVAS =================
+// ================= GRÁFICO =================
 
 function renderGrafico() {
     const canvas = document.getElementById("graficoIMC");
-
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     const historico = JSON.parse(localStorage.getItem("historicoIMC")) || [];
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -222,8 +357,6 @@ function renderGrafico() {
     const altura = canvas.height - padding * 2;
 
     ctx.strokeStyle = "#333";
-    ctx.lineWidth = 1;
-
     ctx.beginPath();
     ctx.moveTo(padding, padding);
     ctx.lineTo(padding, canvas.height - padding);
@@ -267,16 +400,14 @@ function renderGrafico() {
         ctx.fillText(valor.toFixed(2), x - 15, y - 10);
         ctx.fillText(index + 1, x - 4, canvas.height - 25);
     });
-
-    ctx.fillStyle = "#111";
-    ctx.font = "12px Arial";
-    ctx.fillText("Treinos", canvas.width / 2 - 20, canvas.height - 5);
 }
 
-// ================= TIMER DE BOXE =================
+// ================= TIMER BOXE =================
 
 let tempo = 180;
 let contador = null;
+let cronometroTotal = null;
+let tempoTotal = 0;
 let round = 1;
 let maxRounds = 12;
 let emDescanso = false;
@@ -284,9 +415,15 @@ let emDescanso = false;
 function iniciarTimer() {
     clearInterval(contador);
 
+    if (!cronometroTotal) {
+        cronometroTotal = setInterval(() => {
+            tempoTotal++;
+            atualizarTempoTotal();
+        }, 1000);
+    }
+
     contador = setInterval(() => {
         atualizarTimerNaTela();
-
         tempo--;
 
         if (tempo < 0) {
@@ -294,28 +431,25 @@ function iniciarTimer() {
 
             if (!emDescanso) {
                 tocarCampainha();
-
                 emDescanso = true;
                 tempo = 60;
-
                 document.getElementById("status").innerText = "🧊 DESCANSO";
-
                 iniciarTimer();
             } else {
                 round++;
 
                 if (round > maxRounds) {
                     tocarCampainha();
+                    clearInterval(contador);
+                    clearInterval(cronometroTotal);
+                    cronometroTotal = null;
 
-                    document.getElementById("status").innerText =
-                        "🏆 TREINO FINALIZADO";
-
+                    document.getElementById("status").innerText = "🏆 TREINO FINALIZADO";
                     document.getElementById("timer").innerText = "00:00";
                     return;
                 }
 
                 tocarCampainha();
-
                 emDescanso = false;
                 tempo = 180;
 
@@ -332,18 +466,25 @@ function iniciarTimer() {
 
 function pararTimer() {
     clearInterval(contador);
+    clearInterval(cronometroTotal);
+    cronometroTotal = null;
 }
 
 function reiniciarTimer() {
     clearInterval(contador);
+    clearInterval(cronometroTotal);
 
+    contador = null;
+    cronometroTotal = null;
     tempo = 180;
+    tempoTotal = 0;
     round = 1;
     emDescanso = false;
 
     document.getElementById("round").innerText = "🔥 ROUND 1 / 12 🔥";
     document.getElementById("status").innerText = "🥊 LUTA";
     document.getElementById("timer").innerText = "03:00";
+    document.getElementById("tempoTotal").innerText = "00:00";
 }
 
 function atualizarTimerNaTela() {
@@ -351,6 +492,14 @@ function atualizarTimerNaTela() {
     const segundos = tempo % 60;
 
     document.getElementById("timer").innerText =
+        `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+}
+
+function atualizarTempoTotal() {
+    const minutos = Math.floor(tempoTotal / 60);
+    const segundos = tempoTotal % 60;
+
+    document.getElementById("tempoTotal").innerText =
         `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
 }
 
