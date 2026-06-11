@@ -1,5 +1,5 @@
 // ================================
-// 🥊 BOX TIMER PRO + IMC SYSTEM
+// 🥊 BOX TIMER PRO + IMC + HISTÓRICO
 // ================================
 
 
@@ -23,10 +23,13 @@ function calcularIMC() {
         "<br>Classificação: " + classificacao;
 
     document.getElementById("dieta").innerText = dieta;
+
+    salvarHistorico(imc, classificacao, objetivo);
+    carregarHistorico();
 }
 
 
-// 📊 CLASSIFICAÇÃO IMC
+// 📊 CLASSIFICAÇÃO
 function getClassificacao(imc) {
 
     if (imc < 18.5) return "Abaixo do peso";
@@ -36,7 +39,7 @@ function getClassificacao(imc) {
 }
 
 
-// 🍽️ DIETA POR OBJETIVO
+// 🍽️ DIETA
 function gerarDieta(objetivo) {
 
     if (objetivo === "hipertrofia") {
@@ -75,6 +78,61 @@ function gerarDieta(objetivo) {
 }
 
 
+// ================= HISTÓRICO =================
+
+// salvar evolução
+function salvarHistorico(imc, classificacao, objetivo) {
+
+    let historico = JSON.parse(localStorage.getItem("historicoIMC")) || [];
+
+    let registro = {
+        data: new Date().toLocaleString(),
+        imc: imc.toFixed(2),
+        classificacao: classificacao,
+        objetivo: objetivo
+    };
+
+    historico.push(registro);
+
+    localStorage.setItem("historicoIMC", JSON.stringify(historico));
+}
+
+
+// carregar evolução
+function carregarHistorico() {
+
+    let historico = JSON.parse(localStorage.getItem("historicoIMC")) || [];
+
+    let container = document.getElementById("historico");
+
+    container.innerHTML = "";
+
+    historico.reverse().forEach(item => {
+
+        container.innerHTML += `
+        <div style="margin-bottom:10px; padding:10px; border:1px solid #ccc;">
+            <strong>📅 ${item.data}</strong><br>
+            IMC: ${item.imc}<br>
+            Classificação: ${item.classificacao}<br>
+            Objetivo: ${item.objetivo}
+        </div>
+        `;
+    });
+}
+
+
+// limpar histórico
+function limparHistorico() {
+
+    localStorage.removeItem("historicoIMC");
+    carregarHistorico();
+}
+
+
+// inicializa histórico ao abrir
+carregarHistorico();
+
+
 // ================= TIMER =================
 
 let tempo = 180;
@@ -97,7 +155,7 @@ function tocarCampainha() {
 }
 
 
-// 🔥 ATUALIZA ROUND
+// 🔥 ROUND
 function atualizarRound() {
 
     document.getElementById("round").innerHTML =
@@ -105,7 +163,7 @@ function atualizarRound() {
 }
 
 
-// ▶️ INICIAR TIMER
+// ▶️ INICIAR
 function iniciarTimer() {
 
     clearInterval(contador);
@@ -168,13 +226,13 @@ function iniciarTimer() {
 }
 
 
-// ⏹️ PARAR TIMER
+// ⏹️ PARAR
 function pararTimer() {
     clearInterval(contador);
 }
 
 
-// 🔄 REINICIAR TIMER
+// 🔄 REINICIAR
 function reiniciarTimer() {
 
     clearInterval(contador);
