@@ -22,7 +22,7 @@ function calcularIMC() {
         "<br>Classificação: " + classificacao;
 }
 
-let tempo = 180;
+let tempo = 5;
 let contador;
 let round =1;
 function iniciarTimer() {
