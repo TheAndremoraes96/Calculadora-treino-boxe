@@ -1,21 +1,4 @@
-// ================= FIREBASE =================
-const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "SEU_PROJETO.firebaseapp.com",
-    databaseURL: "https://SEU_PROJETO.firebaseio.com",
-    projectId: "SEU_PROJETO",
-    storageBucket: "SEU_PROJETO.appspot.com",
-    messagingSenderId: "XXXX",
-    appId: "XXXX"
-};
-
-// proteção caso Firebase não esteja configurado ainda
-if (typeof firebase !== "undefined") {
-    firebase.initializeApp(firebaseConfig);
-}
-
-const db = typeof firebase !== "undefined" ? firebase.database() : null;
-
+console.log("BoxTimer Pro carregado");
 
 // ================= IMC =================
 
@@ -23,30 +6,31 @@ function calcularIMC() {
 
     let peso = Number(document.getElementById("peso").value);
     let altura = Number(document.getElementById("altura").value);
+
+    if (!peso || !altura) {
+        document.getElementById("resultado").innerText =
+            "Preencha peso e altura corretamente";
+        return;
+    }
+
     let objetivo = document.getElementById("objetivo").value;
     let preferencia = document.getElementById("preferencia").value;
     let orcamento = document.getElementById("orcamento").value;
 
-    if (!peso || !altura) {
-        document.getElementById("resultado").innerHTML =
-            "⚠️ Preencha peso e altura corretamente";
-        return;
-    }
-
     let imc = peso / (altura * altura);
 
     let classificacao = getClassificacao(imc);
-    let dieta = gerarDieta(objetivo, preferencia, orcamento);
+
+    let dieta = gerarDieta(objetivo, orcamento);
 
     document.getElementById("resultado").innerHTML =
-        IMC: ${imc.toFixed(2)} <br> ${classificacao};
+        `IMC: ${imc.toFixed(2)} - ${classificacao}`;
 
     document.getElementById("dieta").innerText = dieta;
 
     salvarHistorico(imc, classificacao, objetivo);
 
     renderHistorico();
-    renderGrafico();
 
     atualizarTema(objetivo);
 }
@@ -64,11 +48,11 @@ function getClassificacao(imc) {
 
 // ================= DIETA =================
 
-function gerarDieta(objetivo, preferencia, orcamento) {
+function gerarDieta(objetivo, orcamento) {
 
     const base = {
         hipertrofia: {
-            economico: ["Ovos", "Frango", "Arroz", "Feijão", "Banana"],
+            economico: ["Ovos", "Frango (coxa)", "Arroz", "Feijão", "Banana"],
             padrao: ["Frango", "Carne", "Whey", "Arroz", "Batata doce"]
         },
         emagrecimento: {
@@ -91,9 +75,9 @@ function atualizarTema(objetivo) {
 
     document.body.className = "";
 
-    if (objetivo === "hipertrofia") document.body.classList.add("hipertrofia");
-    if (objetivo === "emagrecimento") document.body.classList.add("emagrecimento");
-    if (objetivo === "manutencao") document.body.classList.add("manutencao");
+    if (objetivo === "hipertrofia") document.body.style.background = "#0b1b2b";
+    if (objetivo === "emagrecimento") document.body.style.background = "#2b0b0b";
+    if (objetivo === "manutencao") document.body.style.background = "#0b2b1a";
 }
 
 
@@ -103,20 +87,14 @@ function salvarHistorico(imc, classificacao, objetivo) {
 
     let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
 
-    let registro = {
+    dados.push({
         data: new Date().toLocaleString(),
         imc,
         classificacao,
         objetivo
-    };
-
-    dados.push(registro);
+    });
 
     localStorage.setItem("imcHistorico", JSON.stringify(dados));
-
-    if (db) {
-        db.ref("atletas").push(registro);
-    }
 }
 
 
@@ -132,40 +110,11 @@ function renderHistorico() {
         html += `
         <div>
             📅 ${d.data} | IMC: ${d.imc.toFixed(2)} | ${d.objetivo}
-        </div>`;
+        </div>
+        `;
     });
 
     document.getElementById("historico").innerHTML = html;
-}
-
-
-// ================= GRÁFICO =================
-
-function renderGrafico() {
-
-    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
-
-    if (dados.length === 0) return;
-
-    const chart = {
-        chartType: "line",
-        meta: {
-            title: "Evolução do IMC",
-            description: "Progresso do atleta"
-        },
-        xKey: "treino",
-        series: [
-            { dataKey: "imc", label: "IMC", valueFormat: "raw" }
-        ],
-        data: dados.map((d, i) => ({
-            treino: i + 1,
-            imc: Number(d.imc)
-        }))
-    };
-
-    if (window.renderChart) {
-        window.renderChart("grafico-imc", chart);
-    }
 }
 
 
@@ -175,19 +124,19 @@ let tempo = 180;
 let round = 1;
 let maxRounds = 12;
 let emDescanso = false;
-let contador;
+let timer;
 
 function iniciarTimer() {
 
-    clearInterval(contador);
+    clearInterval(timer);
 
-    contador = setInterval(() => {
+    timer = setInterval(() => {
 
         let m = Math.floor(tempo / 60);
         let s = tempo % 60;
 
-        document.getElementById("timer").innerHTML =
-            ${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")};
+        document.getElementById("timer").innerText =
+            `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 
         tempo--;
 
@@ -201,9 +150,10 @@ function iniciarTimer() {
                 emDescanso = false;
                 round++;
                 tempo = 180;
+
                 document.getElementById("status").innerText = "LUTA";
                 document.getElementById("round").innerText =
-                    ROUND ${round} / ${maxRounds};
+                    `ROUND ${round} / ${maxRounds}`;
             }
         }
 
@@ -211,7 +161,7 @@ function iniciarTimer() {
 }
 
 function pararTimer() {
-    clearInterval(contador);
+    clearInterval(timer);
 }
 
 function reiniciarTimer() {
@@ -220,16 +170,7 @@ function reiniciarTimer() {
     emDescanso = false;
 
     document.getElementById("round").innerText =
-        ROUND ${round} / ${maxRounds};
+        `ROUND ${round} / ${maxRounds}`;
+
+    document.getElementById("timer").innerText = "03:00";
 }
-
-
-// ================= PWA =================
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
-}
-
-
-// ================= INIT =================
-renderHistorico();
-renderGrafico();
