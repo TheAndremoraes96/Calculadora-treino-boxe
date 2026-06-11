@@ -41,11 +41,6 @@ O sistema realiza:
 
 ✅ Classificação corporal
 
-- Abaixo do peso
-- Peso normal
-- Sobrepeso
-- Obesidade
-
 ✅ Histórico de avaliações
 
 ✅ Registro da evolução do atleta
@@ -59,132 +54,8 @@ O sistema realiza:
 Uma das principais evoluções do projeto foi a criação de um sistema de sugestões alimentares baseado em:
 
 ### Objetivo
-
-- Hipertrofia
-- Emagrecimento
-- Manutenção
-
 ### Preferência alimentar
-
-- Carnívoro
-- Pescetariano
-- Fit leve
-- Vegetariano
-
 ### Orçamento
-
-- Econômico
-- Padrão
-
----
-
-# 💰 Alimentação Econômica
-
-Nem todo atleta possui condições de manter uma alimentação baseada em alimentos mais caros.
-
-Por isso o sistema possui opções econômicas que buscam atingir objetivos semelhantes utilizando alimentos mais acessíveis.
-
-Exemplos:
-
-### Hipertrofia Econômica
-
-- Ovos
-- Frango (coxa e sobrecoxa)
-- Arroz
-- Feijão
-- Banana
-- Aveia
-- Macarrão
-- Leite
-
-### Emagrecimento Econômico
-
-- Ovos
-- Frango
-- Couve
-- Repolho
-- Pepino
-- Arroz controlado
-- Feijão controlado
-
-### Manutenção Econômica
-
-- Ovos
-- Frango
-- Arroz
-- Feijão
-- Banana
-- Legumes da época
-
----
-
-# 🎨 Sistema de Temas
-
-O aplicativo altera automaticamente sua aparência de acordo com o objetivo do atleta.
-
-### 🟦 Hipertrofia
-
-Tema azul representando força, construção muscular e desempenho.
-
-### 🟥 Emagrecimento
-
-Tema vermelho representando intensidade e redução de peso.
-
-### 🟩 Manutenção
-
-Tema verde representando equilíbrio e constância.
-
----
-
-# 🥊 Cronômetro Profissional de Boxe
-
-O sistema possui um Box Timer integrado.
-
-### Configuração atual
-
-- 12 rounds
-- 3 minutos por round
-- 1 minuto de descanso
-- Campainha automática
-- Controle de rounds
-- Iniciar treino
-- Pausar treino
-- Reiniciar treino
-- Encerramento automático
-
-Inspirado nos padrões utilizados em treinamentos e competições de boxe.
-
----
-
-# 📈 Histórico de Evolução
-
-Cada cálculo realizado pode ser armazenado para acompanhamento.
-
-O histórico registra:
-
-- Data
-- IMC
-- Classificação
-- Objetivo
-- Preferência alimentar
-- Orçamento escolhido
-
-Isso permite acompanhar a evolução do atleta ao longo do tempo.
-
----
-
-# 📊 Gráfico de Evolução
-
-O BoxTimer Pro gera um gráfico visual da evolução do IMC.
-
-Com isso o atleta consegue visualizar de forma simples:
-
-- Ganho de massa
-- Perda de peso
-- Estabilidade corporal
-- Tendência de evolução
-
----
 
 # 💻 Tecnologias Utilizadas
 
@@ -208,27 +79,6 @@ Cada nova funcionalidade adicionada representa uma etapa do meu aprendizado em:
 - Armazenamento local
 - Interface de usuário
 - Desenvolvimento Web
-
----
-
-# 🚀 Próximas Evoluções
-
-Planejadas para futuras versões:
-
-- Sistema de múltiplos alunos
-- Login de usuários
-- Banco de dados em nuvem
-- Sincronização online
-- Aplicativo instalável (PWA)
-- Dashboard para treinador
-- Metas personalizadas
-- Relatórios de evolução
-- Estatísticas de treino
-- Controle de peso corporal
-- Cadastro de exercícios
-- Sistema de acompanhamento para equipes
-
----
 
 # 🥊 BoxTimer Pro
 
