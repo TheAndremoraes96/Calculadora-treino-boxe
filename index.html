@@ -7,24 +7,26 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body id="appBody">
+<body id="appBody" class="tema-hipertrofia">
 
     <h1>🥊 BoxTimer Pro</h1>
 
-    <section>
+    <section class="card">
         <h2>IMC + Plano do Atleta</h2>
 
         <input type="number" id="peso" placeholder="Peso (kg)">
-        <input type="number" id="altura" placeholder="Altura (m)" step="0.01">
+        <input type="number" id="altura" placeholder="Altura (m). Ex: 1.75" step="0.01">
 
         <br><br>
 
+        <label>Objetivo:</label>
         <select id="objetivo" onchange="atualizarTemaPorSelect()">
             <option value="hipertrofia">Hipertrofia</option>
             <option value="emagrecimento">Emagrecimento</option>
             <option value="manutencao">Manutenção</option>
         </select>
 
+        <label>Preferência:</label>
         <select id="preferencia">
             <option value="carnivoro">Carnívoro</option>
             <option value="pescetariano">Pescetariano</option>
@@ -32,6 +34,7 @@
             <option value="vegetariano">Vegetariano</option>
         </select>
 
+        <label>Orçamento:</label>
         <select id="orcamento">
             <option value="economico">Econômico</option>
             <option value="padrao">Padrão</option>
@@ -45,33 +48,25 @@
         <pre id="dieta"></pre>
     </section>
 
-    <hr>
-
-    <section>
+    <section class="card">
         <h2>📊 Gráfico de Evolução do IMC</h2>
         <canvas id="graficoIMC" width="600" height="300"></canvas>
     </section>
 
-    <hr>
-
-    <section>
+    <section class="card">
         <h2>📈 Histórico do Atleta</h2>
         <div id="historico"></div>
         <br>
         <button onclick="limparHistorico()">Limpar Histórico</button>
     </section>
 
-    <hr>
-
-    <section>
-        <h2>🥊 BoxTimer Pro</h2>
+    <section class="card">
+        <h2>🥊 Cronômetro de Boxe</h2>
 
         <h3 id="round">🔥 ROUND 1 / 12 🔥</h3>
         <h3 id="status">🥊 LUTA</h3>
 
         <div id="timer">03:00</div>
-
-        <br>
 
         <button onclick="iniciarTimer()">Iniciar</button>
         <button onclick="pararTimer()">Parar</button>
