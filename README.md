@@ -20,8 +20,28 @@ Funcionalidades atuais:
 - Cronômetro de rounds
 - Contador automático de rounds
 
+
 Tecnologias utilizadas:
 - HTML
 - CSS
 - JavaScript
 - GitHub Pages
+
+## Versão Atual
+
+v1.0
+
+Funcionalidades implementadas:
+- Cálculo de IMC
+- Classificação de IMC
+- Cronômetro de rounds
+- Contador automático de rounds
+
+## Próximas Atualizações
+
+- Descanso automático entre rounds
+- Campainha de início e fim
+- Configuração de rounds
+- Configuração de tempo
+- Contador de golpes
+- Estatísticas de treino
