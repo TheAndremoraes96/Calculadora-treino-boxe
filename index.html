@@ -7,76 +7,72 @@
     <title>🥊 BoxTimer Pro</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <!-- 📱 PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff2d2d">
+
+    <!-- ☁️ FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
 </head>
 
-<body>
+<body id="appBody">
 
     <h1>🥊 BoxTimer Pro</h1>
 
     <!-- ================= IMC ================= -->
-    <h2>IMC do Atleta + Plano Alimentar</h2>
+    <h2>IMC + Plano do Atleta</h2>
 
-    <label>Peso (kg):</label>
-    <br>
-    <input type="number" id="peso">
-
-    <br><br>
-
-    <label>Altura (m):</label>
-    <br>
-    <input type="number" id="altura" step="0.01">
+    <input type="number" id="peso" placeholder="Peso (kg)">
+    <input type="number" id="altura" placeholder="Altura (m)" step="0.01">
 
     <br><br>
 
-    <label>Objetivo:</label>
-    <br>
     <select id="objetivo">
         <option value="hipertrofia">Hipertrofia</option>
         <option value="emagrecimento">Emagrecimento</option>
         <option value="manutencao">Manutenção</option>
     </select>
 
-    <br><br>
-
-    <label>Preferência alimentar:</label>
-    <br>
     <select id="preferencia">
         <option value="carnivoro">Carnívoro</option>
         <option value="pescetariano">Pescetariano</option>
         <option value="fit">Fit leve</option>
     </select>
 
+    <select id="orcamento">
+        <option value="economico">Econômico</option>
+        <option value="padrao">Padrão</option>
+    </select>
+
     <br><br>
 
-    <button onclick="calcularIMC()">
-        Calcular IMC + Plano
-    </button>
+    <button onclick="calcularIMC()">Calcular IMC</button>
 
     <h2 id="resultado"></h2>
     <pre id="dieta"></pre>
 
     <hr>
 
-    <!-- ================= GRÁFICO ================= -->
+    <!-- 📊 GRÁFICO -->
     <h2>📊 Evolução do IMC</h2>
-
     <div id="grafico-imc"></div>
 
     <hr>
 
-    <!-- ================= HISTÓRICO ================= -->
+    <!-- 📈 HISTÓRICO -->
     <h2>📈 Histórico</h2>
-
     <div id="historico"></div>
 
     <button onclick="limparHistorico()">Limpar Histórico</button>
 
     <hr>
 
-    <!-- ================= TIMER ================= -->
+    <!-- 🥊 TIMER -->
     <h2>🥊 BoxTimer Pro</h2>
 
-    <h3 id="round">🔥 ROUND 1 / 12 🔥</h3>
+    <h3 id="round">ROUND 1 / 12</h3>
     <h3 id="status">🥊 LUTA</h3>
 
     <div id="timer">03:00</div>
@@ -86,7 +82,6 @@
     <button onclick="reiniciarTimer()">Reiniciar</button>
 
     <script src="script.js"></script>
-
 </body>
 
 </html>
