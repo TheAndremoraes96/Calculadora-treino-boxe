@@ -21,8 +21,10 @@ function calcularIMC() {
         "IMC: " + imc.toFixed(2) +
         "<br>Classificação: " + classificacao;
 }
+
 let tempo = 180;
 let contador;
+
 function iniciarTimer() {
 
     clearInterval(contador);
@@ -59,19 +61,3 @@ function reiniciarTimer() {
 
     document.getElementById("timer").innerHTML = "03:00";
 }
-et tempo = 180;
-let contador;
-
-function iniciarTimer() {
-...
-}
-
-function pararTimer() {
-...
-}
-
-function reiniciarTimer() {
-...
-}
-
-
