@@ -1,87 +1,56 @@
+
 # 🥊 BoxTimer Pro
 
-Sistema de treino de boxe com IMC, dieta inteligente, histórico de evolução e interface dinâmica.
+Sistema completo de treino de boxe com:
+
+- IMC + dieta inteligente
+- histórico de evolução
+- gráfico de progresso
+- timer profissional de rounds
+- tema dinâmico por objetivo
+- versão app (PWA instalável)
+- sincronização na nuvem (Firebase)
 
 ---
 
-## 🚀 Funcionalidades principais
+## 🚀 Funcionalidades
 
-### 📊 IMC do atleta
-- Cálculo automático
-- Classificação por faixa corporal
-- Registro de evolução
-
----
+### 📊 IMC
+- cálculo automático
+- classificação corporal
+- integração com dieta
 
 ### 🍽️ Dieta inteligente
-Baseada em:
-- Objetivo do atleta:
-  - Hipertrofia
-  - Emagrecimento
-  - Manutenção
+- objetivo (hipertrofia, emagrecimento, manutenção)
+- preferência alimentar
+- orçamento (econômico ou padrão)
 
-- Preferência alimentar:
-  - Carnívoro
-  - Pescetariano
-  - Fit leve
+### 📈 Evolução
+- histórico completo
+- gráfico de progresso do IMC
 
----
+### ☁️ Nuvem
+- salvamento automático no Firebase
+- backup online
 
-### 🎨 Interface dinâmica (NOVO)
+### 📱 App instalável
+- funciona como aplicativo no celular
+- modo offline (PWA)
 
-O sistema agora muda automaticamente o tema da aplicação conforme o objetivo selecionado:
-
-- 🟥 Emagrecimento → foco, intensidade e corte de gordura
-- 🟦 Hipertrofia → força, volume e performance
-- 🟩 Manutenção → equilíbrio e estabilidade
-
-Isso cria uma experiência visual adaptativa para o atleta.
+### 🥊 BoxTimer
+- rounds automáticos
+- descanso automático
+- controle de luta
 
 ---
 
-### 📈 Histórico de evolução
-- IMC salvo automaticamente
-- Data do registro
-- Classificação corporal
-- Objetivo do treino
+## 🧠 Objetivo
+
+Transformar um sistema simples de treino em um app completo de acompanhamento de atletas.
 
 ---
 
-### 📊 Gráfico de evolução
-- Visualização da evolução do IMC ao longo do tempo
-- Baseado no histórico salvo localmente
+## 🚀 Status
 
----
-
-### 🥊 BoxTimer profissional
-- 12 rounds automáticos
-- 3 minutos de luta
-- 1 minuto de descanso
-- Campainha sonora
-- Controle automático de fluxo
-
----
-
-## 💾 Armazenamento
-- localStorage (dados salvos no navegador)
-- histórico persistente sem backend
-
----
-
-## 🧠 Evoluções futuras
-- Gráfico visual real (não JSON)
-- Login de alunos
-- Banco de dados online
-- Plano de treino automático
-- Dashboard de treinador
-- App mobile completo
-
----
-
-## 👨‍💻 Objetivo do projeto
-Evoluir um simples cronômetro de boxe para um sistema completo de acompanhamento de atletas com inteligência básica de treino.
-
----
-
-## 🥊 Status
-Projeto em evolução contínua — base para um sistema profissional de treino.
+Projeto nível:
+👉 mini sistema de academia profissional
