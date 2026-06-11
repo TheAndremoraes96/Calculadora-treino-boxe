@@ -30,6 +30,15 @@ let maxRounds = 12;
 
 let emDescanso = false;
 
+function tocarCampainha() {
+
+    const audio = new Audio(
+        "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+    );
+
+    audio.play();
+}
+
 function atualizarRound() {
 
     document.getElementById("round").innerHTML =
@@ -58,6 +67,8 @@ function iniciarTimer() {
 
             if (!emDescanso) {
 
+                tocarCampainha();
+
                 document.getElementById("status").innerHTML =
                     "🧊 DESCANSO";
 
@@ -73,6 +84,8 @@ function iniciarTimer() {
 
                 if (round > maxRounds) {
 
+                    tocarCampainha();
+
                     document.getElementById("status").innerHTML =
                         "🏆 TREINO FINALIZADO";
 
@@ -83,6 +96,8 @@ function iniciarTimer() {
                 }
 
                 emDescanso = false;
+
+                tocarCampainha();
 
                 atualizarRound();
 
