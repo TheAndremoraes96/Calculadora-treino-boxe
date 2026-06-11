@@ -24,7 +24,7 @@ function calcularIMC() {
 
 let tempo = 180;
 let contador;
-
+let round =1;
 function iniciarTimer() {
 
     clearInterval(contador);
@@ -41,10 +41,21 @@ function iniciarTimer() {
 
         tempo--;
 
-        if (tempo < 0) {
-            clearInterval(contador);
-            alert("Round encerrado!");
-        }
+    if (tempo < 0) {
+
+    clearInterval(contador);
+
+    round++;
+
+    document.getElementById("round").innerHTML =
+        "🔥 ROUND " + round + " 🔥";
+
+    tempo = 180;
+
+    document.getElementById("timer").innerHTML = "03:00";
+
+    alert("Round encerrado!");
+}
 
     }, 1000);
 }
