@@ -4,5 +4,8 @@ Calculadora para atletas e praticantes de boxe com IMC, cronometro de rounds e f
 
 - [x] Cálculo de IMC
 - [x] Classificação de IMC
-- [ ] Cronômetro de rounds
+- [x] Cronômetro de rounds
+- [x] Contador automático de rounds
+- [ ] Descanso automático
+- [ ] Campainha de início e fim
 - [ ] Contador de golpes
