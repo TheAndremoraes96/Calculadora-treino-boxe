@@ -134,6 +134,7 @@ Meta aproximada:
 ⚠️ Observação importante
 ========================
 Este plano é uma referência educativa para organização alimentar.
+As quantidades são estimativas gerais.
 Para dieta exata, exames, restrições, doenças ou suplementação, procure um nutricionista.
 `;
 }
@@ -144,20 +145,20 @@ function getAlimentos(objetivo, preferencia, orcamento) {
             economico: {
                 cafe: ["3 ovos", "60g de aveia", "1 banana", "250ml de leite"],
                 lancheManha: ["1 banana", "30g de amendoim"],
-                almoco: ["200g de arroz", "150g de feijão", "180g de frango", "Salada"],
-                preTreino: ["150g de batata-doce ou macarrão", "2 ovos"],
+                almoco: ["200g de arroz", "150g de feijão", "180g de frango coxa/sobrecoxa", "Salada à vontade"],
+                preTreino: ["150g de macarrão ou batata-doce", "2 ovos"],
                 posTreino: ["200g de arroz", "180g de frango"],
-                jantar: ["150g de arroz", "150g de feijão", "150g de frango ou ovos"],
+                jantar: ["150g de arroz", "150g de feijão", "150g de frango ou 3 ovos"],
                 ceia: ["250ml de leite", "40g de aveia"]
             },
             padrao: {
-                cafe: ["3 ovos", "70g de aveia", "1 banana", "30g de whey"],
+                cafe: ["3 ovos", "70g de aveia", "1 banana", "30g de whey protein"],
                 lancheManha: ["170g de iogurte natural", "30g de castanhas"],
-                almoco: ["200g de arroz", "200g de peito de frango", "120g de feijão", "Legumes"],
+                almoco: ["200g de arroz", "120g de feijão", "200g de peito de frango", "150g de legumes"],
                 preTreino: ["200g de batata-doce", "1 banana"],
-                posTreino: ["30g de whey", "150g de arroz ou batata"],
-                jantar: ["180g de carne magra", "150g de arroz", "Legumes"],
-                ceia: ["Iogurte natural", "30g de pasta de amendoim"]
+                posTreino: ["30g de whey protein", "150g de arroz ou batata-doce"],
+                jantar: ["180g de carne magra", "150g de arroz", "150g de legumes"],
+                ceia: ["170g de iogurte natural", "25g de pasta de amendoim"]
             }
         },
 
@@ -167,18 +168,18 @@ function getAlimentos(objetivo, preferencia, orcamento) {
                 lancheManha: ["1 fruta"],
                 almoco: ["100g de arroz", "80g de feijão", "150g de frango", "Salada à vontade"],
                 preTreino: ["1 banana ou 80g de batata-doce"],
-                posTreino: ["150g de frango", "Legumes"],
-                jantar: ["2 ovos", "Salada", "100g de legumes"],
-                ceia: ["Chá sem açúcar ou 1 iogurte natural"]
+                posTreino: ["150g de frango", "150g de legumes"],
+                jantar: ["2 ovos", "100g de couve ou repolho", "100g de legumes"],
+                ceia: ["Chá sem açúcar ou 170g de iogurte natural"]
             },
             padrao: {
                 cafe: ["2 ovos", "40g de aveia", "1 fruta"],
                 lancheManha: ["170g de iogurte natural"],
                 almoco: ["120g de arroz integral", "160g de frango ou peixe", "Salada à vontade"],
                 preTreino: ["100g de batata-doce"],
-                posTreino: ["150g de peixe ou frango", "Legumes"],
-                jantar: ["150g de proteína magra", "Salada", "Legumes"],
-                ceia: ["Iogurte natural ou chá"]
+                posTreino: ["150g de peixe ou frango", "150g de legumes"],
+                jantar: ["150g de proteína magra", "Salada à vontade", "150g de legumes"],
+                ceia: ["170g de iogurte natural ou chá sem açúcar"]
             }
         },
 
@@ -186,20 +187,20 @@ function getAlimentos(objetivo, preferencia, orcamento) {
             economico: {
                 cafe: ["2 ovos", "40g de aveia", "1 banana"],
                 lancheManha: ["1 fruta", "20g de amendoim"],
-                almoco: ["150g de arroz", "120g de feijão", "150g de frango", "Legumes"],
+                almoco: ["150g de arroz", "120g de feijão", "150g de frango", "120g de legumes"],
                 preTreino: ["1 banana", "30g de aveia"],
-                posTreino: ["120g de arroz", "150g de frango ou ovos"],
+                posTreino: ["120g de arroz", "150g de frango ou 2 ovos"],
                 jantar: ["120g de arroz", "100g de feijão", "150g de proteína"],
                 ceia: ["250ml de leite ou 1 fruta"]
             },
             padrao: {
-                cafe: ["2 ovos", "50g de aveia", "1 fruta", "Iogurte natural"],
-                lancheManha: ["Castanhas 25g", "1 fruta"],
-                almoco: ["150g de arroz", "150g de frango ou peixe", "100g de feijão", "Legumes"],
+                cafe: ["2 ovos", "50g de aveia", "1 fruta", "170g de iogurte natural"],
+                lancheManha: ["25g de castanhas", "1 fruta"],
+                almoco: ["150g de arroz", "100g de feijão", "150g de frango ou peixe", "150g de legumes"],
                 preTreino: ["100g de batata-doce", "1 banana"],
                 posTreino: ["150g de proteína", "120g de arroz"],
-                jantar: ["150g de carne/frango/peixe", "Legumes", "100g de arroz"],
-                ceia: ["Iogurte natural ou queijo branco"]
+                jantar: ["150g de carne, frango ou peixe", "150g de legumes", "100g de arroz"],
+                ceia: ["170g de iogurte natural ou 60g de queijo branco"]
             }
         }
     };
@@ -239,11 +240,11 @@ function trocarProteinas(plano, opcoes) {
     Object.keys(novoPlano).forEach(refeicao => {
         novoPlano[refeicao] = novoPlano[refeicao].map(item => {
             if (
-                item.includes("frango") ||
-                item.includes("carne") ||
-                item.includes("peito") ||
-                item.includes("proteína") ||
-                item.includes("peixe")
+                item.toLowerCase().includes("frango") ||
+                item.toLowerCase().includes("carne") ||
+                item.toLowerCase().includes("peito") ||
+                item.toLowerCase().includes("proteína") ||
+                item.toLowerCase().includes("peixe")
             ) {
                 return item + ` (substituição possível: ${opcoes.join(", ")})`;
             }
