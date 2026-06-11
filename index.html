@@ -13,7 +13,8 @@
 
     <h1>🥊 BoxTimer Pro</h1>
 
-    <h2>IMC do Atleta</h2>
+    <!-- ================= IMC ================= -->
+    <h2>IMC do Atleta + Plano Alimentar</h2>
 
     <label>Peso (kg):</label>
     <br>
@@ -40,11 +41,11 @@
     </button>
 
     <h2 id="resultado"></h2>
-
-    <h3 id="dieta"></h3>
+    <pre id="dieta"></pre>
 
     <hr>
 
+    <!-- ================= TIMER ================= -->
     <h2>🥊 BoxTimer Pro - Treino</h2>
 
     <h3 id="round">🔥 ROUND 1 / 12 🔥</h3>
@@ -53,17 +54,9 @@
 
     <div id="timer">03:00</div>
 
-    <button onclick="iniciarTimer()">
-        Iniciar
-    </button>
-
-    <button onclick="pararTimer()">
-        Parar
-    </button>
-
-    <button onclick="reiniciarTimer()">
-        Reiniciar
-    </button>
+    <button onclick="iniciarTimer()">Iniciar</button>
+    <button onclick="pararTimer()">Parar</button>
+    <button onclick="reiniciarTimer()">Reiniciar</button>
 
     <script src="script.js"></script>
 
