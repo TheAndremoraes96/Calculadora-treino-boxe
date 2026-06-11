@@ -31,7 +31,7 @@ O sistema permite calcular o IMC do atleta, controlar rounds de treinamento, pau
 
 ## Versão Atual
 
-v1.2
+*v1.2*
 
 ## Próximas Atualizações
 
@@ -41,3 +41,14 @@ v1.2
 - Estatísticas de treino
 - Histórico de sessões
 
+## Como Utilizar
+
+1. Informe seu peso e altura.
+2. Clique em *Calcular IMC*.
+3. Inicie o cronômetro de treino.
+4. Acompanhe os rounds e períodos de descanso.
+5. Reinicie o treino quando necessário.
+
+## Autor
+
+Projeto desenvolvido por André Moraes como parte dos estudos em Engenharia de Software e desenvolvimento web.
