@@ -1,73 +1,90 @@
-// ================================
-// 🥊 BOX TIMER PRO - EVOLUÇÃO COMPLETA
-// ================================
+// ================= FIREBASE =================
+const firebaseConfig = {
+    apiKey: "SUA_API_KEY",
+    authDomain: "SEU_PROJETO.firebaseapp.com",
+    databaseURL: "https://SEU_PROJETO.firebaseio.com",
+    projectId: "SEU_PROJETO",
+    storageBucket: "SEU_PROJETO.appspot.com",
+    messagingSenderId: "XXXX",
+    appId: "XXXX"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 
 // ================= IMC =================
 
 function calcularIMC() {
 
-    let peso = parseFloat(document.getElementById("peso").value);
-    let altura = parseFloat(document.getElementById("altura").value);
+    let peso = Number(document.getElementById("peso").value);
+    let altura = Number(document.getElementById("altura").value);
     let objetivo = document.getElementById("objetivo").value;
     let preferencia = document.getElementById("preferencia").value;
-
-    if (!peso || !altura) return;
+    let orcamento = document.getElementById("orcamento").value;
 
     let imc = peso / (altura * altura);
 
     let classificacao = getClassificacao(imc);
-    let dieta = gerarDieta(objetivo, preferencia);
+
+    let dieta = gerarDieta(objetivo, preferencia, orcamento);
 
     document.getElementById("resultado").innerHTML =
-        `IMC: ${imc.toFixed(2)} <br>Classificação: ${classificacao}`;
+        IMC: ${imc.toFixed(2)} <br> ${classificacao};
 
     document.getElementById("dieta").innerText = dieta;
 
     salvarHistorico(imc, classificacao, objetivo);
+
     renderHistorico();
     renderGrafico();
+
+    atualizarTema(objetivo);
 }
 
 
 // ================= CLASSIFICAÇÃO =================
 
 function getClassificacao(imc) {
-
     if (imc < 18.5) return "Abaixo do peso";
-    if (imc < 25) return "Peso normal";
+    if (imc < 25) return "Normal";
     if (imc < 30) return "Sobrepeso";
     return "Obesidade";
 }
 
 
-// ================= DIETA INTELIGENTE =================
+// ================= DIETA =================
 
-function gerarDieta(objetivo, preferencia) {
+function gerarDieta(objetivo, preferencia, orcamento) {
 
     const base = {
         hipertrofia: {
-            carnivoro: ["Ovos", "Frango", "Carne vermelha", "Whey", "Arroz", "Batata doce"],
-            pescetariano: ["Ovos", "Salmão", "Atum", "Arroz", "Aveia", "Frutas"],
-            fit: ["Ovos", "Frango", "Arroz", "Aveia", "Banana", "Legumes"]
+            economico: ["Ovos", "Frango", "Arroz", "Feijão", "Banana"],
+            padrao: ["Frango", "Carne", "Whey", "Arroz", "Batata doce"]
         },
         emagrecimento: {
-            carnivoro: ["Frango", "Ovos", "Carne magra", "Saladas", "Brócolis"],
-            pescetariano: ["Peixe", "Atum", "Ovos", "Legumes", "Saladas"],
-            fit: ["Frango", "Ovos", "Legumes", "Couve", "Saladas"]
+            economico: ["Ovos", "Frango", "Couve", "Arroz (pouco)"],
+            padrao: ["Peixe", "Frango", "Saladas", "Legumes"]
         },
         manutencao: {
-            carnivoro: ["Frango", "Carne", "Ovos", "Arroz", "Feijão"],
-            pescetariano: ["Peixe", "Ovos", "Arroz", "Feijão", "Legumes"],
-            fit: ["Frango", "Ovos", "Legumes", "Frutas", "Arroz"]
+            economico: ["Ovos", "Arroz", "Feijão", "Banana"],
+            padrao: ["Frango", "Arroz", "Feijão", "Legumes"]
         }
     };
 
-    return `
-🍽️ Dieta (${objetivo} - ${preferencia}):
+    return "🍽️ Dieta:\n- " + base[objetivo][orcamento].join("\n- ");
+}
 
-- ${base[objetivo][preferencia].join("\n- ")}
-    `;
+
+// ================= TEMA =================
+
+function atualizarTema(objetivo) {
+
+    document.body.className = "";
+
+    if (objetivo === "hipertrofia") document.body.classList.add("hipertrofia");
+    if (objetivo === "emagrecimento") document.body.classList.add("emagrecimento");
+    if (objetivo === "manutencao") document.body.classList.add("manutencao");
 }
 
 
@@ -75,16 +92,20 @@ function gerarDieta(objetivo, preferencia) {
 
 function salvarHistorico(imc, classificacao, objetivo) {
 
-    let historico = JSON.parse(localStorage.getItem("imcHistorico")) || [];
+    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
 
-    historico.push({
+    let registro = {
         data: new Date().toLocaleString(),
         imc,
         classificacao,
         objetivo
-    });
+    };
 
-    localStorage.setItem("imcHistorico", JSON.stringify(historico));
+    dados.push(registro);
+
+    localStorage.setItem("imcHistorico", JSON.stringify(dados));
+
+    db.ref("atletas").push(registro);
 }
 
 
@@ -92,88 +113,56 @@ function salvarHistorico(imc, classificacao, objetivo) {
 
 function renderHistorico() {
 
-    let historico = JSON.parse(localStorage.getItem("imcHistorico")) || [];
+    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
 
-    let container = document.getElementById("historico");
-    container.innerHTML = "";
+    let html = "";
 
-    historico.slice().reverse().forEach(item => {
-
-        container.innerHTML += `
-        <div style="border:1px solid #ccc; margin:5px; padding:8px;">
-            📅 ${item.data}<br>
-            IMC: ${item.imc.toFixed(2)}<br>
-            ${item.classificacao} | ${item.objetivo}
-        </div>
-        `;
+    dados.slice().reverse().forEach(d => {
+        html += `
+        <div>
+            📅 ${d.data} | IMC: ${d.imc.toFixed(2)} | ${d.objetivo}
+        </div>`;
     });
+
+    document.getElementById("historico").innerHTML = html;
 }
 
 
-// ================= GRÁFICO =================
+// ================= GRÁFICO REAL =================
 
 function renderGrafico() {
 
-    let historico = JSON.parse(localStorage.getItem("imcHistorico")) || [];
+    let dados = JSON.parse(localStorage.getItem("imcHistorico")) || [];
 
-    let data = historico.map(h => ({
-        dia: h.data,
-        imc: h.imc
-    }));
+    if (dados.length === 0) return;
 
     const chart = {
         chartType: "line",
         meta: {
             title: "Evolução do IMC",
-            description: "Histórico de progresso do atleta"
+            description: "Progresso do atleta"
         },
-        xKey: "dia",
+        xKey: "treino",
         series: [
-            {
-                dataKey: "imc",
-                label: "IMC",
-                valueFormat: "raw"
-            }
+            { dataKey: "imc", label: "IMC", valueFormat: "raw" }
         ],
-        data
+        data: dados.map((d, i) => ({
+            treino: i + 1,
+            imc: Number(d.imc)
+        }))
     };
 
-    document.getElementById("grafico-imc").innerHTML =
-        `<pre>${JSON.stringify(chart, null, 2)}</pre>`;
+    window.renderChart?.("grafico-imc", chart);
 }
 
 
-// ================= LIMPAR =================
-
-function limparHistorico() {
-
-    localStorage.removeItem("imcHistorico");
-    renderHistorico();
-    renderGrafico();
-}
-
-
-// INIT
-renderHistorico();
-renderGrafico();
-
-
-// ================= TIMER (mantido igual ao seu) =================
+// ================= TIMER =================
 
 let tempo = 180;
-let contador;
 let round = 1;
 let maxRounds = 12;
 let emDescanso = false;
-
-function tocarCampainha() {
-    new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg").play();
-}
-
-function atualizarRound() {
-    document.getElementById("round").innerHTML =
-        `🔥 ROUND ${round} / ${maxRounds} 🔥`;
-}
+let contador;
 
 function iniciarTimer() {
 
@@ -185,41 +174,22 @@ function iniciarTimer() {
         let s = tempo % 60;
 
         document.getElementById("timer").innerHTML =
-            String(m).padStart(2, "0") + ":" +
-            String(s).padStart(2, "0");
+            ${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")};
 
         tempo--;
 
         if (tempo < 0) {
 
-            clearInterval(contador);
-
             if (!emDescanso) {
-
-                tocarCampainha();
                 emDescanso = true;
                 tempo = 60;
-
-                document.getElementById("status").innerHTML = "🧊 DESCANSO";
-                iniciarTimer();
-
+                document.getElementById("status").innerText = "DESCANSO";
             } else {
-
-                round++;
-
-                if (round > maxRounds) {
-                    document.getElementById("status").innerHTML = "🏆 FINAL";
-                    return;
-                }
-
                 emDescanso = false;
-                tocarCampainha();
-                atualizarRound();
-
-                document.getElementById("status").innerHTML = "🥊 LUTA";
+                round++;
                 tempo = 180;
-
-                iniciarTimer();
+                document.getElementById("status").innerText = "LUTA";
+                document.getElementById("round").innerText = ROUND ${round} / ${maxRounds};
             }
         }
 
@@ -234,5 +204,15 @@ function reiniciarTimer() {
     round = 1;
     tempo = 180;
     emDescanso = false;
-    atualizarRound();
 }
+
+
+// ================= PWA =================
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js");
+}
+
+
+// ================= INIT =================
+renderHistorico();
+renderGrafico();
