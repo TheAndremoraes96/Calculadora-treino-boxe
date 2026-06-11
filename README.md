@@ -1,54 +1,62 @@
 # 🥊 BoxTimer Pro
 
-## Funcionalidades
+Sistema de treino de boxe com cálculo de IMC e cronômetro inteligente de rounds.
 
-- [x] Cálculo de IMC
-- [x] Classificação de IMC
-- [x] Cronômetro de rounds
-- [x] Contador automático de rounds
-- [x] Descanso automático entre rounds
-- [x] Controle de início, pausa e reinício
-- [x] Limite de 12 rounds
-- [x] Status de luta e descanso
-- [x] Campainha de início e fim
-- [ ] Configuração personalizada de rounds
-- [ ] Configuração personalizada de tempo
-- [ ] Contador de golpes
-- [ ] Estatísticas de treino
+---
 
-## Sobre o Projeto
+## 🚀 Funcionalidades
 
-O BoxTimer Pro foi desenvolvido para auxiliar atletas, praticantes e treinadores de boxe no controle de treinos.
+### 📊 IMC do atleta
+- Cálculo automático de IMC
+- Classificação:
+  - Abaixo do peso
+  - Peso normal
+  - Sobrepeso
+  - Obesidade
 
-O sistema permite calcular o IMC do atleta, controlar rounds de treinamento, pausas de descanso e acompanhar a progressão do treino de forma automática.
+### 🍽️ Plano alimentar
+Baseado no objetivo do atleta:
+- Hipertrofia
+- Emagrecimento
+- Manutenção
 
-## Tecnologias Utilizadas
+### 🥊 Timer de boxe
+- 12 rounds configurados
+- 3 minutos de luta
+- 1 minuto de descanso automático
+- Campainha sonora
+- Reinício automático de rounds
 
-- HTML5
-- CSS3
-- JavaScript
-- GitHub Pages
+---
 
-## Versão Atual
+## ⚙️ Tecnologias
+- HTML
+- CSS
+- JavaScript puro (Vanilla JS)
 
-*v1.2*
+---
 
-## Próximas Atualizações
+## 🎯 Objetivo do projeto
 
-- Configuração de rounds
-- Configuração de tempo
-- Contador de golpes
-- Estatísticas de treino
-- Histórico de sessões
+Simular um sistema real usado em treinos de boxe:
+- Controle de performance
+- Estrutura de rounds
+- Monitoramento físico básico (IMC)
+- Direcionamento alimentar simples
 
-## Como Utilizar
+---
 
-1. Informe seu peso e altura.
-2. Clique em *Calcular IMC*.
-3. Inicie o cronômetro de treino.
-4. Acompanhe os rounds e períodos de descanso.
-5. Reinicie o treino quando necessário.
+## 🧠 Evoluções futuras
 
-## Autor
+- Calorias automáticas
+- Plano de treino diário
+- Histórico do atleta
+- Salvamento local (localStorage)
+- Interface estilo aplicativo mobile
+- Dashboard do treinador
 
-Projeto desenvolvido por André Moraes como parte dos estudos em Engenharia de Software e desenvolvimento web.
+---
+
+## 👨‍💻 Autor
+
+Projeto em evolução contínua focado em treino de boxe + programação prática.
