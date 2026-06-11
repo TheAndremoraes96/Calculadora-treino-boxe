@@ -1,115 +1,237 @@
 # 🥊 BoxTimer Pro
 
-Sistema de treino de boxe com cálculo de IMC, plano alimentar inteligente, histórico de evolução, gráfico de progresso e cronômetro profissional de rounds.
+> Mais do que um cronômetro de boxe.
+>
+> Um projeto criado para unir treinamento esportivo, acompanhamento físico, organização alimentar e evolução do atleta em uma única ferramenta.
 
 ---
 
-## 🚀 Funcionalidades
+# 📖 Sobre o Projeto
 
-### 📊 IMC do atleta
-- Cálculo automático do IMC
-- Classificação corporal:
-  - Abaixo do peso
-  - Peso normal
-  - Sobrepeso
-  - Obesidade
+O BoxTimer Pro nasceu de uma necessidade real.
+
+Como treinador e atleta de boxe, sempre senti falta de uma ferramenta simples que reunisse informações importantes para acompanhar a evolução de um aluno ou atleta durante sua jornada.
+
+O projeto começou apenas como uma calculadora de IMC e um cronômetro de rounds.
+
+Com o tempo, evoluiu para um sistema mais completo, capaz de auxiliar atletas em diferentes objetivos físicos, respeitando inclusive diferentes realidades financeiras.
+
+Além de ajudar atletas, o BoxTimer Pro também representa minha evolução como estudante de Engenharia de Software, servindo como um projeto prático para aplicar conhecimentos de HTML, CSS e JavaScript.
 
 ---
 
-### 🎯 Objetivo do atleta
-O usuário pode escolher entre:
+# 🎯 Objetivos do Sistema
+
+O BoxTimer Pro foi desenvolvido para ajudar atletas que desejam:
+
+- Ganhar massa muscular
+- Perder peso
+- Manter o condicionamento físico
+- Acompanhar sua evolução corporal
+- Organizar melhor sua alimentação
+- Treinar boxe com controle profissional de rounds
+
+---
+
+# 📊 Avaliação Física
+
+O sistema realiza:
+
+✅ Cálculo automático de IMC
+
+✅ Classificação corporal
+
+- Abaixo do peso
+- Peso normal
+- Sobrepeso
+- Obesidade
+
+✅ Histórico de avaliações
+
+✅ Registro da evolução do atleta
+
+✅ Gráfico de evolução do IMC
+
+---
+
+# 🍽️ Alimentação Inteligente
+
+Uma das principais evoluções do projeto foi a criação de um sistema de sugestões alimentares baseado em:
+
+### Objetivo
 
 - Hipertrofia
 - Emagrecimento
 - Manutenção
 
-A cor do sistema muda automaticamente de acordo com o objetivo selecionado.
+### Preferência alimentar
 
----
-
-### 🍽️ Plano alimentar inteligente
-
-O sistema gera sugestões alimentares com base em:
-
-- Objetivo do atleta
-- Preferência alimentar
-- Orçamento disponível
-
-#### Preferências alimentares:
 - Carnívoro
 - Pescetariano
 - Fit leve
 - Vegetariano
 
-#### Orçamento:
+### Orçamento
+
 - Econômico
 - Padrão
 
-A opção econômica foi criada para sugerir alimentos mais acessíveis, mantendo o foco no objetivo do atleta.
+---
+
+# 💰 Alimentação Econômica
+
+Nem todo atleta possui condições de manter uma alimentação baseada em alimentos mais caros.
+
+Por isso o sistema possui opções econômicas que buscam atingir objetivos semelhantes utilizando alimentos mais acessíveis.
+
+Exemplos:
+
+### Hipertrofia Econômica
+
+- Ovos
+- Frango (coxa e sobrecoxa)
+- Arroz
+- Feijão
+- Banana
+- Aveia
+- Macarrão
+- Leite
+
+### Emagrecimento Econômico
+
+- Ovos
+- Frango
+- Couve
+- Repolho
+- Pepino
+- Arroz controlado
+- Feijão controlado
+
+### Manutenção Econômica
+
+- Ovos
+- Frango
+- Arroz
+- Feijão
+- Banana
+- Legumes da época
 
 ---
 
-### 📈 Histórico de evolução
+# 🎨 Sistema de Temas
 
-O sistema salva automaticamente:
+O aplicativo altera automaticamente sua aparência de acordo com o objetivo do atleta.
 
-- Data do registro
-- IMC calculado
-- Classificação corporal
-- Objetivo
-- Preferência alimentar
-- Orçamento escolhido
+### 🟦 Hipertrofia
 
-Os dados ficam salvos no navegador usando `localStorage`.
+Tema azul representando força, construção muscular e desempenho.
 
----
+### 🟥 Emagrecimento
 
-### 📊 Gráfico de evolução do IMC
+Tema vermelho representando intensidade e redução de peso.
 
-O aplicativo possui um gráfico visual feito com `Canvas`, mostrando a evolução do IMC ao longo dos registros.
+### 🟩 Manutenção
+
+Tema verde representando equilíbrio e constância.
 
 ---
 
-### 🥊 Cronômetro de boxe
+# 🥊 Cronômetro Profissional de Boxe
 
-Cronômetro profissional para treino de boxe:
+O sistema possui um Box Timer integrado.
+
+### Configuração atual
 
 - 12 rounds
 - 3 minutos por round
 - 1 minuto de descanso
-- Botão iniciar
-- Botão parar
-- Botão reiniciar
-- Campainha sonora
-- Finalização automática do treino
+- Campainha automática
+- Controle de rounds
+- Iniciar treino
+- Pausar treino
+- Reiniciar treino
+- Encerramento automático
+
+Inspirado nos padrões utilizados em treinamentos e competições de boxe.
 
 ---
 
-## 🎨 Tema dinâmico
+# 📈 Histórico de Evolução
 
-O visual muda conforme o objetivo:
+Cada cálculo realizado pode ser armazenado para acompanhamento.
 
-- Hipertrofia: tema azul
-- Emagrecimento: tema vermelho
-- Manutenção: tema verde
+O histórico registra:
+
+- Data
+- IMC
+- Classificação
+- Objetivo
+- Preferência alimentar
+- Orçamento escolhido
+
+Isso permite acompanhar a evolução do atleta ao longo do tempo.
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+# 📊 Gráfico de Evolução
+
+O BoxTimer Pro gera um gráfico visual da evolução do IMC.
+
+Com isso o atleta consegue visualizar de forma simples:
+
+- Ganho de massa
+- Perda de peso
+- Estabilidade corporal
+- Tendência de evolução
+
+---
+
+# 💻 Tecnologias Utilizadas
 
 - HTML5
 - CSS3
-- JavaScript puro
-- Canvas
-- localStorage
+- JavaScript
+- Canvas API
+- LocalStorage
 
 ---
 
-## 📁 Estrutura do projeto
+# 🎓 Aprendizado
 
-```txt
-index.html
-style.css
-script.js
-README.md
+Este projeto faz parte da minha jornada como estudante de Engenharia de Software.
 
+Cada nova funcionalidade adicionada representa uma etapa do meu aprendizado em:
+
+- Lógica de programação
+- Manipulação do DOM
+- Estruturas de dados
+- Armazenamento local
+- Interface de usuário
+- Desenvolvimento Web
+
+---
+
+# 🚀 Próximas Evoluções
+
+Planejadas para futuras versões:
+
+- Sistema de múltiplos alunos
+- Login de usuários
+- Banco de dados em nuvem
+- Sincronização online
+- Aplicativo instalável (PWA)
+- Dashboard para treinador
+- Metas personalizadas
+- Relatórios de evolução
+- Estatísticas de treino
+- Controle de peso corporal
+- Cadastro de exercícios
+- Sistema de acompanhamento para equipes
+
+---
+
+# 🥊 BoxTimer Pro
+
+Desenvolvido para atletas.
+Construído por alguém que vive o esporte.
+Evoluído através da programação.
