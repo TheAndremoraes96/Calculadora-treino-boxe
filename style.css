@@ -1,26 +1,21 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 30px;
+    transition: 0.4s ease;
 }
 
-input {
-    padding: 10px;
-    width: 120px;
+/* 🟥 EMAGRECIMENTO */
+body.emagrecimento {
+    background: #2b0b0b;
+    color: #ff4d4d;
 }
 
-button {
-    padding: 10px 15px;
-    margin: 5px;
-    cursor: pointer;
+/* 🟦 HIPERTROFIA */
+body.hipertrofia {
+    background: #0b1b2b;
+    color: #4da6ff;
 }
 
-#timer {
-    font-size: 50px;
-    font-weight: bold;
-    margin: 20px;
-}
-
-#status {
-    color: #444;
+/* 🟩 MANUTENÇÃO */
+body.manutencao {
+    background: #0b2b1a;
+    color: #4dff88;
 }
