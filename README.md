@@ -2,280 +2,347 @@
 
 **Treine. Evolua. Compartilhe.**
 
-O BoxTimer Pro Community é uma plataforma esportiva inspirada em aplicativos de acompanhamento de performance, combinando boxe, corrida, caminhada, musculação, HIIT, natação, avaliação física, nutrição esportiva e comunidade de atletas em um único sistema.
+O BoxTimer Pro Community é uma plataforma esportiva desenvolvida para atletas, treinadores e praticantes de atividade física, reunindo cadastro do atleta, avaliação física, bioimpedância, nutrição esportiva, timer de rounds, comunidade, eventos e acompanhamento de evolução.
 
 ---
 
-# 🚀 Principais Funcionalidades
+## 🚀 Funcionalidades
 
-## 🏆 Perfil do Atleta
+### 1️⃣ Cadastro do Atleta
 
-Cada usuário pode criar seu perfil contendo:
+Cadastro único com os dados principais do usuário:
 
-* Nome
-* Cidade
-* Idade
-* Peso
-* Modalidade principal
-* Objetivo esportivo
-* Histórico esportivo
-* Conquistas pessoais
+- Nome
+- Idade
+- Sexo
+- Peso
+- Altura
+- Cidade
+- Objetivo
+- Modalidade principal
+- Restrições alimentares
+- Lesões
+- Medicamentos
+- Histórico esportivo
+- Preferências alimentares
+- Rotina de sono
+- Quantidade de refeições
+- Consumo de água
 
----
-
-# 📈 Feed de Atividades
-
-Publique e acompanhe atividades como:
-
-* 🥊 Boxe
-* 🥊 Sparring
-* 🏃 Corrida
-* 🚶 Caminhada
-* 🏋️ Musculação
-* ⚡ HIIT
-* 🏊 Natação
-* 🔥 Cross Training
-
-Cada atividade registra:
-
-* Nome do atleta
-* Data
-* Tempo de treino
-* Distância
-* Calorias
-* Rounds
-* Golpes
-* Séries e cargas
-* Comentários
-* Fotos
+Os dados são salvos localmente e utilizados nas próximas etapas do aplicativo.
 
 ---
 
-# 🌍 Comunidade Ativa
+### 2️⃣ Termo de Responsabilidade
 
-Interaja com outros atletas através de:
+Área com aceite obrigatório do termo de responsabilidade.
 
-* Curtidas
-* Comentários
-* Compartilhamento de experiências
-* Publicação de fotos
-* Registro de evolução
-* Motivação da comunidade
+O usuário declara que:
 
----
-
-# 📊 Dashboard de Evolução
-
-Acompanhe sua evolução com:
-
-* Total de treinos
-* Horas treinadas
-* Distância acumulada
-* Rounds realizados
-* Histórico esportivo
-* Estatísticas pessoais
+- As informações fornecidas são verdadeiras
+- O app possui caráter educativo
+- O app não substitui médicos, nutricionistas ou educadores físicos
+- Autoriza o uso dos dados para gerar avaliações internas
 
 ---
 
-# 🏅 Sistema de Conquistas
+### 3️⃣ Avaliação Física e Nutricional
 
-Desbloqueie medalhas automáticas:
+Sistema completo de avaliação com opções de método:
 
-* Primeiro treino
-* 10 treinos
-* 50 treinos
-* 100 treinos
-* 10 km percorridos
-* 50 km percorridos
-* 100 km percorridos
-* 50 rounds
-* 500 rounds
+- Guedes — 3 dobras
+- Bioimpedância
+- Weltman — Obesos
+- Faulkner — 4 dobras
 
 ---
 
-# 📅 Eventos Esportivos
+## ⚖️ Bioimpedância Completa
 
-Crie eventos para:
+Registro de dados da balança:
 
-* Corridas
-* Caminhadas
-* Treinos coletivos
-* Sparrings
-* Natação
-* HIIT
-* Boxe
-* Cross Training
-
-Cada evento possui:
-
-* Organizador
-* Data
-* Hora
-* Local
-* Descrição
-* Limite de participantes
-* Lista de presença
+- Gordura corporal (%)
+- Músculo esquelético (%)
+- Idade corporal
+- Metabolismo basal
+- Gordura visceral
+- Água corporal (%)
+- Massa muscular
+- Massa óssea
+- Massa magra
+- Massa gorda
+- Meta de gordura corporal
 
 ---
-
-# 🍽️ Nutrição Esportiva
-
-Sistema completo de avaliação nutricional:
-
-## 📝 Anamnese
-
-* Hábitos alimentares
-* Rotina diária
-* Consumo de água
-* Sono
-* Estresse
-* Suplementação
-
-## ⚖️ Bioimpedância
-
-* Gordura corporal
-* Massa muscular
-* Massa magra
-* Massa gorda
-* Gordura visceral
-* Taxa metabólica basal
 
 ## 📏 Dobras Cutâneas
 
-Registro de:
+Registro de medidas:
 
-* Peitoral
-* Abdômen
-* Coxa
-* Tríceps
-* Subescapular
-* Supra-ilíaca
-* Panturrilha
-
----
-
-# 📊 Avaliação Corporal
-
-O sistema calcula automaticamente:
-
-* IMC
-* Taxa Metabólica Basal (TMB)
-* Gasto Calórico Diário
-* Meta Calórica
-* Proteínas
-* Carboidratos
-* Gorduras
-* Hidratação
+- Peitoral
+- Abdômen
+- Coxa
+- Tríceps
+- Subescapular
+- Supra-ilíaca
+- Panturrilha
 
 ---
 
-# 🥗 Planejamento Alimentar
+## 🍽️ Nutrição Esportiva
 
-Geração automática de estratégias para:
+O sistema calcula:
+
+- IMC
+- Classificação corporal
+- Taxa metabólica basal
+- Gasto calórico diário
+- Meta calórica
+- Proteínas em gramas
+- Carboidratos em gramas
+- Gorduras em gramas
+- Recomendação de água
+
+---
+
+## 🥗 Plano Alimentar Inicial Gratuito
+
+O aplicativo gera sugestões alimentares iniciais para:
 
 ### Hipertrofia
 
-* Superávit calórico
-* Ganho de massa muscular
-* Recuperação otimizada
+- Superávit calórico
+- Proteína alta
+- Carboidratos para força e recuperação
+- Sugestões de refeições pré e pós-treino
 
 ### Emagrecimento
 
-* Déficit calórico controlado
-* Preservação muscular
-* Controle alimentar
+- Déficit calórico
+- Alta saciedade
+- Preservação de massa muscular
+- Controle alimentar
 
 ### Manutenção
 
-* Equilíbrio energético
-* Saúde metabólica
+- Equilíbrio calórico
+- Refeições balanceadas
+- Estabilidade corporal
 
 ### Performance
 
-* Energia para treinos
-* Recuperação acelerada
-* Melhor rendimento esportivo
+- Energia para treino
+- Recuperação muscular
+- Hidratação
+- Eletrólitos
 
 ---
 
-# 💪 Estratégias de Treino
+## 🥛 Restrições Alimentares
 
-O sistema fornece recomendações para:
+O plano considera restrições e preferências como:
 
-* Pré-treino
-* Pós-treino
-* Recuperação muscular
-* Hidratação
-* Performance esportiva
-
----
-
-# 🥊 Módulo de Boxe
-
-Recursos específicos para atletas de boxe:
-
-* Registro de rounds
-* Registro de sparrings
-* Controle de golpes
-* Evolução técnica
-* Histórico de treinos
+- Sem lactose
+- Sem glúten
+- Vegetariano
+- Vegano
+- Orçamento econômico
+- Orçamento padrão
 
 ---
 
-# 🛠️ Tecnologias Utilizadas
+## 🥊 Timer de Rounds
 
-* HTML5
-* CSS3
-* JavaScript
-* LocalStorage
-* GitHub Pages
+Timer profissional ajustável para treinos de boxe.
 
-Preparado para futuras integrações:
+Recursos:
 
-* Firebase
-* Banco de Dados
-* Login Social
-* PWA
-* Aplicativo Mobile
-* Inteligência Artificial
+- Quantidade de rounds configurável
+- Tempo de round configurável
+- Tempo de descanso configurável
+- Contador de round atual
+- Modo descanso
+- Pausar
+- Reiniciar
+- Campainha sonora
 
 ---
 
-# 🔮 Próximas Atualizações
+## 📈 Registro de Atividades
 
-* Login de usuários
-* Seguir atletas
-* Ranking de performance
-* Chat entre atletas
-* Inteligência Artificial para análise nutricional
-* Integração com smartwatch
-* GPS para corrida e caminhada
-* Exportação de relatórios PDF
-* Aplicativo Android e iOS
+Permite registrar:
+
+- Boxe
+- Sparring
+- Corrida
+- Caminhada
+- Musculação
+- HIIT
+- Natação
+- Cross Training
+
+Cada atividade pode conter:
+
+- Nome do atleta
+- Tipo de atividade
+- Distância
+- Tempo
+- Calorias
+- Rounds
+- Golpes
+- Carga, séries ou repetições
+- Comentário
+- Foto
 
 ---
 
-# ⚠️ Aviso Importante
+## 🌍 Feed da Comunidade
 
-As informações fornecidas pelo sistema possuem caráter educacional e informativo.
+Área social inspirada em aplicativos esportivos.
 
-O BoxTimer Pro Community não substitui:
+Funcionalidades:
 
-* Médicos
-* Nutricionistas
-* Educadores físicos
-* Avaliações presenciais
-
-Consulte profissionais qualificados para orientações individualizadas.
+- Publicar atividades
+- Adicionar fotos
+- Curtir publicações
+- Comentar publicações
+- Excluir atividades
+- Compartilhar evolução
 
 ---
 
-# 👨‍💻 Desenvolvedor
+## 📅 Eventos Esportivos
+
+Criação de eventos para:
+
+- Corridas
+- Caminhadas
+- Natação
+- HIIT
+- Boxe
+- Treino coletivo
+- Sparring
+
+Cada evento possui:
+
+- Organizador
+- Tipo de evento
+- Data
+- Hora
+- Local
+- Limite de participantes
+- Descrição
+- Lista de inscritos
+
+Também é possível:
+
+- Confirmar presença
+- Limpar inscrições
+- Excluir eventos
+
+---
+
+## 📊 Dashboard
+
+Painel de acompanhamento com:
+
+- Total de treinos
+- Horas treinadas
+- Distância percorrida
+- Total de rounds
+- Conquistas desbloqueadas
+
+---
+
+## 🏅 Sistema de Conquistas
+
+Medalhas automáticas:
+
+- Primeiro treino
+- 10 treinos
+- 50 treinos
+- 100 treinos
+- 10 km percorridos
+- 50 km percorridos
+- 100 km percorridos
+- 50 rounds
+- 500 rounds
+
+---
+
+## ⭐ Pesquisa de Satisfação
+
+Área final para o usuário avaliar o aplicativo.
+
+Coleta:
+
+- Nota do aplicativo
+- Comentário
+- Sugestões de melhoria
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- HTML5
+- CSS3
+- JavaScript
+- LocalStorage
+- GitHub Pages
+
+---
+
+## 💾 Armazenamento
+
+Atualmente, os dados são salvos no navegador usando `localStorage`.
+
+Isso significa que:
+
+- Os dados ficam salvos no dispositivo do usuário
+- Não há banco de dados online ainda
+- Outros usuários não veem os dados em tempo real
+
+---
+
+## 🔮 Próximas Atualizações
+
+- Firebase
+- Login de usuários
+- Banco de dados online
+- Área do treinador
+- Cadastro de alunos
+- Ranking de atletas
+- Chat da comunidade
+- Gráficos de evolução
+- Exportação em PDF
+- Integração com IA
+- PWA instalável
+- Versão mobile
+
+---
+
+## ⚠️ Aviso Importante
+
+O BoxTimer Pro Community possui finalidade educativa, esportiva e informativa.
+
+O aplicativo não substitui:
+
+- Médicos
+- Nutricionistas
+- Educadores físicos
+- Avaliações presenciais
+- Exames laboratoriais
+
+Para objetivos competitivos, corte de peso, doenças, lesões ou condições especiais, procure acompanhamento profissional.
+
+---
+
+## 👨‍💻 Desenvolvedor
 
 **André Moraes**
 
-🥊 Atleta de Boxe
-🥊 Treinador de Boxe
-🎓 Estudante de Engenharia de Software
+🥊 Atleta de Boxe  
+🥊 Treinador de Boxe  
+🎓 Estudante de Engenharia de Software  
 
-Projeto desenvolvido para unir tecnologia, esporte, performance e comunidade em uma única plataforma.
+Projeto desenvolvido para unir tecnologia, esporte, performance, nutrição e comunidade.
