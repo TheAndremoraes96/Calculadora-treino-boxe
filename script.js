@@ -8,51 +8,119 @@ function numero(id) {
     return el ? parseFloat(el.value) || 0 : 0;
 }
 
-/* PERFIL */
+/* ============================
+   CADASTRO ÚNICO
+============================ */
 
-let perfil = JSON.parse(localStorage.getItem("perfilAtleta")) || {};
+let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 
-function salvarPerfil() {
-    perfil = {
-        nome: valor("perfilNome"),
-        cidade: valor("perfilCidade"),
-        idade: valor("perfilIdade"),
-        peso: valor("perfilPeso"),
-        modalidade: valor("perfilModalidade"),
-        objetivo: valor("perfilObjetivo"),
-        bio: valor("perfilBio")
+function salvarCadastro() {
+    cadastro = {
+        nome: valor("nome"),
+        idade: valor("idade"),
+        sexo: valor("sexo"),
+        peso: valor("peso"),
+        altura: valor("altura"),
+        cidade: valor("cidade"),
+        objetivo: valor("objetivo"),
+        modalidade: valor("modalidade"),
+        restricoes: valor("restricoes"),
+        lesoes: valor("lesoes"),
+        medicamentos: valor("medicamentos"),
+        historico: valor("historico"),
+        preferencias: valor("preferencias"),
+        horarioAcorda: valor("horarioAcorda"),
+        horarioDorme: valor("horarioDorme"),
+        refeicoesDia: valor("refeicoesDia"),
+        aguaAtual: valor("aguaAtual")
     };
 
-    localStorage.setItem("perfilAtleta", JSON.stringify(perfil));
-    carregarPerfil();
+    localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
+    carregarCadastro();
+
+    alert("Cadastro salvo com sucesso.");
 }
 
-function carregarPerfil() {
-    const area = document.getElementById("perfilSalvo");
+function carregarCadastro() {
+    const area = document.getElementById("cadastroSalvo");
     if (!area) return;
 
-    if (!perfil.nome) {
-        area.innerHTML = "<p>Nenhum perfil salvo ainda.</p>";
+    if (!cadastro.nome) {
+        area.innerHTML = "<p>Nenhum cadastro salvo ainda.</p>";
         return;
     }
 
+    preencherCampo("nome", cadastro.nome);
+    preencherCampo("idade", cadastro.idade);
+    preencherCampo("sexo", cadastro.sexo);
+    preencherCampo("peso", cadastro.peso);
+    preencherCampo("altura", cadastro.altura);
+    preencherCampo("cidade", cadastro.cidade);
+    preencherCampo("objetivo", cadastro.objetivo);
+    preencherCampo("modalidade", cadastro.modalidade);
+    preencherCampo("restricoes", cadastro.restricoes);
+    preencherCampo("lesoes", cadastro.lesoes);
+    preencherCampo("medicamentos", cadastro.medicamentos);
+    preencherCampo("historico", cadastro.historico);
+    preencherCampo("preferencias", cadastro.preferencias);
+    preencherCampo("horarioAcorda", cadastro.horarioAcorda);
+    preencherCampo("horarioDorme", cadastro.horarioDorme);
+    preencherCampo("refeicoesDia", cadastro.refeicoesDia);
+    preencherCampo("aguaAtual", cadastro.aguaAtual);
+
     area.innerHTML = `
         <div class="perfil-box">
-            <h3>👤 ${perfil.nome}</h3>
-            <p><strong>Cidade:</strong> ${perfil.cidade || "Não informada"}</p>
-            <p><strong>Idade:</strong> ${perfil.idade || "Não informada"}</p>
-            <p><strong>Peso:</strong> ${perfil.peso || "Não informado"} kg</p>
-            <p><strong>Modalidade:</strong> ${perfil.modalidade || "Não informada"}</p>
-            <p><strong>Objetivo:</strong> ${perfil.objetivo || "Não informado"}</p>
-            <p><strong>Bio:</strong> ${perfil.bio || "Sem descrição"}</p>
+            <h3>👤 ${cadastro.nome}</h3>
+            <p><strong>Idade:</strong> ${cadastro.idade}</p>
+            <p><strong>Peso:</strong> ${cadastro.peso} kg</p>
+            <p><strong>Altura:</strong> ${cadastro.altura} m</p>
+            <p><strong>Objetivo:</strong> ${formatarObjetivo(cadastro.objetivo)}</p>
+            <p><strong>Modalidade:</strong> ${cadastro.modalidade}</p>
         </div>
     `;
 }
 
-/* NUTRIÇÃO */
+function preencherCampo(id, valorCampo) {
+    const campo = document.getElementById(id);
+    if (campo && valorCampo !== undefined) campo.value = valorCampo;
+}
+
+/* ============================
+   TERMO
+============================ */
+
+function aceitarTermo() {
+    const aceite = document.getElementById("aceiteTermo");
+    const status = document.getElementById("statusTermo");
+
+    if (!aceite.checked) {
+        alert("Você precisa aceitar o termo para continuar.");
+        return;
+    }
+
+    localStorage.setItem("termoAceito", "sim");
+
+    if (status) {
+        status.innerHTML = "<p>✅ Termo aceito com sucesso.</p>";
+    }
+}
+
+function carregarTermo() {
+    const status = document.getElementById("statusTermo");
+    const aceite = document.getElementById("aceiteTermo");
+
+    if (localStorage.getItem("termoAceito") === "sim") {
+        if (aceite) aceite.checked = true;
+        if (status) status.innerHTML = "<p>✅ Termo já aceito.</p>";
+    }
+}
+
+/* ============================
+   AVALIAÇÃO NUTRICIONAL
+============================ */
 
 function gerarAvaliacao() {
-    const nome = valor("nome") || "Atleta";
+    const nome = valor("nome") || cadastro.nome || "Atleta";
     const idade = numero("idade");
     const sexo = valor("sexo");
     const altura = numero("altura");
@@ -62,7 +130,7 @@ function gerarAvaliacao() {
     const orcamento = valor("orcamento");
 
     if (!idade || !altura || !peso || !sexo || !objetivo) {
-        alert("Preencha idade, sexo, altura, peso e objetivo nutricional.");
+        alert("Preencha cadastro com idade, sexo, altura, peso e objetivo.");
         return;
     }
 
@@ -125,34 +193,33 @@ function gerarAvaliacao() {
         numero("suprailiaca") +
         numero("panturrilha");
 
-    let avaliacaoDobras = "Dobras não informadas.";
+    const avaliacaoDobras = somaDobras > 0
+        ? `Soma das dobras: ${somaDobras.toFixed(1)} mm. Use essa medida para acompanhar evolução corporal a cada 30 dias.`
+        : "Dobras não informadas.";
 
-    if (somaDobras > 0) {
-        avaliacaoDobras = `Soma das dobras: ${somaDobras.toFixed(1)} mm. Use essa medida para acompanhar evolução corporal a cada 30 dias.`;
-    }
-
-    const resultado = `
-        <h3>👤 Resumo do Perfil</h3>
+    document.getElementById("resultadoAvaliacao").innerHTML = `
+        <h3>👤 Resumo do Atleta</h3>
         <p><strong>Nome:</strong> ${nome}</p>
         <p><strong>Objetivo:</strong> ${formatarObjetivo(objetivo)}</p>
+        <p><strong>Modalidade:</strong> ${valor("modalidade") || cadastro.modalidade || "Não informada"}</p>
         <p><strong>IMC:</strong> ${imc.toFixed(2)} - ${classificacaoIMC}</p>
 
         <h3>⚖️ Avaliação Corporal</h3>
         <p><strong>TMB:</strong> ${Math.round(tmb)} kcal</p>
-        <p><strong>Gasto diário:</strong> ${Math.round(gastoDiario)} kcal</p>
+        <p><strong>Gasto diário estimado:</strong> ${Math.round(gastoDiario)} kcal</p>
         <p><strong>Meta calórica:</strong> ${Math.round(caloriasMeta)} kcal</p>
         <p><strong>Gordura corporal:</strong> ${numero("gordura") || "não informada"}%</p>
         <p><strong>Massa muscular:</strong> ${numero("massaMuscular") || "não informada"} kg</p>
         <p><strong>Massa magra:</strong> ${numero("massaMagra") || "não informada"} kg</p>
         <p><strong>Massa gorda:</strong> ${numero("massaGorda") || "não informada"} kg</p>
         <p><strong>Gordura visceral:</strong> ${numero("gorduraVisceral") || "não informada"}</p>
-        <p><strong>Dobras:</strong> ${avaliacaoDobras}</p>
+        <p><strong>Dobras cutâneas:</strong> ${avaliacaoDobras}</p>
 
         <h3>🥩 Macronutrientes</h3>
         <p><strong>Proteínas:</strong> ${Math.round(proteinas)}g/dia</p>
         <p><strong>Carboidratos:</strong> ${Math.round(carboidratos)}g/dia</p>
         <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g/dia</p>
-        <p><strong>Água:</strong> ${aguaRecomendada.toFixed(1)} litros/dia</p>
+        <p><strong>Água recomendada:</strong> ${aguaRecomendada.toFixed(1)} litros/dia</p>
 
         <h3>🍽️ Plano Alimentar Personalizado</h3>
         ${gerarPlanoAlimentar(objetivo, orcamento)}
@@ -166,11 +233,9 @@ function gerarAvaliacao() {
         <h3>💊 Suplementação Opcional</h3>
         <p>Creatina, whey protein, cafeína e eletrólitos podem ser úteis conforme rotina, tolerância e orientação profissional.</p>
 
-        <h3>⚠️ Alertas</h3>
+        <h3>⚠️ Alerta</h3>
         <p>Esta avaliação é educativa e não substitui nutricionista, médico ou avaliação presencial.</p>
     `;
-
-    document.getElementById("resultadoAvaliacao").innerHTML = resultado;
 }
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
@@ -207,10 +272,10 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
     if (objetivo === "hipertrofia") {
         return `
             <ul>
-                <li><strong>Café:</strong> 3 ovos ou tofu mexido, 60g de aveia, 1 banana e café.</li>
+                <li><strong>Café:</strong> 3 ovos ou tofu mexido, 60g de aveia, 1 banana.</li>
                 <li><strong>Lanche:</strong> ${lacteos} com fruta.</li>
                 <li><strong>Almoço:</strong> 150g de arroz, 100g de feijão, 180g de ${proteinas}, salada e azeite.</li>
-                <li><strong>Pré-treino:</strong> Banana com aveia, tapioca ou pão sem glúten se necessário.</li>
+                <li><strong>Pré-treino:</strong> banana com aveia, tapioca ou pão sem glúten se necessário.</li>
                 <li><strong>Pós-treino:</strong> 180g de ${proteinas} + ${carboidratos}.</li>
                 <li><strong>Jantar:</strong> ${proteinas} com ${carboidratos} e legumes.</li>
             </ul>
@@ -280,12 +345,125 @@ function formatarObjetivo(objetivo) {
     return "Manutenção";
 }
 
-/* ATIVIDADES */
+/* ============================
+   TIMER DE ROUNDS
+============================ */
+
+let timerInterval = null;
+let tempoAtual = 180;
+let roundAtualNumero = 1;
+let emDescanso = false;
+let timerRodando = false;
+
+function atualizarDisplayTimer() {
+    const minutos = Math.floor(tempoAtual / 60);
+    const segundos = tempoAtual % 60;
+
+    const display = document.getElementById("timerDisplay");
+    if (display) {
+        display.innerText = `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+    }
+
+    const roundTexto = document.getElementById("roundAtual");
+    if (roundTexto) {
+        roundTexto.innerText = emDescanso ? `Descanso após Round ${roundAtualNumero}` : `Round ${roundAtualNumero}`;
+    }
+
+    const status = document.getElementById("timerStatus");
+    if (status) {
+        status.innerText = emDescanso ? "Descanso" : "Round em andamento";
+    }
+}
+
+function iniciarTimer() {
+    if (timerRodando) return;
+
+    const totalRounds = numero("totalRoundsConfig") || 12;
+    const tempoRound = numero("tempoRoundConfig") || 180;
+    const tempoDescanso = numero("tempoDescansoConfig") || 60;
+
+    if (tempoAtual <= 0) tempoAtual = tempoRound;
+
+    timerRodando = true;
+
+    timerInterval = setInterval(() => {
+        tempoAtual--;
+        atualizarDisplayTimer();
+
+        if (tempoAtual <= 0) {
+            tocarCampainha();
+
+            if (!emDescanso) {
+                if (roundAtualNumero >= totalRounds) {
+                    finalizarTimer();
+                    return;
+                }
+
+                emDescanso = true;
+                tempoAtual = tempoDescanso;
+            } else {
+                emDescanso = false;
+                roundAtualNumero++;
+                tempoAtual = tempoRound;
+            }
+
+            atualizarDisplayTimer();
+        }
+    }, 1000);
+}
+
+function pausarTimer() {
+    clearInterval(timerInterval);
+    timerRodando = false;
+
+    const status = document.getElementById("timerStatus");
+    if (status) status.innerText = "Pausado";
+}
+
+function reiniciarTimer() {
+    clearInterval(timerInterval);
+
+    tempoAtual = numero("tempoRoundConfig") || 180;
+    roundAtualNumero = 1;
+    emDescanso = false;
+    timerRodando = false;
+
+    atualizarDisplayTimer();
+
+    const status = document.getElementById("timerStatus");
+    if (status) status.innerText = "Pronto";
+}
+
+function finalizarTimer() {
+    clearInterval(timerInterval);
+    timerRodando = false;
+
+    const status = document.getElementById("timerStatus");
+    if (status) status.innerText = "Treino finalizado";
+
+    const roundTexto = document.getElementById("roundAtual");
+    if (roundTexto) roundTexto.innerText = "Todos os rounds concluídos";
+
+    tocarCampainha();
+}
+
+function tocarCampainha() {
+    try {
+        const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+        audio.play();
+    } catch (e) {
+        console.log("Campainha não disponível.");
+    }
+}
+
+/* ============================
+   ATIVIDADES E FEED
+============================ */
 
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
 function publicarAtividade() {
-    const nome = valor("atividadeNome") || perfil.nome || "Atleta";
+    const nome = valor("atividadeNome") || cadastro.nome || "Atleta";
     const tipo = valor("tipoAtividade");
     const distancia = numero("distancia");
     const tempo = numero("tempo");
@@ -297,7 +475,7 @@ function publicarAtividade() {
     const fotoInput = document.getElementById("fotoAtividade");
 
     if (!tipo || !tempo) {
-        alert("Preencha pelo menos o tipo de atividade e o tempo.");
+        alert("Preencha pelo menos tipo de atividade e tempo.");
         return;
     }
 
@@ -413,45 +591,9 @@ function excluirAtividade(id) {
     atualizarDashboard();
 }
 
-/* DASHBOARD */
-
-function atualizarDashboard() {
-    const totalTreinos = atividades.length;
-    const totalMinutos = atividades.reduce((soma, item) => soma + (Number(item.tempo) || 0), 0);
-    const totalHoras = totalMinutos / 60;
-    const totalKm = atividades.reduce((soma, item) => soma + (Number(item.distancia) || 0), 0);
-    const totalRounds = atividades.reduce((soma, item) => soma + (Number(item.rounds) || 0), 0);
-
-    if (document.getElementById("totalTreinos")) document.getElementById("totalTreinos").innerText = totalTreinos;
-    if (document.getElementById("totalHoras")) document.getElementById("totalHoras").innerText = `${totalHoras.toFixed(1)}h`;
-    if (document.getElementById("totalKm")) document.getElementById("totalKm").innerText = `${totalKm.toFixed(1)} km`;
-    if (document.getElementById("totalRounds")) document.getElementById("totalRounds").innerText = totalRounds;
-
-    gerarConquistas(totalTreinos, totalKm, totalRounds);
-}
-
-function gerarConquistas(totalTreinos, totalKm, totalRounds) {
-    const area = document.getElementById("conquistas");
-    if (!area) return;
-
-    let conquistas = [];
-
-    if (totalTreinos >= 1) conquistas.push("🏅 Primeiro treino");
-    if (totalTreinos >= 10) conquistas.push("🥉 10 treinos");
-    if (totalTreinos >= 50) conquistas.push("🥈 50 treinos");
-    if (totalTreinos >= 100) conquistas.push("🥇 100 treinos");
-    if (totalKm >= 10) conquistas.push("🏃 10 km");
-    if (totalKm >= 50) conquistas.push("🔥 50 km");
-    if (totalKm >= 100) conquistas.push("🚀 100 km");
-    if (totalRounds >= 50) conquistas.push("🥊 50 rounds");
-    if (totalRounds >= 500) conquistas.push("👑 500 rounds");
-
-    area.innerHTML = conquistas.length
-        ? conquistas.map(c => `<span class="badge">${c}</span>`).join("")
-        : "<p>Nenhuma conquista desbloqueada ainda.</p>";
-}
-
-/* EVENTOS */
+/* ============================
+   EVENTOS
+============================ */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -535,7 +677,6 @@ function confirmarPresenca(id) {
 
             if (!e.participantes.includes(nome)) e.participantes.push(nome);
         }
-
         return e;
     });
 
@@ -573,9 +714,85 @@ function excluirTodosEventos() {
     alert("Todos os eventos foram excluídos.");
 }
 
-/* INICIALIZAÇÃO */
+/* ============================
+   DASHBOARD
+============================ */
 
-carregarPerfil();
+function atualizarDashboard() {
+    const totalTreinos = atividades.length;
+    const totalMinutos = atividades.reduce((soma, item) => soma + (Number(item.tempo) || 0), 0);
+    const totalHoras = totalMinutos / 60;
+    const totalKm = atividades.reduce((soma, item) => soma + (Number(item.distancia) || 0), 0);
+    const totalRounds = atividades.reduce((soma, item) => soma + (Number(item.rounds) || 0), 0);
+
+    atualizarTexto("totalTreinos", totalTreinos);
+    atualizarTexto("totalHoras", `${totalHoras.toFixed(1)}h`);
+    atualizarTexto("totalKm", `${totalKm.toFixed(1)} km`);
+    atualizarTexto("totalRounds", totalRounds);
+
+    gerarConquistas(totalTreinos, totalKm, totalRounds);
+}
+
+function atualizarTexto(id, texto) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = texto;
+}
+
+function gerarConquistas(totalTreinos, totalKm, totalRounds) {
+    const area = document.getElementById("conquistas");
+    if (!area) return;
+
+    let conquistas = [];
+
+    if (totalTreinos >= 1) conquistas.push("🏅 Primeiro treino");
+    if (totalTreinos >= 10) conquistas.push("🥉 10 treinos");
+    if (totalTreinos >= 50) conquistas.push("🥈 50 treinos");
+    if (totalTreinos >= 100) conquistas.push("🥇 100 treinos");
+    if (totalKm >= 10) conquistas.push("🏃 10 km");
+    if (totalKm >= 50) conquistas.push("🔥 50 km");
+    if (totalKm >= 100) conquistas.push("🚀 100 km");
+    if (totalRounds >= 50) conquistas.push("🥊 50 rounds");
+    if (totalRounds >= 500) conquistas.push("👑 500 rounds");
+
+    area.innerHTML = conquistas.length
+        ? conquistas.map(c => `<span class="badge">${c}</span>`).join("")
+        : "<p>Nenhuma conquista desbloqueada ainda.</p>";
+}
+
+/* ============================
+   SATISFAÇÃO
+============================ */
+
+function salvarSatisfacao() {
+    const nota = valor("notaApp");
+    const avaliacao = valor("avaliacaoApp");
+
+    if (!nota || !avaliacao.trim()) {
+        alert("Preencha a nota e o comentário.");
+        return;
+    }
+
+    const dados = {
+        nota,
+        avaliacao,
+        data: new Date().toLocaleString("pt-BR")
+    };
+
+    localStorage.setItem("satisfacaoBoxTimer", JSON.stringify(dados));
+
+    const area = document.getElementById("resultadoSatisfacao");
+    if (area) {
+        area.innerHTML = `<p>✅ Obrigado pela avaliação: ${nota}</p>`;
+    }
+}
+
+/* ============================
+   INICIALIZAÇÃO
+============================ */
+
+carregarCadastro();
+carregarTermo();
+reiniciarTimer();
 carregarFeed();
-atualizarDashboard();
 carregarEventos();
+atualizarDashboard();
