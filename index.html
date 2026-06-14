@@ -16,24 +16,42 @@
   </header>
 
   <nav class="menu">
-    <a href="#perfil">Perfil</a>
-    <a href="#nutricao">Nutrição</a>
+    <a href="#cadastro">Cadastro</a>
+    <a href="#termo">Termo</a>
     <a href="#avaliacao">Avaliação</a>
+    <a href="#timer">Timer</a>
     <a href="#atividade">Atividade</a>
     <a href="#feed">Feed</a>
-    <a href="#dashboard">Dashboard</a>
     <a href="#eventos">Eventos</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#satisfacao">Satisfação</a>
   </nav>
 
-  <section class="card" id="perfil">
-    <h2>🏆 Perfil do Atleta</h2>
+  <section class="card pagina" id="cadastro">
+    <h2>1️⃣ Cadastro do Atleta</h2>
 
-    <input id="perfilNome" placeholder="Nome do atleta">
-    <input id="perfilCidade" placeholder="Cidade">
-    <input id="perfilIdade" type="number" placeholder="Idade">
-    <input id="perfilPeso" type="number" step="0.1" placeholder="Peso atual em kg">
+    <input id="nome" placeholder="Nome completo">
+    <input id="idade" type="number" placeholder="Idade">
 
-    <select id="perfilModalidade">
+    <select id="sexo">
+      <option value="">Sexo</option>
+      <option value="masculino">Masculino</option>
+      <option value="feminino">Feminino</option>
+    </select>
+
+    <input id="peso" type="number" step="0.1" placeholder="Peso atual em kg">
+    <input id="altura" type="number" step="0.01" placeholder="Altura em metros. Ex: 1.75">
+    <input id="cidade" placeholder="Cidade">
+
+    <select id="objetivo">
+      <option value="">Objetivo principal</option>
+      <option value="hipertrofia">Hipertrofia</option>
+      <option value="emagrecimento">Emagrecimento</option>
+      <option value="manutencao">Manutenção</option>
+      <option value="performance">Performance</option>
+    </select>
+
+    <select id="modalidade">
       <option value="">Modalidade principal</option>
       <option>Boxe</option>
       <option>Corrida</option>
@@ -44,74 +62,52 @@
       <option>Cross Training</option>
     </select>
 
-    <select id="perfilObjetivo">
-      <option value="">Objetivo</option>
-      <option>Emagrecimento</option>
-      <option>Hipertrofia</option>
-      <option>Performance</option>
-      <option>Condicionamento</option>
-      <option>Competição</option>
-    </select>
+    <textarea id="restricoes" placeholder="Restrições alimentares, alergias ou intolerâncias. Ex: lactose, glúten, vegano..."></textarea>
+    <textarea id="lesoes" placeholder="Lesões, dores ou limitações físicas"></textarea>
+    <textarea id="medicamentos" placeholder="Medicamentos em uso"></textarea>
+    <textarea id="historico" placeholder="Histórico esportivo"></textarea>
+    <textarea id="preferencias" placeholder="Preferências alimentares. Ex: vegetariano, comida simples, sem peixe..."></textarea>
 
-    <textarea id="perfilBio" placeholder="Histórico esportivo, conquistas ou descrição pessoal"></textarea>
-
-    <button onclick="salvarPerfil()">Salvar Perfil</button>
-
-    <div id="perfilSalvo"></div>
-  </section>
-
-  <section class="card" id="nutricao">
-    <h2>🍽️ Nutrição Esportiva e Anamnese</h2>
-
-    <input id="nome" placeholder="Nome">
-    <input id="idade" type="number" placeholder="Idade">
-
-    <select id="sexo">
-      <option value="">Sexo</option>
-      <option value="masculino">Masculino</option>
-      <option value="feminino">Feminino</option>
-    </select>
-
-    <input id="altura" type="number" step="0.01" placeholder="Altura em metros. Ex: 1.75">
-    <input id="peso" type="number" step="0.1" placeholder="Peso atual em kg">
-    <input id="pesoDesejado" type="number" step="0.1" placeholder="Peso desejado em kg">
-
-    <select id="objetivo">
-      <option value="">Objetivo nutricional</option>
-      <option value="hipertrofia">Hipertrofia</option>
-      <option value="emagrecimento">Emagrecimento</option>
-      <option value="manutencao">Manutenção</option>
-      <option value="performance">Performance</option>
-    </select>
-
-    <input id="refeicoesDia" type="number" placeholder="Quantas refeições por dia?">
     <input id="horarioAcorda" placeholder="Horário que acorda">
     <input id="horarioDorme" placeholder="Horário que dorme">
-    <input id="agua" type="number" step="0.1" placeholder="Litros de água por dia">
-    <input id="sono" type="number" step="0.1" placeholder="Horas de sono por noite">
+    <input id="refeicoesDia" type="number" placeholder="Quantidade de refeições por dia">
+    <input id="aguaAtual" type="number" step="0.1" placeholder="Água atual por dia em litros">
 
-    <select id="estresse">
-      <option value="">Nível de estresse</option>
-      <option value="baixo">Baixo</option>
-      <option value="moderado">Moderado</option>
-      <option value="alto">Alto</option>
-    </select>
+    <button onclick="salvarCadastro()">Salvar Cadastro</button>
 
-    <textarea id="preferencias" placeholder="Preferências alimentares. Ex: vegetariano, comida simples, sem peixe..."></textarea>
-    <textarea id="restricoes" placeholder="Restrições, alergias ou intolerâncias. Ex: lactose, glúten, vegano..."></textarea>
-    <textarea id="suplementos" placeholder="Suplementos usados"></textarea>
+    <div id="cadastroSalvo"></div>
   </section>
 
-  <section class="card" id="avaliacao">
-    <h2>📊 Avaliação Física Completa</h2>
+  <section class="card pagina" id="termo">
+    <h2>2️⃣ Termo de Responsabilidade</h2>
+
+    <p>
+      Declaro que as informações fornecidas são verdadeiras. Entendo que o BoxTimer Pro Community oferece estimativas educativas sobre treino, nutrição e avaliação física, não substituindo médicos, nutricionistas ou educadores físicos.
+    </p>
+
+    <p>
+      Autorizo o uso das informações preenchidas para gerar avaliações, recomendações, histórico esportivo e funcionalidades internas do aplicativo.
+    </p>
+
+    <label class="checkbox-area">
+      <input type="checkbox" id="aceiteTermo">
+      Li e aceito o termo de responsabilidade.
+    </label>
+
+    <button onclick="aceitarTermo()">Aceitar Termo</button>
+
+    <div id="statusTermo"></div>
+  </section>
+
+  <section class="card pagina" id="avaliacao">
+    <h2>3️⃣ Avaliação Física e Nutricional</h2>
 
     <h3>🏋️ Rotina de Treino</h3>
-    <input id="modalidade" placeholder="Modalidade principal. Ex: Boxe, Musculação">
     <input id="frequencia" type="number" placeholder="Treinos por semana">
     <input id="duracao" type="number" placeholder="Duração média do treino em minutos">
 
     <select id="intensidade">
-      <option value="">Intensidade</option>
+      <option value="">Intensidade do treino</option>
       <option value="leve">Leve</option>
       <option value="moderada">Moderada</option>
       <option value="alta">Alta</option>
@@ -126,7 +122,7 @@
     <input id="massaMagra" type="number" step="0.1" placeholder="Massa magra em kg">
     <input id="massaGorda" type="number" step="0.1" placeholder="Massa gorda em kg">
     <input id="gorduraVisceral" type="number" step="0.1" placeholder="Gordura visceral">
-    <input id="tmbBio" type="number" placeholder="Taxa metabólica basal da bioimpedância">
+    <input id="tmbBio" type="number" placeholder="TMB da bioimpedância, se tiver">
 
     <h3>📏 Dobras Cutâneas</h3>
     <input id="peitoral" type="number" step="0.1" placeholder="Peitoral mm">
@@ -137,24 +133,39 @@
     <input id="suprailiaca" type="number" step="0.1" placeholder="Supra-ilíaca mm">
     <input id="panturrilha" type="number" step="0.1" placeholder="Panturrilha mm">
 
-    <h3>💰 Preferência Alimentar</h3>
+    <h3>💰 Orçamento Alimentar</h3>
     <select id="orcamento">
       <option value="economico">Econômico</option>
       <option value="padrao">Padrão</option>
     </select>
 
     <button onclick="gerarAvaliacao()">Gerar Avaliação Nutricional</button>
-  </section>
 
-  <section class="card resultado">
-    <h2>📋 Resultado Nutricional e Corporal</h2>
     <div id="resultadoAvaliacao">
-      Preencha os dados e gere sua avaliação.
+      Preencha a avaliação e gere seu resultado.
     </div>
   </section>
 
-  <section class="card" id="atividade">
-    <h2>📈 Registrar Atividade</h2>
+  <section class="card pagina" id="timer">
+    <h2>4️⃣ Timer de Rounds</h2>
+
+    <input id="totalRoundsConfig" type="number" value="12" placeholder="Quantidade de rounds">
+    <input id="tempoRoundConfig" type="number" value="180" placeholder="Tempo do round em segundos">
+    <input id="tempoDescansoConfig" type="number" value="60" placeholder="Descanso em segundos">
+
+    <div class="timer-box">
+      <h3 id="timerStatus">Pronto</h3>
+      <h1 id="timerDisplay">03:00</h1>
+      <p id="roundAtual">Round 1</p>
+    </div>
+
+    <button onclick="iniciarTimer()">▶️ Iniciar</button>
+    <button onclick="pausarTimer()">⏸️ Pausar</button>
+    <button onclick="reiniciarTimer()">🔄 Reiniciar</button>
+  </section>
+
+  <section class="card pagina" id="atividade">
+    <h2>5️⃣ Registrar Atividade</h2>
 
     <input id="atividadeNome" placeholder="Nome do atleta">
 
@@ -175,7 +186,7 @@
     <input id="calorias" type="number" placeholder="Calorias estimadas">
     <input id="rounds" type="number" placeholder="Rounds, se for boxe">
     <input id="golpes" type="number" placeholder="Golpes estimados, se for boxe">
-    <input id="carga" placeholder="Carga/séries/repetições, se for musculação">
+    <input id="carga" placeholder="Carga, séries ou repetições">
 
     <textarea id="comentarioAtividade" placeholder="Como foi o treino?"></textarea>
     <input type="file" id="fotoAtividade" accept="image/*">
@@ -183,27 +194,13 @@
     <button onclick="publicarAtividade()">Publicar Atividade</button>
   </section>
 
-  <section class="card" id="feed">
-    <h2>🌍 Feed da Comunidade</h2>
+  <section class="card pagina" id="feed">
+    <h2>6️⃣ Feed da Comunidade</h2>
     <div id="feedAtividades"></div>
   </section>
 
-  <section class="card" id="dashboard">
-    <h2>📊 Dashboard de Evolução</h2>
-
-    <div class="dashboard-grid">
-      <div class="stat"><h3 id="totalTreinos">0</h3><p>Treinos</p></div>
-      <div class="stat"><h3 id="totalHoras">0h</h3><p>Horas treinadas</p></div>
-      <div class="stat"><h3 id="totalKm">0 km</h3><p>Distância</p></div>
-      <div class="stat"><h3 id="totalRounds">0</h3><p>Rounds</p></div>
-    </div>
-
-    <h3>🏅 Conquistas</h3>
-    <div id="conquistas"></div>
-  </section>
-
-  <section class="card" id="eventos">
-    <h2>📅 Eventos Esportivos</h2>
+  <section class="card pagina" id="eventos">
+    <h2>7️⃣ Eventos Esportivos</h2>
 
     <input id="eventoOrganizador" placeholder="Organizador">
 
@@ -225,10 +222,43 @@
     <textarea id="eventoDescricao" placeholder="Descrição do evento"></textarea>
 
     <button onclick="criarEvento()">Criar Evento</button>
-    <button onclick="limparTodasInscricoes()">🧹 Limpar todas as inscrições</button>
-    <button onclick="excluirTodosEventos()">🗑️ Excluir todos os eventos</button>
+    <button onclick="limparTodasInscricoes()">🧹 Limpar inscrições</button>
+    <button onclick="excluirTodosEventos()">🗑️ Excluir eventos</button>
 
     <div id="listaEventos"></div>
+  </section>
+
+  <section class="card pagina" id="dashboard">
+    <h2>8️⃣ Dashboard</h2>
+
+    <div class="dashboard-grid">
+      <div class="stat"><h3 id="totalTreinos">0</h3><p>Treinos</p></div>
+      <div class="stat"><h3 id="totalHoras">0h</h3><p>Horas treinadas</p></div>
+      <div class="stat"><h3 id="totalKm">0 km</h3><p>Distância</p></div>
+      <div class="stat"><h3 id="totalRounds">0</h3><p>Rounds</p></div>
+    </div>
+
+    <h3>🏅 Conquistas</h3>
+    <div id="conquistas"></div>
+  </section>
+
+  <section class="card pagina" id="satisfacao">
+    <h2>9️⃣ Pesquisa de Satisfação</h2>
+
+    <select id="notaApp">
+      <option value="">Nota para o aplicativo</option>
+      <option>⭐</option>
+      <option>⭐⭐</option>
+      <option>⭐⭐⭐</option>
+      <option>⭐⭐⭐⭐</option>
+      <option>⭐⭐⭐⭐⭐</option>
+    </select>
+
+    <textarea id="avaliacaoApp" placeholder="O que você achou do app? O que podemos melhorar?"></textarea>
+
+    <button onclick="salvarSatisfacao()">Enviar Avaliação</button>
+
+    <div id="resultadoSatisfacao"></div>
   </section>
 
 </div>
