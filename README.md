@@ -1,170 +1,281 @@
-🥊 BoxTimer Pro
+# 🥊 BoxTimer Pro Community
 
-Sistema completo para atletas, treinadores e praticantes de boxe, integrando treino, avaliação física e planejamento nutricional esportivo.
+**Treine. Evolua. Compartilhe.**
 
-🚀 Funcionalidades
-🥊 Timer Profissional de Boxe
-Cronômetro de rounds
-Controle de descanso
-Contagem automática de rounds
-Cronômetro de treino
-Preparação para sparring
-Treinos técnicos e condicionamento
-📊 Avaliação Física Completa
-IMC
-Cálculo automático
-Classificação corporal
-Interpretação dos resultados
-Bioimpedância
+O BoxTimer Pro Community é uma plataforma esportiva inspirada em aplicativos de acompanhamento de performance, combinando boxe, corrida, caminhada, musculação, HIIT, natação, avaliação física, nutrição esportiva e comunidade de atletas em um único sistema.
 
-Cadastro de:
+---
 
-Percentual de gordura corporal
-Massa muscular
-Massa magra
-Massa gorda
-Gordura visceral
-Água corporal
-Taxa metabólica basal
-Dobras Cutâneas
+# 🚀 Principais Funcionalidades
+
+## 🏆 Perfil do Atleta
+
+Cada usuário pode criar seu perfil contendo:
+
+* Nome
+* Cidade
+* Idade
+* Peso
+* Modalidade principal
+* Objetivo esportivo
+* Histórico esportivo
+* Conquistas pessoais
+
+---
+
+# 📈 Feed de Atividades
+
+Publique e acompanhe atividades como:
+
+* 🥊 Boxe
+* 🥊 Sparring
+* 🏃 Corrida
+* 🚶 Caminhada
+* 🏋️ Musculação
+* ⚡ HIIT
+* 🏊 Natação
+* 🔥 Cross Training
+
+Cada atividade registra:
+
+* Nome do atleta
+* Data
+* Tempo de treino
+* Distância
+* Calorias
+* Rounds
+* Golpes
+* Séries e cargas
+* Comentários
+* Fotos
+
+---
+
+# 🌍 Comunidade Ativa
+
+Interaja com outros atletas através de:
+
+* Curtidas
+* Comentários
+* Compartilhamento de experiências
+* Publicação de fotos
+* Registro de evolução
+* Motivação da comunidade
+
+---
+
+# 📊 Dashboard de Evolução
+
+Acompanhe sua evolução com:
+
+* Total de treinos
+* Horas treinadas
+* Distância acumulada
+* Rounds realizados
+* Histórico esportivo
+* Estatísticas pessoais
+
+---
+
+# 🏅 Sistema de Conquistas
+
+Desbloqueie medalhas automáticas:
+
+* Primeiro treino
+* 10 treinos
+* 50 treinos
+* 100 treinos
+* 10 km percorridos
+* 50 km percorridos
+* 100 km percorridos
+* 50 rounds
+* 500 rounds
+
+---
+
+# 📅 Eventos Esportivos
+
+Crie eventos para:
+
+* Corridas
+* Caminhadas
+* Treinos coletivos
+* Sparrings
+* Natação
+* HIIT
+* Boxe
+* Cross Training
+
+Cada evento possui:
+
+* Organizador
+* Data
+* Hora
+* Local
+* Descrição
+* Limite de participantes
+* Lista de presença
+
+---
+
+# 🍽️ Nutrição Esportiva
+
+Sistema completo de avaliação nutricional:
+
+## 📝 Anamnese
+
+* Hábitos alimentares
+* Rotina diária
+* Consumo de água
+* Sono
+* Estresse
+* Suplementação
+
+## ⚖️ Bioimpedância
+
+* Gordura corporal
+* Massa muscular
+* Massa magra
+* Massa gorda
+* Gordura visceral
+* Taxa metabólica basal
+
+## 📏 Dobras Cutâneas
 
 Registro de:
 
-Peitoral
-Abdômen
-Coxa
-Tríceps
-Subescapular
-Supra-ilíaca
-Panturrilha
+* Peitoral
+* Abdômen
+* Coxa
+* Tríceps
+* Subescapular
+* Supra-ilíaca
+* Panturrilha
 
-Monitoramento da evolução corporal ao longo do tempo.
+---
 
-📝 Anamnese Nutricional
+# 📊 Avaliação Corporal
 
-Coleta completa de informações:
+O sistema calcula automaticamente:
 
-Dados pessoais
-Rotina diária
-Horários de refeições
-Consumo de água
-Qualidade do sono
-Nível de estresse
-Preferências alimentares
-Restrições alimentares
-Suplementação
-Histórico de saúde
-🏋️ Avaliação da Rotina de Treino
+* IMC
+* Taxa Metabólica Basal (TMB)
+* Gasto Calórico Diário
+* Meta Calórica
+* Proteínas
+* Carboidratos
+* Gorduras
+* Hidratação
 
-Cadastro de:
+---
 
-Modalidade esportiva
-Frequência semanal
-Intensidade do treino
-Duração das sessões
-Horários de treino
-Objetivo esportivo
-🍽️ Nutrição Esportiva Inteligente
+# 🥗 Planejamento Alimentar
 
-O sistema gera automaticamente:
+Geração automática de estratégias para:
 
-Hipertrofia
-Superávit calórico controlado
-Distribuição de macronutrientes
-Estratégias pré e pós-treino
-Emagrecimento
-Déficit calórico seguro
-Preservação de massa muscular
-Controle alimentar
-Manutenção
-Equilíbrio energético
-Estabilidade corporal
-Performance
-Estratégias para atletas
-Otimização da recuperação
-Melhora do rendimento esportivo
-📈 Relatório Nutricional
+### Hipertrofia
 
-O aplicativo fornece:
+* Superávit calórico
+* Ganho de massa muscular
+* Recuperação otimizada
 
-Diagnóstico inicial
-Estimativa de gasto energético
-Meta calórica diária
-Quantidade de proteínas
-Quantidade de carboidratos
-Quantidade de gorduras
-Quantidade de água recomendada
-🍛 Plano Alimentar
+### Emagrecimento
 
-Geração automática de sugestões para:
+* Déficit calórico controlado
+* Preservação muscular
+* Controle alimentar
 
-Café da manhã
-Lanche da manhã
-Almoço
-Pré-treino
-Pós-treino
-Jantar
-Ceia
+### Manutenção
 
-Com opções:
+* Equilíbrio energético
+* Saúde metabólica
 
-Econômicas
-Padrão
-💧 Hidratação
+### Performance
 
-Cálculo automático da recomendação diária de água com base no peso corporal.
+* Energia para treinos
+* Recuperação acelerada
+* Melhor rendimento esportivo
 
-💊 Suplementação
+---
 
-Sugestões educacionais de:
+# 💪 Estratégias de Treino
 
-Creatina
-Whey Protein
-Cafeína
-Eletrólitos
+O sistema fornece recomendações para:
 
-Sem prescrição médica.
+* Pré-treino
+* Pós-treino
+* Recuperação muscular
+* Hidratação
+* Performance esportiva
 
-🛠️ Tecnologias Utilizadas
-HTML5
-CSS3
-JavaScript
-GitHub Pages
-🎯 Público-Alvo
-Atletas de Boxe
-Treinadores
-Lutadores
-Praticantes de Artes Marciais
-Atletas de Performance
-Pessoas em processo de emagrecimento
-Pessoas em busca de hipertrofia
-⚠️ Aviso Importante
+---
 
-As informações fornecidas pelo sistema possuem caráter educativo e informativo.
+# 🥊 Módulo de Boxe
 
-O BoxTimer Pro não substitui:
+Recursos específicos para atletas de boxe:
 
-Nutricionistas
-Médicos
-Educadores físicos
-Avaliações presenciais
+* Registro de rounds
+* Registro de sparrings
+* Controle de golpes
+* Evolução técnica
+* Histórico de treinos
 
-Em casos de doenças, gestação, adolescentes, idosos ou atletas em preparação competitiva, recomenda-se acompanhamento profissional.
+---
 
-🔥 Próximas Atualizações
-Histórico de avaliações
-Gráficos de evolução corporal
-Armazenamento em nuvem
-Exportação em PDF
-Inteligência Artificial para análise nutricional
-Aplicativo PWA
-Dashboard do atleta
-Controle de peso para competições
-Área exclusiva para treinadores
-👨‍💻 Desenvolvedor
+# 🛠️ Tecnologias Utilizadas
 
-André Moraes
+* HTML5
+* CSS3
+* JavaScript
+* LocalStorage
+* GitHub Pages
 
-Atleta, treinador de boxe e estudante de Engenharia de Software.
+Preparado para futuras integrações:
 
-Projeto desenvolvido com foco em performance esportiva, evolução física e acompanhamento de atletas.
+* Firebase
+* Banco de Dados
+* Login Social
+* PWA
+* Aplicativo Mobile
+* Inteligência Artificial
+
+---
+
+# 🔮 Próximas Atualizações
+
+* Login de usuários
+* Seguir atletas
+* Ranking de performance
+* Chat entre atletas
+* Inteligência Artificial para análise nutricional
+* Integração com smartwatch
+* GPS para corrida e caminhada
+* Exportação de relatórios PDF
+* Aplicativo Android e iOS
+
+---
+
+# ⚠️ Aviso Importante
+
+As informações fornecidas pelo sistema possuem caráter educacional e informativo.
+
+O BoxTimer Pro Community não substitui:
+
+* Médicos
+* Nutricionistas
+* Educadores físicos
+* Avaliações presenciais
+
+Consulte profissionais qualificados para orientações individualizadas.
+
+---
+
+# 👨‍💻 Desenvolvedor
+
+**André Moraes**
+
+🥊 Atleta de Boxe
+🥊 Treinador de Boxe
+🎓 Estudante de Engenharia de Software
+
+Projeto desenvolvido para unir tecnologia, esporte, performance e comunidade em uma única plataforma.
