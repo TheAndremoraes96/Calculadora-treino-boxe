@@ -18,9 +18,42 @@ function preencherCampo(id, valorCampo) {
     if (campo && valorCampo !== undefined) campo.value = valorCampo;
 }
 
-/* ============================
-   CADASTRO ÚNICO
-============================ */
+/* PREMIUM */
+
+function verificarPremium() {
+    const status = document.getElementById("statusPremium");
+    const premiumAtivo = localStorage.getItem("premiumAtivo") === "sim";
+
+    if (status) {
+        status.innerHTML = premiumAtivo
+            ? "<p>✅ Premium ativo. Avaliação completa liberada.</p>"
+            : "<p>🔒 Premium não ativo. Use o código enviado após pagamento.</p>";
+    }
+}
+
+function ativarPremium() {
+    const codigo = prompt("Digite o código Premium:");
+
+    if (codigo === "BOXTIMER2026") {
+        localStorage.setItem("premiumAtivo", "sim");
+        verificarPremium();
+        alert("Premium ativado com sucesso!");
+    } else {
+        alert("Código inválido.");
+    }
+}
+
+function desativarPremium() {
+    localStorage.removeItem("premiumAtivo");
+    verificarPremium();
+    alert("Premium desativado.");
+}
+
+function premiumAtivo() {
+    return localStorage.getItem("premiumAtivo") === "sim";
+}
+
+/* CADASTRO */
 
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 
@@ -73,9 +106,7 @@ function carregarCadastro() {
     `;
 }
 
-/* ============================
-   TERMO
-============================ */
+/* TERMO */
 
 function aceitarTermo() {
     const aceite = document.getElementById("aceiteTermo");
@@ -87,7 +118,6 @@ function aceitarTermo() {
     }
 
     localStorage.setItem("termoAceito", "sim");
-
     if (status) status.innerHTML = "<p>✅ Termo aceito com sucesso.</p>";
 }
 
@@ -101,11 +131,14 @@ function carregarTermo() {
     }
 }
 
-/* ============================
-   AVALIAÇÃO FÍSICA E NUTRIÇÃO
-============================ */
+/* AVALIAÇÃO PREMIUM */
 
 function gerarAvaliacao() {
+    if (!premiumAtivo()) {
+        alert("Recurso Premium. Ative o Premium para gerar avaliação física e nutricional completa.");
+        return;
+    }
+
     const nome = valor("nome") || cadastro.nome || "Atleta";
     const idade = numero("idade");
     const sexo = valor("sexo");
@@ -121,7 +154,6 @@ function gerarAvaliacao() {
     }
 
     const metodo = document.querySelector('input[name="metodoAvaliacao"]:checked')?.value || "Bioimpedância";
-
     const imc = peso / (altura * altura);
 
     let classificacaoIMC = "";
@@ -150,22 +182,8 @@ function gerarAvaliacao() {
     if (objetivo === "emagrecimento") caloriasMeta -= 400;
     if (objetivo === "performance") caloriasMeta += 150;
 
-    let proteinas = 0;
-    let gorduras = 0;
-
-    if (objetivo === "hipertrofia") {
-        proteinas = peso * 2.0;
-        gorduras = peso * 0.9;
-    } else if (objetivo === "emagrecimento") {
-        proteinas = peso * 2.2;
-        gorduras = peso * 0.8;
-    } else if (objetivo === "performance") {
-        proteinas = peso * 1.8;
-        gorduras = peso * 0.9;
-    } else {
-        proteinas = peso * 1.8;
-        gorduras = peso * 0.8;
-    }
+    let proteinas = objetivo === "emagrecimento" ? peso * 2.2 : objetivo === "performance" ? peso * 1.8 : peso * 2.0;
+    let gorduras = objetivo === "emagrecimento" ? peso * 0.8 : peso * 0.9;
 
     let carboidratos = (caloriasMeta - ((proteinas * 4) + (gorduras * 9))) / 4;
     if (carboidratos < 0) carboidratos = 0;
@@ -215,7 +233,7 @@ function gerarAvaliacao() {
         <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g/dia</p>
         <p><strong>Água recomendada:</strong> ${aguaRecomendada.toFixed(1)} litros/dia</p>
 
-        <h3>🍽️ Plano Alimentar Inicial Gratuito</h3>
+        <h3>🍽️ Plano Alimentar Premium</h3>
         ${gerarPlanoAlimentar(objetivo, orcamento)}
 
         <h3>🥊 Pré-Treino</h3>
@@ -270,9 +288,7 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
                 <li><strong>Pré-treino:</strong> banana com aveia, tapioca ou pão sem glúten se necessário.</li>
                 <li><strong>Pós-treino:</strong> 180g de ${proteinas} + ${carboidratos}.</li>
                 <li><strong>Jantar:</strong> ${proteinas} com ${carboidratos} e legumes.</li>
-            </ul>
-            <p><strong>Estratégia:</strong> superávit calórico, proteína alta e carboidratos para força e recuperação.</p>
-        `;
+            </ul>`;
     }
 
     if (objetivo === "emagrecimento") {
@@ -284,23 +300,7 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
                 <li><strong>Pré-treino:</strong> fruta ou pequena porção de ${carboidratos}.</li>
                 <li><strong>Pós-treino:</strong> ${proteinas} com legumes.</li>
                 <li><strong>Jantar:</strong> proteína magra ou vegetal com salada e legumes.</li>
-            </ul>
-            <p><strong>Estratégia:</strong> déficit calórico, saciedade, proteína adequada e redução de ultraprocessados.</p>
-        `;
-    }
-
-    if (objetivo === "performance") {
-        return `
-            <ul>
-                <li><strong>Café:</strong> ovos/tofu, aveia, banana e mel se permitido.</li>
-                <li><strong>Lanche:</strong> fruta com ${lacteos} ou sanduíche adaptado.</li>
-                <li><strong>Almoço:</strong> arroz, feijão, ${proteinas}, legumes e salada.</li>
-                <li><strong>Pré-treino:</strong> carboidrato de fácil digestão 60 a 90 minutos antes.</li>
-                <li><strong>Pós-treino:</strong> proteína + carboidrato para recuperação.</li>
-                <li><strong>Jantar:</strong> refeição completa com ${proteinas} e ${carboidratos}.</li>
-            </ul>
-            <p><strong>Estratégia:</strong> energia para treino, recuperação muscular, hidratação e eletrólitos.</p>
-        `;
+            </ul>`;
     }
 
     return `
@@ -311,9 +311,7 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
             <li><strong>Pré-treino:</strong> banana, tapioca ou carboidrato leve.</li>
             <li><strong>Pós-treino:</strong> ${proteinas} com carboidrato moderado.</li>
             <li><strong>Jantar:</strong> refeição equilibrada com legumes, proteína e carboidrato controlado.</li>
-        </ul>
-        <p><strong>Estratégia:</strong> manutenção calórica, qualidade alimentar e estabilidade corporal.</p>
-    `;
+        </ul>`;
 }
 
 function estrategiaPreTreino(objetivo) {
@@ -337,9 +335,7 @@ function formatarObjetivo(objetivo) {
     return "Manutenção";
 }
 
-/* ============================
-   TIMER DE ROUNDS
-============================ */
+/* TIMER */
 
 let timerInterval = null;
 let tempoAtual = 180;
@@ -401,12 +397,10 @@ function pausarTimer() {
 
 function reiniciarTimer() {
     clearInterval(timerInterval);
-
     tempoAtual = numero("tempoRoundConfig") || 180;
     roundAtualNumero = 1;
     emDescanso = false;
     timerRodando = false;
-
     atualizarDisplayTimer();
     atualizarTexto("timerStatus", "Pronto");
 }
@@ -414,10 +408,8 @@ function reiniciarTimer() {
 function finalizarTimer() {
     clearInterval(timerInterval);
     timerRodando = false;
-
     atualizarTexto("timerStatus", "Treino finalizado");
     atualizarTexto("roundAtual", "Todos os rounds concluídos");
-
     tocarCampainha();
 }
 
@@ -430,9 +422,7 @@ function tocarCampainha() {
     }
 }
 
-/* ============================
-   ATIVIDADES E FEED
-============================ */
+/* ATIVIDADES */
 
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
@@ -565,9 +555,7 @@ function excluirAtividade(id) {
     atualizarDashboard();
 }
 
-/* ============================
-   EVENTOS
-============================ */
+/* EVENTOS */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -689,9 +677,7 @@ function excluirTodosEventos() {
     alert("Todos os eventos foram excluídos.");
 }
 
-/* ============================
-   DASHBOARD
-============================ */
+/* DASHBOARD */
 
 function atualizarDashboard() {
     const totalTreinos = atividades.length;
@@ -729,9 +715,7 @@ function gerarConquistas(totalTreinos, totalKm, totalRounds) {
         : "<p>Nenhuma conquista desbloqueada ainda.</p>";
 }
 
-/* ============================
-   SATISFAÇÃO
-============================ */
+/* SATISFAÇÃO */
 
 function salvarSatisfacao() {
     const nota = valor("notaApp");
@@ -754,9 +738,7 @@ function salvarSatisfacao() {
     if (area) area.innerHTML = `<p>✅ Obrigado pela avaliação: ${nota}</p>`;
 }
 
-/* ============================
-   INICIALIZAÇÃO
-============================ */
+/* INICIALIZAÇÃO */
 
 carregarCadastro();
 carregarTermo();
@@ -764,3 +746,4 @@ reiniciarTimer();
 carregarFeed();
 carregarEventos();
 atualizarDashboard();
+verificarPremium();
