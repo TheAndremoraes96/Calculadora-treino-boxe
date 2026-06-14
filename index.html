@@ -12,7 +12,7 @@
 
   <header>
     <h1>🥊 BoxTimer Pro</h1>
-    <p>Treino de boxe, avaliação física e nutrição esportiva</p>
+    <p>Treino de boxe, avaliação física, nutrição esportiva e comunidade ativa</p>
   </header>
 
   <section class="card">
@@ -20,7 +20,7 @@
 
     <input id="nome" placeholder="Nome">
     <input id="idade" type="number" placeholder="Idade">
-    
+
     <select id="sexo">
       <option value="">Sexo</option>
       <option value="masculino">Masculino</option>
@@ -48,7 +48,7 @@
     <input id="horarioDorme" placeholder="Horário que dorme">
     <input id="agua" type="number" placeholder="Litros de água por dia">
     <input id="sono" type="number" placeholder="Horas de sono por noite">
-    
+
     <select id="estresse">
       <option value="">Nível de estresse</option>
       <option value="baixo">Baixo</option>
@@ -118,6 +118,21 @@
     <div id="resultadoAvaliacao">
       Preencha os dados e gere sua avaliação.
     </div>
+  </section>
+
+  <section class="card comunidade">
+    <h2>🌍 Comunidade Ativa</h2>
+    <p>Compartilhe experiências, fotos, treinos, evolução e comentários com a comunidade.</p>
+
+    <input type="text" id="nomeComunidade" placeholder="Seu nome">
+
+    <textarea id="comentarioComunidade" placeholder="Compartilhe sua experiência, treino ou evolução..."></textarea>
+
+    <input type="file" id="fotoComunidade" accept="image/*">
+
+    <button onclick="publicarExperiencia()">📢 Publicar experiência</button>
+
+    <div id="feedComunidade"></div>
   </section>
 
 </div>
