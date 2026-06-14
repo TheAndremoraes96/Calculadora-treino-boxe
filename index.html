@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BoxTimer Pro Community</title>
+
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ff3b30">
@@ -22,6 +23,8 @@
     <a href="#cadastro">Cadastro</a>
     <a href="#termo">Termo</a>
     <a href="#avaliacao">Avaliação</a>
+    <a href="#treinador">Treinador</a>
+    <a href="#historicoAvaliacoes">Histórico</a>
     <a href="#timer">Timer</a>
     <a href="#atividade">Atividade</a>
     <a href="#feed">Feed</a>
@@ -50,8 +53,8 @@
       <li>✅ Dobras cutâneas</li>
       <li>✅ Plano alimentar personalizado</li>
       <li>✅ Macronutrientes em gramas</li>
-      <li>✅ Estratégia pré e pós-treino</li>
-      <li>✅ Restrições alimentares</li>
+      <li>✅ Histórico de avaliações</li>
+      <li>✅ Área do treinador</li>
     </ul>
 
     <p><strong>Sugestão de preço:</strong> R$ 14,90/mês</p>
@@ -97,11 +100,11 @@
       <option>Cross Training</option>
     </select>
 
-    <textarea id="restricoes" placeholder="Restrições alimentares, alergias ou intolerâncias. Ex: lactose, glúten, vegano..."></textarea>
+    <textarea id="restricoes" placeholder="Restrições alimentares, alergias ou intolerâncias"></textarea>
     <textarea id="lesoes" placeholder="Lesões, dores ou limitações físicas"></textarea>
     <textarea id="medicamentos" placeholder="Medicamentos em uso"></textarea>
     <textarea id="historico" placeholder="Histórico esportivo"></textarea>
-    <textarea id="preferencias" placeholder="Preferências alimentares. Ex: vegetariano, comida simples, sem peixe..."></textarea>
+    <textarea id="preferencias" placeholder="Preferências alimentares"></textarea>
 
     <input id="horarioAcorda" placeholder="Horário que acorda">
     <input id="horarioDorme" placeholder="Horário que dorme">
@@ -189,10 +192,48 @@
     </select>
 
     <button onclick="gerarAvaliacao()">Gerar Avaliação Nutricional</button>
+    <button onclick="salvarAvaliacaoHistorico()">💾 Salvar Avaliação no Histórico</button>
 
     <div id="resultadoAvaliacao">
       Ative o Premium para gerar a avaliação completa.
     </div>
+  </section>
+
+  <section class="card pagina" id="treinador">
+    <h2>👨‍🏫 Área do Treinador Premium</h2>
+
+    <p class="aviso">Cadastre alunos, objetivos e observações para acompanhar sua equipe.</p>
+
+    <input id="alunoNome" placeholder="Nome do aluno">
+    <input id="alunoContato" placeholder="Contato do aluno">
+    <input id="alunoPeso" type="number" step="0.1" placeholder="Peso do aluno em kg">
+
+    <select id="alunoObjetivo">
+      <option value="">Objetivo do aluno</option>
+      <option value="hipertrofia">Hipertrofia</option>
+      <option value="emagrecimento">Emagrecimento</option>
+      <option value="manutencao">Manutenção</option>
+      <option value="performance">Performance</option>
+      <option value="competicao">Competição</option>
+    </select>
+
+    <textarea id="alunoObservacoes" placeholder="Observações do treinador"></textarea>
+
+    <button onclick="cadastrarAluno()">➕ Cadastrar Aluno</button>
+    <button onclick="limparAlunos()">🗑️ Limpar Todos os Alunos</button>
+
+    <div id="listaAlunos"></div>
+  </section>
+
+  <section class="card pagina" id="historicoAvaliacoes">
+    <h2>📊 Histórico de Avaliações Premium</h2>
+
+    <p class="aviso">Salve avaliações para acompanhar evolução de peso, gordura, massa muscular e IMC.</p>
+
+    <button onclick="carregarHistoricoAvaliacoes()">🔄 Atualizar Histórico</button>
+    <button onclick="limparHistoricoAvaliacoes()">🗑️ Limpar Histórico</button>
+
+    <div id="listaHistoricoAvaliacoes"></div>
   </section>
 
   <section class="card pagina" id="timer">
@@ -315,9 +356,11 @@
 <script src="script.js"></script>
 
 <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./service-worker.js")
+    .then(() => console.log("Service Worker registrado"))
+    .catch(err => console.log(err));
+}
 </script>
 
 </body>
