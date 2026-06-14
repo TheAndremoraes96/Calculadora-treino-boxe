@@ -1,96 +1,127 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🥊 BoxTimer Pro</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BoxTimer Pro</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body>
 
-<body id="appBody" class="tema-hipertrofia">
+<div class="container">
 
+  <header>
     <h1>🥊 BoxTimer Pro</h1>
+    <p>Treino de boxe, avaliação física e nutrição esportiva</p>
+  </header>
 
-    <section class="card">
-        <h2>Dados do Atleta</h2>
+  <section class="card">
+    <h2>👤 Dados Pessoais</h2>
 
-        <input type="text" id="nome" placeholder="Nome do atleta">
-        <input type="number" id="idade" placeholder="Idade">
-        <input type="number" id="peso" placeholder="Peso (kg)">
-        <input type="number" id="altura" placeholder="Altura (m). Ex: 1.75" step="0.01">
+    <input id="nome" placeholder="Nome">
+    <input id="idade" type="number" placeholder="Idade">
+    
+    <select id="sexo">
+      <option value="">Sexo</option>
+      <option value="masculino">Masculino</option>
+      <option value="feminino">Feminino</option>
+    </select>
 
-        <br><br>
+    <input id="altura" type="number" step="0.01" placeholder="Altura em metros. Ex: 1.75">
+    <input id="peso" type="number" step="0.1" placeholder="Peso atual em kg">
+    <input id="pesoDesejado" type="number" step="0.1" placeholder="Peso desejado em kg">
 
-        <label>Sexo:</label>
-        <select id="sexo">
-            <option value="masculino">Masculino</option>
-            <option value="feminino">Feminino</option>
-        </select>
+    <select id="objetivo">
+      <option value="">Objetivo</option>
+      <option value="hipertrofia">Hipertrofia</option>
+      <option value="emagrecimento">Emagrecimento</option>
+      <option value="manutencao">Manutenção</option>
+      <option value="performance">Performance</option>
+    </select>
+  </section>
 
-        <label>Objetivo:</label>
-        <select id="objetivo" onchange="atualizarTemaPorSelect()">
-            <option value="hipertrofia">Hipertrofia</option>
-            <option value="emagrecimento">Emagrecimento</option>
-            <option value="manutencao">Manutenção</option>
-        </select>
+  <section class="card">
+    <h2>📝 Anamnese Nutricional</h2>
 
-        <label>Preferência:</label>
-        <select id="preferencia">
-            <option value="carnivoro">Carnívoro</option>
-            <option value="pescetariano">Pescetariano</option>
-            <option value="fit">Fit leve</option>
-            <option value="vegetariano">Vegetariano</option>
-        </select>
+    <input id="refeicoesDia" type="number" placeholder="Quantas refeições por dia?">
+    <input id="horarioAcorda" placeholder="Horário que acorda">
+    <input id="horarioDorme" placeholder="Horário que dorme">
+    <input id="agua" type="number" placeholder="Litros de água por dia">
+    <input id="sono" type="number" placeholder="Horas de sono por noite">
+    
+    <select id="estresse">
+      <option value="">Nível de estresse</option>
+      <option value="baixo">Baixo</option>
+      <option value="moderado">Moderado</option>
+      <option value="alto">Alto</option>
+    </select>
 
-        <label>Orçamento:</label>
-        <select id="orcamento">
-            <option value="economico">Econômico</option>
-            <option value="padrao">Padrão</option>
-        </select>
+    <textarea id="preferencias" placeholder="Preferências alimentares"></textarea>
+    <textarea id="restricoes" placeholder="Restrições, alergias ou intolerâncias"></textarea>
+    <textarea id="suplementos" placeholder="Suplementos usados"></textarea>
+  </section>
 
-        <label>Treinos por semana:</label>
-        <select id="frequencia">
-            <option value="3">3x por semana</option>
-            <option value="4">4x por semana</option>
-            <option value="5">5x por semana</option>
-            <option value="6">6x por semana</option>
-        </select>
+  <section class="card">
+    <h2>🏋️ Rotina de Treino</h2>
 
-        <br><br>
+    <input id="modalidade" placeholder="Modalidade principal. Ex: Boxe, Musculação">
+    <input id="frequencia" type="number" placeholder="Treinos por semana">
+    <input id="duracao" type="number" placeholder="Duração média do treino em minutos">
 
-        <button onclick="calcularIMC()">Gerar IMC + Plano Alimentar</button>
+    <select id="intensidade">
+      <option value="">Intensidade</option>
+      <option value="leve">Leve</option>
+      <option value="moderada">Moderada</option>
+      <option value="alta">Alta</option>
+      <option value="muito alta">Muito alta</option>
+    </select>
 
-        <h2 id="resultado"></h2>
-        <pre id="dieta"></pre>
-    </section>
+    <input id="horarioTreino" placeholder="Horário do treino">
+  </section>
 
-    <section class="card">
-        <h2>📊 Gráfico de Evolução do IMC</h2>
-        <canvas id="graficoIMC" width="600" height="300"></canvas>
-    </section>
+  <section class="card">
+    <h2>⚖️ Bioimpedância</h2>
 
-    <section class="card">
-        <h2>📈 Histórico do Atleta</h2>
-        <div id="historico"></div>
-        <br>
-        <button onclick="limparHistorico()">Limpar Histórico</button>
-    </section>
+    <input id="gordura" type="number" step="0.1" placeholder="% de gordura corporal">
+    <input id="massaMuscular" type="number" step="0.1" placeholder="Massa muscular em kg">
+    <input id="massaMagra" type="number" step="0.1" placeholder="Massa magra em kg">
+    <input id="massaGorda" type="number" step="0.1" placeholder="Massa gorda em kg">
+    <input id="gorduraVisceral" type="number" step="0.1" placeholder="Gordura visceral">
+    <input id="tmbBio" type="number" placeholder="Taxa metabólica basal da bioimpedância">
+  </section>
 
-    <section class="card">
-        <h2>🥊 Cronômetro de Boxe</h2>
+  <section class="card">
+    <h2>📏 Dobras Cutâneas</h2>
 
-        <h3 id="round">🔥 ROUND 1 / 12 🔥</h3>
-        <h3 id="status">🥊 LUTA</h3>
+    <input id="peitoral" type="number" step="0.1" placeholder="Peitoral mm">
+    <input id="abdomen" type="number" step="0.1" placeholder="Abdômen mm">
+    <input id="coxa" type="number" step="0.1" placeholder="Coxa mm">
+    <input id="triceps" type="number" step="0.1" placeholder="Tríceps mm">
+    <input id="subescapular" type="number" step="0.1" placeholder="Subescapular mm">
+    <input id="suprailiaca" type="number" step="0.1" placeholder="Supra-ilíaca mm">
+    <input id="panturrilha" type="number" step="0.1" placeholder="Panturrilha mm">
+  </section>
 
-        <div id="timer">03:00</div>
+  <section class="card">
+    <h2>💰 Preferência Alimentar</h2>
 
-        <h3>⏱️ Tempo Total: <span id="tempoTotal">00:00</span></h3>
+    <select id="orcamento">
+      <option value="economico">Econômico</option>
+      <option value="padrao">Padrão</option>
+    </select>
 
-        <button onclick="iniciarTimer()">Iniciar</button>
-        <button onclick="pararTimer()">Parar</button>
-        <button onclick="reiniciarTimer()">Reiniciar</button>
-    </section>
+    <button onclick="gerarAvaliacao()">Gerar Avaliação Nutricional</button>
+  </section>
 
-    <script src="script.js"></script>
+  <section class="card resultado">
+    <h2>📊 Resultado da Avaliação</h2>
+    <div id="resultadoAvaliacao">
+      Preencha os dados e gere sua avaliação.
+    </div>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
