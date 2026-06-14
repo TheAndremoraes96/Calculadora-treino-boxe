@@ -147,6 +147,47 @@ button:hover {
     margin: 0;
 }
 
+/* MÉTODOS DE AVALIAÇÃO */
+
+.metodos-avaliacao {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.metodos-avaliacao label {
+    background: #111;
+    border: 1px solid #444;
+    padding: 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    color: #f5f5f5;
+    transition: 0.3s;
+}
+
+.metodos-avaliacao label:hover {
+    border-color: #ff3b30;
+    background: #1f1f1f;
+}
+
+.metodos-avaliacao input {
+    width: auto;
+    margin-right: 8px;
+    accent-color: #ff3b30;
+}
+
+.aviso {
+    background: #111;
+    border-left: 4px solid #2ecc71;
+    padding: 14px;
+    border-radius: 12px;
+    color: #ddd;
+    margin-bottom: 12px;
+}
+
+/* TIMER */
+
 .timer-box {
     text-align: center;
     background: #111;
@@ -170,6 +211,8 @@ button:hover {
     font-size: 1.2rem;
     color: #ddd;
 }
+
+/* RESULTADOS */
 
 #resultadoAvaliacao,
 #statusTermo,
@@ -199,6 +242,8 @@ button:hover {
 #resultadoAvaliacao li {
     margin-bottom: 8px;
 }
+
+/* CARDS INTERNOS */
 
 .perfil-box,
 .post,
@@ -263,6 +308,8 @@ button:hover {
     background: #333;
 }
 
+/* DASHBOARD */
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -298,6 +345,8 @@ button:hover {
     font-weight: bold;
 }
 
+/* EVENTOS */
+
 .evento ul {
     margin-left: 20px;
     margin-top: 8px;
@@ -306,6 +355,8 @@ button:hover {
 .evento li {
     margin-bottom: 5px;
 }
+
+/* CORES DAS PÁGINAS */
 
 #cadastro {
     border-left: 5px solid #2ecc71;
@@ -343,6 +394,8 @@ button:hover {
     border-left: 5px solid #e84393;
 }
 
+/* RESPONSIVO */
+
 @media (min-width: 768px) {
     .dashboard-grid {
         grid-template-columns: repeat(4, 1fr);
@@ -378,5 +431,9 @@ button:hover {
 
     button {
         font-size: 15px;
+    }
+
+    .metodos-avaliacao {
+        grid-template-columns: 1fr;
     }
 }
