@@ -97,8 +97,8 @@
       <option value="alto">Alto</option>
     </select>
 
-    <textarea id="preferencias" placeholder="Preferências alimentares"></textarea>
-    <textarea id="restricoes" placeholder="Restrições, alergias ou intolerâncias"></textarea>
+    <textarea id="preferencias" placeholder="Preferências alimentares. Ex: vegetariano, comida simples, sem peixe..."></textarea>
+    <textarea id="restricoes" placeholder="Restrições, alergias ou intolerâncias. Ex: lactose, glúten, vegano..."></textarea>
     <textarea id="suplementos" placeholder="Suplementos usados"></textarea>
   </section>
 
@@ -173,13 +173,11 @@
     <input id="distancia" type="number" step="0.1" placeholder="Distância em km, se houver">
     <input id="tempo" type="number" placeholder="Tempo em minutos">
     <input id="calorias" type="number" placeholder="Calorias estimadas">
-
     <input id="rounds" type="number" placeholder="Rounds, se for boxe">
     <input id="golpes" type="number" placeholder="Golpes estimados, se for boxe">
     <input id="carga" placeholder="Carga/séries/repetições, se for musculação">
 
-    <textarea id="comentarioAtividade" placeholder="Como foi o treino? Observações técnicas, evolução ou sensação do dia"></textarea>
-
+    <textarea id="comentarioAtividade" placeholder="Como foi o treino?"></textarea>
     <input type="file" id="fotoAtividade" accept="image/*">
 
     <button onclick="publicarAtividade()">Publicar Atividade</button>
@@ -194,25 +192,10 @@
     <h2>📊 Dashboard de Evolução</h2>
 
     <div class="dashboard-grid">
-      <div class="stat">
-        <h3 id="totalTreinos">0</h3>
-        <p>Treinos</p>
-      </div>
-
-      <div class="stat">
-        <h3 id="totalHoras">0h</h3>
-        <p>Horas treinadas</p>
-      </div>
-
-      <div class="stat">
-        <h3 id="totalKm">0 km</h3>
-        <p>Distância</p>
-      </div>
-
-      <div class="stat">
-        <h3 id="totalRounds">0</h3>
-        <p>Rounds</p>
-      </div>
+      <div class="stat"><h3 id="totalTreinos">0</h3><p>Treinos</p></div>
+      <div class="stat"><h3 id="totalHoras">0h</h3><p>Horas treinadas</p></div>
+      <div class="stat"><h3 id="totalKm">0 km</h3><p>Distância</p></div>
+      <div class="stat"><h3 id="totalRounds">0</h3><p>Rounds</p></div>
     </div>
 
     <h3>🏅 Conquistas</h3>
@@ -242,6 +225,8 @@
     <textarea id="eventoDescricao" placeholder="Descrição do evento"></textarea>
 
     <button onclick="criarEvento()">Criar Evento</button>
+    <button onclick="limparTodasInscricoes()">🧹 Limpar todas as inscrições</button>
+    <button onclick="excluirTodosEventos()">🗑️ Excluir todos os eventos</button>
 
     <div id="listaEventos"></div>
   </section>
