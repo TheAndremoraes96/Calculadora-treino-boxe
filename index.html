@@ -12,11 +12,13 @@
 
   <header>
     <h1>🥊 BoxTimer Pro Community</h1>
-    <p>Treine. Evolua. Compartilhe.</p>
+    <p>Treino, nutrição, avaliação física, evolução e comunidade esportiva.</p>
   </header>
 
   <nav class="menu">
     <a href="#perfil">Perfil</a>
+    <a href="#nutricao">Nutrição</a>
+    <a href="#avaliacao">Avaliação</a>
     <a href="#atividade">Atividade</a>
     <a href="#feed">Feed</a>
     <a href="#dashboard">Dashboard</a>
@@ -29,7 +31,7 @@
     <input id="perfilNome" placeholder="Nome do atleta">
     <input id="perfilCidade" placeholder="Cidade">
     <input id="perfilIdade" type="number" placeholder="Idade">
-    <input id="perfilPeso" type="number" placeholder="Peso atual em kg">
+    <input id="perfilPeso" type="number" step="0.1" placeholder="Peso atual em kg">
 
     <select id="perfilModalidade">
       <option value="">Modalidade principal</option>
@@ -56,6 +58,99 @@
     <button onclick="salvarPerfil()">Salvar Perfil</button>
 
     <div id="perfilSalvo"></div>
+  </section>
+
+  <section class="card" id="nutricao">
+    <h2>🍽️ Nutrição Esportiva e Anamnese</h2>
+
+    <input id="nome" placeholder="Nome">
+    <input id="idade" type="number" placeholder="Idade">
+
+    <select id="sexo">
+      <option value="">Sexo</option>
+      <option value="masculino">Masculino</option>
+      <option value="feminino">Feminino</option>
+    </select>
+
+    <input id="altura" type="number" step="0.01" placeholder="Altura em metros. Ex: 1.75">
+    <input id="peso" type="number" step="0.1" placeholder="Peso atual em kg">
+    <input id="pesoDesejado" type="number" step="0.1" placeholder="Peso desejado em kg">
+
+    <select id="objetivo">
+      <option value="">Objetivo nutricional</option>
+      <option value="hipertrofia">Hipertrofia</option>
+      <option value="emagrecimento">Emagrecimento</option>
+      <option value="manutencao">Manutenção</option>
+      <option value="performance">Performance</option>
+    </select>
+
+    <input id="refeicoesDia" type="number" placeholder="Quantas refeições por dia?">
+    <input id="horarioAcorda" placeholder="Horário que acorda">
+    <input id="horarioDorme" placeholder="Horário que dorme">
+    <input id="agua" type="number" step="0.1" placeholder="Litros de água por dia">
+    <input id="sono" type="number" step="0.1" placeholder="Horas de sono por noite">
+
+    <select id="estresse">
+      <option value="">Nível de estresse</option>
+      <option value="baixo">Baixo</option>
+      <option value="moderado">Moderado</option>
+      <option value="alto">Alto</option>
+    </select>
+
+    <textarea id="preferencias" placeholder="Preferências alimentares"></textarea>
+    <textarea id="restricoes" placeholder="Restrições, alergias ou intolerâncias"></textarea>
+    <textarea id="suplementos" placeholder="Suplementos usados"></textarea>
+  </section>
+
+  <section class="card" id="avaliacao">
+    <h2>📊 Avaliação Física Completa</h2>
+
+    <h3>🏋️ Rotina de Treino</h3>
+    <input id="modalidade" placeholder="Modalidade principal. Ex: Boxe, Musculação">
+    <input id="frequencia" type="number" placeholder="Treinos por semana">
+    <input id="duracao" type="number" placeholder="Duração média do treino em minutos">
+
+    <select id="intensidade">
+      <option value="">Intensidade</option>
+      <option value="leve">Leve</option>
+      <option value="moderada">Moderada</option>
+      <option value="alta">Alta</option>
+      <option value="muito alta">Muito alta</option>
+    </select>
+
+    <input id="horarioTreino" placeholder="Horário do treino">
+
+    <h3>⚖️ Bioimpedância</h3>
+    <input id="gordura" type="number" step="0.1" placeholder="% de gordura corporal">
+    <input id="massaMuscular" type="number" step="0.1" placeholder="Massa muscular em kg">
+    <input id="massaMagra" type="number" step="0.1" placeholder="Massa magra em kg">
+    <input id="massaGorda" type="number" step="0.1" placeholder="Massa gorda em kg">
+    <input id="gorduraVisceral" type="number" step="0.1" placeholder="Gordura visceral">
+    <input id="tmbBio" type="number" placeholder="Taxa metabólica basal da bioimpedância">
+
+    <h3>📏 Dobras Cutâneas</h3>
+    <input id="peitoral" type="number" step="0.1" placeholder="Peitoral mm">
+    <input id="abdomen" type="number" step="0.1" placeholder="Abdômen mm">
+    <input id="coxa" type="number" step="0.1" placeholder="Coxa mm">
+    <input id="triceps" type="number" step="0.1" placeholder="Tríceps mm">
+    <input id="subescapular" type="number" step="0.1" placeholder="Subescapular mm">
+    <input id="suprailiaca" type="number" step="0.1" placeholder="Supra-ilíaca mm">
+    <input id="panturrilha" type="number" step="0.1" placeholder="Panturrilha mm">
+
+    <h3>💰 Preferência Alimentar</h3>
+    <select id="orcamento">
+      <option value="economico">Econômico</option>
+      <option value="padrao">Padrão</option>
+    </select>
+
+    <button onclick="gerarAvaliacao()">Gerar Avaliação Nutricional</button>
+  </section>
+
+  <section class="card resultado">
+    <h2>📋 Resultado Nutricional e Corporal</h2>
+    <div id="resultadoAvaliacao">
+      Preencha os dados e gere sua avaliação.
+    </div>
   </section>
 
   <section class="card" id="atividade">
@@ -128,7 +223,7 @@
     <h2>📅 Eventos Esportivos</h2>
 
     <input id="eventoOrganizador" placeholder="Organizador">
-    
+
     <select id="eventoTipo">
       <option value="">Tipo de evento</option>
       <option>Corrida</option>
