@@ -1,516 +1,235 @@
-console.log("BoxTimer Pro carregado");
+function valor(id) {
+    return document.getElementById(id).value;
+}
 
-// ================= IMC + PLANO =================
+function numero(id) {
+    return parseFloat(document.getElementById(id).value) || 0;
+}
 
-function calcularIMC() {
-    const nome = document.getElementById("nome").value || "Atleta";
-    const idade = Number(document.getElementById("idade").value);
-    const peso = Number(document.getElementById("peso").value);
-    const altura = Number(document.getElementById("altura").value);
-    const sexo = document.getElementById("sexo").value;
-    const objetivo = document.getElementById("objetivo").value;
-    const preferencia = document.getElementById("preferencia").value;
-    const orcamento = document.getElementById("orcamento").value;
-    const frequencia = Number(document.getElementById("frequencia").value);
+function gerarAvaliacao() {
+    const nome = valor("nome") || "Atleta";
+    const idade = numero("idade");
+    const sexo = valor("sexo");
+    const altura = numero("altura");
+    const peso = numero("peso");
+    const objetivo = valor("objetivo");
+    const frequencia = numero("frequencia");
+    const duracao = numero("duracao");
+    const intensidade = valor("intensidade");
+    const orcamento = valor("orcamento");
 
-    if (!peso || !altura || !idade || altura <= 0) {
-        document.getElementById("resultado").innerText =
-            "⚠️ Preencha peso, altura e idade corretamente.";
+    if (!idade || !altura || !peso || !sexo || !objetivo) {
+        alert("Preencha idade, sexo, altura, peso e objetivo.");
         return;
     }
 
     const imc = peso / (altura * altura);
-    const classificacao = getClassificacao(imc);
-    const calorias = calcularCalorias(peso, altura, idade, sexo, objetivo, frequencia);
-    const proteina = calcularProteina(peso, objetivo);
-    const agua = peso * 35;
 
-    const plano = gerarPlanoAlimentar(
-        nome,
-        objetivo,
-        preferencia,
-        orcamento,
-        calorias,
-        proteina,
-        agua
-    );
+    let classificacaoIMC = "";
 
-    document.getElementById("resultado").innerHTML =
-        `IMC: ${imc.toFixed(2)} <br>
-         Classificação: ${classificacao} <br>
-         Calorias estimadas: ${calorias} kcal/dia <br>
-         Proteína estimada: ${proteina}g/dia <br>
-         Água estimada: ${(agua / 1000).toFixed(1)}L/dia`;
+    if (imc < 18.5) {
+        classificacaoIMC = "Abaixo do peso";
+    } else if (imc < 25) {
+        classificacaoIMC = "Peso normal";
+    } else if (imc < 30) {
+        classificacaoIMC = "Sobrepeso";
+    } else {
+        classificacaoIMC = "Obesidade";
+    }
 
-    document.getElementById("dieta").innerText = plano;
-
-    salvarHistorico(imc, classificacao, objetivo, preferencia, orcamento);
-    renderHistorico();
-    renderGrafico();
-    atualizarTema(objetivo);
-}
-
-function getClassificacao(imc) {
-    if (imc < 18.5) return "Abaixo do peso";
-    if (imc < 25) return "Peso normal";
-    if (imc < 30) return "Sobrepeso";
-    return "Obesidade";
-}
-
-function calcularCalorias(peso, altura, idade, sexo, objetivo, frequencia) {
-    const alturaCm = altura * 100;
-
-    let tmb;
+    let tmb = 0;
 
     if (sexo === "masculino") {
-        tmb = 10 * peso + 6.25 * alturaCm - 5 * idade + 5;
+        tmb = 10 * peso + 6.25 * (altura * 100) - 5 * idade + 5;
     } else {
-        tmb = 10 * peso + 6.25 * alturaCm - 5 * idade - 161;
+        tmb = 10 * peso + 6.25 * (altura * 100) - 5 * idade - 161;
     }
 
-    let fatorAtividade = 1.4;
+    let fatorAtividade = 1.2;
 
-    if (frequencia === 4) fatorAtividade = 1.5;
-    if (frequencia === 5) fatorAtividade = 1.6;
-    if (frequencia >= 6) fatorAtividade = 1.7;
+    if (frequencia >= 1 && frequencia <= 2) fatorAtividade = 1.375;
+    if (frequencia >= 3 && frequencia <= 4) fatorAtividade = 1.55;
+    if (frequencia >= 5 && frequencia <= 6) fatorAtividade = 1.725;
+    if (frequencia >= 7) fatorAtividade = 1.9;
 
-    let calorias = tmb * fatorAtividade;
+    let gastoDiario = tmb * fatorAtividade;
 
-    if (objetivo === "hipertrofia") calorias += 300;
-    if (objetivo === "emagrecimento") calorias -= 400;
+    let caloriasMeta = gastoDiario;
 
-    return Math.round(calorias);
+    if (objetivo === "hipertrofia") caloriasMeta += 300;
+    if (objetivo === "emagrecimento") caloriasMeta -= 400;
+    if (objetivo === "performance") caloriasMeta += 150;
+
+    let proteinas = 0;
+    let gorduras = 0;
+    let carboidratos = 0;
+
+    if (objetivo === "hipertrofia") {
+        proteinas = peso * 2.0;
+        gorduras = peso * 0.9;
+    } else if (objetivo === "emagrecimento") {
+        proteinas = peso * 2.2;
+        gorduras = peso * 0.8;
+    } else if (objetivo === "performance") {
+        proteinas = peso * 1.8;
+        gorduras = peso * 0.9;
+    } else {
+        proteinas = peso * 1.8;
+        gorduras = peso * 0.8;
+    }
+
+    carboidratos = (caloriasMeta - ((proteinas * 4) + (gorduras * 9))) / 4;
+
+    const aguaRecomendada = peso * 35 / 1000;
+
+    const somaDobras =
+        numero("peitoral") +
+        numero("abdomen") +
+        numero("coxa") +
+        numero("triceps") +
+        numero("subescapular") +
+        numero("suprailiaca") +
+        numero("panturrilha");
+
+    let avaliacaoDobras = "Dobras não informadas.";
+
+    if (somaDobras > 0) {
+        avaliacaoDobras = `Soma das dobras: ${somaDobras.toFixed(1)} mm. Use essa medida para acompanhar evolução corporal a cada 30 dias.`;
+    }
+
+    const alimentos = gerarPlanoAlimentar(objetivo, orcamento);
+
+    const resultado = `
+        <h3>👤 Resumo do Perfil</h3>
+        <p><strong>Nome:</strong> ${nome}</p>
+        <p><strong>Objetivo:</strong> ${formatarObjetivo(objetivo)}</p>
+        <p><strong>IMC:</strong> ${imc.toFixed(2)} - ${classificacaoIMC}</p>
+
+        <h3>⚖️ Avaliação Corporal</h3>
+        <p><strong>TMB estimada:</strong> ${Math.round(tmb)} kcal</p>
+        <p><strong>Gasto calórico diário:</strong> ${Math.round(gastoDiario)} kcal</p>
+        <p><strong>Meta calórica diária:</strong> ${Math.round(caloriasMeta)} kcal</p>
+        <p><strong>Bioimpedância:</strong> Gordura corporal ${numero("gordura") || "não informada"}%, massa muscular ${numero("massaMuscular") || "não informada"} kg.</p>
+        <p><strong>Dobras cutâneas:</strong> ${avaliacaoDobras}</p>
+
+        <h3>🥩 Macronutrientes Recomendados</h3>
+        <p><strong>Proteínas:</strong> ${Math.round(proteinas)}g por dia</p>
+        <p><strong>Carboidratos:</strong> ${Math.round(carboidratos)}g por dia</p>
+        <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g por dia</p>
+        <p><strong>Água:</strong> ${aguaRecomendada.toFixed(1)} litros por dia</p>
+
+        <h3>🍽️ Plano Alimentar Diário</h3>
+        ${alimentos}
+
+        <h3>🥊 Estratégia Pré-Treino</h3>
+        <p>${estrategiaPreTreino(objetivo)}</p>
+
+        <h3>💪 Estratégia Pós-Treino</h3>
+        <p>${estrategiaPosTreino(objetivo)}</p>
+
+        <h3>💊 Suplementação Opcional</h3>
+        <p>Creatina, whey protein, cafeína e eletrólitos podem ser úteis dependendo da rotina, tolerância e orientação profissional.</p>
+
+        <h3>⚠️ Alertas Importantes</h3>
+        <p>Esta avaliação é uma estimativa educativa e não substitui nutricionista, médico ou avaliação presencial. Pessoas com doenças, gestantes, adolescentes, idosos ou atletas em corte de peso extremo devem buscar acompanhamento profissional.</p>
+
+        <h3>📅 Próxima Reavaliação</h3>
+        <p>Recomenda-se nova avaliação a cada 30 dias com peso, medidas, bioimpedância, dobras cutâneas e evolução de desempenho.</p>
+    `;
+
+    document.getElementById("resultadoAvaliacao").innerHTML = resultado;
 }
 
-function calcularProteina(peso, objetivo) {
-    if (objetivo === "hipertrofia") return Math.round(peso * 2);
-    if (objetivo === "emagrecimento") return Math.round(peso * 1.8);
-    return Math.round(peso * 1.6);
-}
+function gerarPlanoAlimentar(objetivo, orcamento) {
+    let proteinaBase = orcamento === "economico" ? "ovos, frango, sardinha e patinho" : "frango, peixe, patinho, ovos e whey protein";
+    let carboBase = orcamento === "economico" ? "arroz, feijão, batata-doce, banana e aveia" : "arroz integral, batata-doce, mandioca, frutas e aveia";
 
-// ================= PLANO ALIMENTAR =================
+    if (objetivo === "hipertrofia") {
+        return `
+            <ul>
+                <li><strong>Café:</strong> 3 ovos, 60g de aveia, 1 banana.</li>
+                <li><strong>Lanche:</strong> Iogurte natural ou whey com fruta.</li>
+                <li><strong>Almoço:</strong> 150g de arroz, 100g de feijão, 180g de frango, salada.</li>
+                <li><strong>Pré-treino:</strong> Banana com aveia ou pão com ovos.</li>
+                <li><strong>Pós-treino:</strong> 180g de proteína + carboidrato de rápida reposição.</li>
+                <li><strong>Jantar:</strong> ${proteinaBase} com ${carboBase}.</li>
+            </ul>
+        `;
+    }
 
-function gerarPlanoAlimentar(nome, objetivo, preferencia, orcamento, calorias, proteina, agua) {
-    const alimentos = getAlimentos(objetivo, preferencia, orcamento);
+    if (objetivo === "emagrecimento") {
+        return `
+            <ul>
+                <li><strong>Café:</strong> 2 ovos, fruta e café sem açúcar.</li>
+                <li><strong>Lanche:</strong> Iogurte natural ou fruta.</li>
+                <li><strong>Almoço:</strong> 100g de arroz, 80g de feijão, 160g de frango, bastante salada.</li>
+                <li><strong>Pré-treino:</strong> Fruta ou pequena porção de carboidrato.</li>
+                <li><strong>Pós-treino:</strong> Proteína magra com legumes.</li>
+                <li><strong>Jantar:</strong> Carne magra, ovos ou peixe com salada e legumes.</li>
+            </ul>
+        `;
+    }
+
+    if (objetivo === "performance") {
+        return `
+            <ul>
+                <li><strong>Café:</strong> Ovos, aveia, banana e mel.</li>
+                <li><strong>Lanche:</strong> Fruta com iogurte ou sanduíche natural.</li>
+                <li><strong>Almoço:</strong> Arroz, feijão, proteína magra, legumes e salada.</li>
+                <li><strong>Pré-treino:</strong> Carboidrato de fácil digestão 60 a 90 minutos antes.</li>
+                <li><strong>Pós-treino:</strong> Proteína + carboidrato para recuperação muscular.</li>
+                <li><strong>Jantar:</strong> Refeição completa com boa fonte de carboidrato e proteína.</li>
+            </ul>
+        `;
+    }
 
     return `
-🥊 Plano alimentar personalizado - ${nome}
-
-Objetivo: ${formatarTexto(objetivo)}
-Preferência alimentar: ${formatarTexto(preferencia)}
-Orçamento: ${formatarTexto(orcamento)}
-
-Meta aproximada:
-- Calorias: ${calorias} kcal/dia
-- Proteína: ${proteina}g/dia
-- Água: ${(agua / 1000).toFixed(1)}L por dia
-
-========================
-🍽️ REFEIÇÕES DO DIA
-========================
-
-07:00 - Café da manhã
-- ${alimentos.cafe.join("\n- ")}
-
-10:00 - Lanche da manhã
-- ${alimentos.lancheManha.join("\n- ")}
-
-13:00 - Almoço
-- ${alimentos.almoco.join("\n- ")}
-
-16:30 - Pré-treino
-- ${alimentos.preTreino.join("\n- ")}
-
-19:00 - Pós-treino
-- ${alimentos.posTreino.join("\n- ")}
-
-21:00 - Jantar
-- ${alimentos.jantar.join("\n- ")}
-
-22:30 - Ceia
-- ${alimentos.ceia.join("\n- ")}
-
-========================
-⚠️ Observação importante
-========================
-Este plano é uma referência educativa para organização alimentar.
-As quantidades são estimativas gerais.
-Para dieta exata, exames, restrições, doenças ou suplementação, procure um nutricionista.
-`;
+        <ul>
+            <li><strong>Café:</strong> Ovos, fruta e aveia.</li>
+            <li><strong>Lanche:</strong> Fruta ou iogurte.</li>
+            <li><strong>Almoço:</strong> Arroz, feijão, proteína magra e salada.</li>
+            <li><strong>Pré-treino:</strong> Banana ou pão com ovos.</li>
+            <li><strong>Pós-treino:</strong> Proteína magra com carboidrato moderado.</li>
+            <li><strong>Jantar:</strong> Refeição equilibrada com legumes, proteína e carboidrato controlado.</li>
+        </ul>
+    `;
 }
 
-function getAlimentos(objetivo, preferencia, orcamento) {
-    const planos = {
-        hipertrofia: {
-            economico: {
-                cafe: ["3 ovos", "60g de aveia", "1 banana", "250ml de leite"],
-                lancheManha: ["1 banana", "30g de amendoim"],
-                almoco: ["200g de arroz", "150g de feijão", "180g de frango coxa/sobrecoxa", "Salada à vontade"],
-                preTreino: ["150g de macarrão ou batata-doce", "2 ovos"],
-                posTreino: ["200g de arroz", "180g de frango"],
-                jantar: ["150g de arroz", "150g de feijão", "150g de frango ou 3 ovos"],
-                ceia: ["250ml de leite", "40g de aveia"]
-            },
-            padrao: {
-                cafe: ["3 ovos", "70g de aveia", "1 banana", "30g de whey protein"],
-                lancheManha: ["170g de iogurte natural", "30g de castanhas"],
-                almoco: ["200g de arroz", "120g de feijão", "200g de peito de frango", "150g de legumes"],
-                preTreino: ["200g de batata-doce", "1 banana"],
-                posTreino: ["30g de whey protein", "150g de arroz ou batata-doce"],
-                jantar: ["180g de carne magra", "150g de arroz", "150g de legumes"],
-                ceia: ["170g de iogurte natural", "25g de pasta de amendoim"]
-            }
-        },
-
-        emagrecimento: {
-            economico: {
-                cafe: ["2 ovos", "1 banana", "Café sem açúcar"],
-                lancheManha: ["1 fruta"],
-                almoco: ["100g de arroz", "80g de feijão", "150g de frango", "Salada à vontade"],
-                preTreino: ["1 banana ou 80g de batata-doce"],
-                posTreino: ["150g de frango", "150g de legumes"],
-                jantar: ["2 ovos", "100g de couve ou repolho", "100g de legumes"],
-                ceia: ["Chá sem açúcar ou 170g de iogurte natural"]
-            },
-            padrao: {
-                cafe: ["2 ovos", "40g de aveia", "1 fruta"],
-                lancheManha: ["170g de iogurte natural"],
-                almoco: ["120g de arroz integral", "160g de frango ou peixe", "Salada à vontade"],
-                preTreino: ["100g de batata-doce"],
-                posTreino: ["150g de peixe ou frango", "150g de legumes"],
-                jantar: ["150g de proteína magra", "Salada à vontade", "150g de legumes"],
-                ceia: ["170g de iogurte natural ou chá sem açúcar"]
-            }
-        },
-
-        manutencao: {
-            economico: {
-                cafe: ["2 ovos", "40g de aveia", "1 banana"],
-                lancheManha: ["1 fruta", "20g de amendoim"],
-                almoco: ["150g de arroz", "120g de feijão", "150g de frango", "120g de legumes"],
-                preTreino: ["1 banana", "30g de aveia"],
-                posTreino: ["120g de arroz", "150g de frango ou 2 ovos"],
-                jantar: ["120g de arroz", "100g de feijão", "150g de proteína"],
-                ceia: ["250ml de leite ou 1 fruta"]
-            },
-            padrao: {
-                cafe: ["2 ovos", "50g de aveia", "1 fruta", "170g de iogurte natural"],
-                lancheManha: ["25g de castanhas", "1 fruta"],
-                almoco: ["150g de arroz", "100g de feijão", "150g de frango ou peixe", "150g de legumes"],
-                preTreino: ["100g de batata-doce", "1 banana"],
-                posTreino: ["150g de proteína", "120g de arroz"],
-                jantar: ["150g de carne, frango ou peixe", "150g de legumes", "100g de arroz"],
-                ceia: ["170g de iogurte natural ou 60g de queijo branco"]
-            }
-        }
-    };
-
-    let plano = planos[objetivo][orcamento];
-
-    if (preferencia === "vegetariano") {
-        plano = substituirPorVegetariano(plano);
+function estrategiaPreTreino(objetivo) {
+    if (objetivo === "emagrecimento") {
+        return "Priorize alimento leve, com carboidrato moderado e boa digestão para manter energia sem exagerar nas calorias.";
     }
 
-    if (preferencia === "pescetariano") {
-        plano = substituirPorPescetariano(plano);
+    if (objetivo === "hipertrofia") {
+        return "Use carboidratos e proteínas antes do treino para melhorar força, volume de treino e recuperação.";
     }
 
-    if (preferencia === "fit") {
-        plano = substituirPorFit(plano);
+    if (objetivo === "performance") {
+        return "Priorize carboidratos de fácil digestão, hidratação adequada e eletrólitos em treinos longos ou intensos.";
     }
 
-    return plano;
+    return "Mantenha uma refeição equilibrada 60 a 90 minutos antes do treino.";
 }
 
-function substituirPorVegetariano(plano) {
-    return trocarProteinas(plano, ["ovos", "lentilha", "grão-de-bico", "feijão", "iogurte natural", "queijo branco"]);
-}
-
-function substituirPorPescetariano(plano) {
-    return trocarProteinas(plano, ["sardinha", "atum", "peixe", "ovos"]);
-}
-
-function substituirPorFit(plano) {
-    return trocarProteinas(plano, ["frango", "ovos", "peixe", "iogurte natural"]);
-}
-
-function trocarProteinas(plano, opcoes) {
-    const novoPlano = JSON.parse(JSON.stringify(plano));
-
-    Object.keys(novoPlano).forEach(refeicao => {
-        novoPlano[refeicao] = novoPlano[refeicao].map(item => {
-            if (
-                item.toLowerCase().includes("frango") ||
-                item.toLowerCase().includes("carne") ||
-                item.toLowerCase().includes("peito") ||
-                item.toLowerCase().includes("proteína") ||
-                item.toLowerCase().includes("peixe")
-            ) {
-                return item + ` (substituição possível: ${opcoes.join(", ")})`;
-            }
-
-            return item;
-        });
-    });
-
-    return novoPlano;
-}
-
-function formatarTexto(texto) {
-    return texto.charAt(0).toUpperCase() + texto.slice(1);
-}
-
-// ================= TEMA =================
-
-function atualizarTema(objetivo) {
-    const body = document.getElementById("appBody");
-
-    body.classList.remove("tema-hipertrofia", "tema-emagrecimento", "tema-manutencao");
-
-    if (objetivo === "hipertrofia") body.classList.add("tema-hipertrofia");
-    if (objetivo === "emagrecimento") body.classList.add("tema-emagrecimento");
-    if (objetivo === "manutencao") body.classList.add("tema-manutencao");
-}
-
-function atualizarTemaPorSelect() {
-    atualizarTema(document.getElementById("objetivo").value);
-}
-
-// ================= HISTÓRICO =================
-
-function salvarHistorico(imc, classificacao, objetivo, preferencia, orcamento) {
-    const historico = JSON.parse(localStorage.getItem("historicoIMC")) || [];
-
-    historico.push({
-        data: new Date().toLocaleString("pt-BR"),
-        imc: Number(imc.toFixed(2)),
-        classificacao,
-        objetivo,
-        preferencia,
-        orcamento
-    });
-
-    localStorage.setItem("historicoIMC", JSON.stringify(historico));
-}
-
-function renderHistorico() {
-    const historico = JSON.parse(localStorage.getItem("historicoIMC")) || [];
-    const container = document.getElementById("historico");
-
-    if (historico.length === 0) {
-        container.innerHTML = "Nenhum registro ainda.";
-        return;
+function estrategiaPosTreino(objetivo) {
+    if (objetivo === "emagrecimento") {
+        return "Consuma proteína suficiente após o treino para preservar massa muscular e controlar fome.";
     }
 
-    let html = "";
-
-    historico.slice().reverse().forEach((item) => {
-        html += `
-            <div class="historico-card">
-                <strong>📅 ${item.data}</strong><br>
-                IMC: ${item.imc}<br>
-                Classificação: ${item.classificacao}<br>
-                Objetivo: ${formatarTexto(item.objetivo)}<br>
-                Preferência: ${formatarTexto(item.preferencia)}<br>
-                Orçamento: ${formatarTexto(item.orcamento)}
-            </div>
-        `;
-    });
-
-    container.innerHTML = html;
-}
-
-function limparHistorico() {
-    localStorage.removeItem("historicoIMC");
-    renderHistorico();
-    renderGrafico();
-}
-
-// ================= GRÁFICO =================
-
-function renderGrafico() {
-    const canvas = document.getElementById("graficoIMC");
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    const historico = JSON.parse(localStorage.getItem("historicoIMC")) || [];
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#111";
-    ctx.font = "16px Arial";
-    ctx.fillText("Evolução do IMC", 20, 25);
-
-    if (historico.length === 0) {
-        ctx.font = "14px Arial";
-        ctx.fillText("Nenhum dado para exibir ainda.", 20, 60);
-        return;
+    if (objetivo === "hipertrofia") {
+        return "Priorize proteína e carboidrato após o treino para recuperação, síntese muscular e reposição de energia.";
     }
 
-    const valores = historico.map(item => Number(item.imc));
-    const max = Math.max(...valores) + 2;
-    const min = Math.min(...valores) - 2;
-
-    const padding = 45;
-    const largura = canvas.width - padding * 2;
-    const altura = canvas.height - padding * 2;
-
-    ctx.strokeStyle = "#333";
-    ctx.beginPath();
-    ctx.moveTo(padding, padding);
-    ctx.lineTo(padding, canvas.height - padding);
-    ctx.lineTo(canvas.width - padding, canvas.height - padding);
-    ctx.stroke();
-
-    function getX(index) {
-        if (valores.length === 1) return padding + largura / 2;
-        return padding + (index * largura) / (valores.length - 1);
+    if (objetivo === "performance") {
+        return "Reponha carboidratos, proteínas, líquidos e eletrólitos para acelerar recuperação entre sessões.";
     }
 
-    function getY(valor) {
-        return canvas.height - padding - ((valor - min) / (max - min)) * altura;
-    }
-
-    ctx.strokeStyle = "#007bff";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-
-    valores.forEach((valor, index) => {
-        const x = getX(index);
-        const y = getY(valor);
-
-        if (index === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-    });
-
-    ctx.stroke();
-
-    valores.forEach((valor, index) => {
-        const x = getX(index);
-        const y = getY(valor);
-
-        ctx.fillStyle = "#007bff";
-        ctx.beginPath();
-        ctx.arc(x, y, 5, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "#111";
-        ctx.font = "12px Arial";
-        ctx.fillText(valor.toFixed(2), x - 15, y - 10);
-        ctx.fillText(index + 1, x - 4, canvas.height - 25);
-    });
+    return "Inclua proteína magra e carboidrato de qualidade após o treino.";
 }
 
-// ================= TIMER BOXE =================
-
-let tempo = 180;
-let contador = null;
-let cronometroTotal = null;
-let tempoTotal = 0;
-let round = 1;
-let maxRounds = 12;
-let emDescanso = false;
-
-function iniciarTimer() {
-    clearInterval(contador);
-
-    if (!cronometroTotal) {
-        cronometroTotal = setInterval(() => {
-            tempoTotal++;
-            atualizarTempoTotal();
-        }, 1000);
-    }
-
-    contador = setInterval(() => {
-        atualizarTimerNaTela();
-        tempo--;
-
-        if (tempo < 0) {
-            clearInterval(contador);
-
-            if (!emDescanso) {
-                tocarCampainha();
-                emDescanso = true;
-                tempo = 60;
-                document.getElementById("status").innerText = "🧊 DESCANSO";
-                iniciarTimer();
-            } else {
-                round++;
-
-                if (round > maxRounds) {
-                    tocarCampainha();
-                    clearInterval(contador);
-                    clearInterval(cronometroTotal);
-                    cronometroTotal = null;
-
-                    document.getElementById("status").innerText = "🏆 TREINO FINALIZADO";
-                    document.getElementById("timer").innerText = "00:00";
-                    return;
-                }
-
-                tocarCampainha();
-                emDescanso = false;
-                tempo = 180;
-
-                document.getElementById("round").innerText =
-                    `🔥 ROUND ${round} / ${maxRounds} 🔥`;
-
-                document.getElementById("status").innerText = "🥊 LUTA";
-
-                iniciarTimer();
-            }
-        }
-    }, 1000);
+function formatarObjetivo(objetivo) {
+    if (objetivo === "hipertrofia") return "Hipertrofia";
+    if (objetivo === "emagrecimento") return "Emagrecimento";
+    if (objetivo === "performance") return "Performance";
+    return "Manutenção";
 }
-
-function pararTimer() {
-    clearInterval(contador);
-    clearInterval(cronometroTotal);
-    cronometroTotal = null;
-}
-
-function reiniciarTimer() {
-    clearInterval(contador);
-    clearInterval(cronometroTotal);
-
-    contador = null;
-    cronometroTotal = null;
-    tempo = 180;
-    tempoTotal = 0;
-    round = 1;
-    emDescanso = false;
-
-    document.getElementById("round").innerText = "🔥 ROUND 1 / 12 🔥";
-    document.getElementById("status").innerText = "🥊 LUTA";
-    document.getElementById("timer").innerText = "03:00";
-    document.getElementById("tempoTotal").innerText = "00:00";
-}
-
-function atualizarTimerNaTela() {
-    const minutos = Math.floor(tempo / 60);
-    const segundos = tempo % 60;
-
-    document.getElementById("timer").innerText =
-        `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
-}
-
-function atualizarTempoTotal() {
-    const minutos = Math.floor(tempoTotal / 60);
-    const segundos = tempoTotal % 60;
-
-    document.getElementById("tempoTotal").innerText =
-        `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
-}
-
-function tocarCampainha() {
-    const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
-    audio.play();
-}
-
-// ================= INICIALIZAÇÃO =================
-
-renderHistorico();
-renderGrafico();
-atualizarTemaPorSelect();
