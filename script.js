@@ -8,6 +8,16 @@ function numero(id) {
     return el ? parseFloat(el.value) || 0 : 0;
 }
 
+function atualizarTexto(id, texto) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = texto;
+}
+
+function preencherCampo(id, valorCampo) {
+    const campo = document.getElementById(id);
+    if (campo && valorCampo !== undefined) campo.value = valorCampo;
+}
+
 /* ============================
    CADASTRO ÚNICO
 ============================ */
@@ -37,7 +47,6 @@ function salvarCadastro() {
 
     localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
     carregarCadastro();
-
     alert("Cadastro salvo com sucesso.");
 }
 
@@ -50,39 +59,18 @@ function carregarCadastro() {
         return;
     }
 
-    preencherCampo("nome", cadastro.nome);
-    preencherCampo("idade", cadastro.idade);
-    preencherCampo("sexo", cadastro.sexo);
-    preencherCampo("peso", cadastro.peso);
-    preencherCampo("altura", cadastro.altura);
-    preencherCampo("cidade", cadastro.cidade);
-    preencherCampo("objetivo", cadastro.objetivo);
-    preencherCampo("modalidade", cadastro.modalidade);
-    preencherCampo("restricoes", cadastro.restricoes);
-    preencherCampo("lesoes", cadastro.lesoes);
-    preencherCampo("medicamentos", cadastro.medicamentos);
-    preencherCampo("historico", cadastro.historico);
-    preencherCampo("preferencias", cadastro.preferencias);
-    preencherCampo("horarioAcorda", cadastro.horarioAcorda);
-    preencherCampo("horarioDorme", cadastro.horarioDorme);
-    preencherCampo("refeicoesDia", cadastro.refeicoesDia);
-    preencherCampo("aguaAtual", cadastro.aguaAtual);
+    Object.keys(cadastro).forEach(campo => preencherCampo(campo, cadastro[campo]));
 
     area.innerHTML = `
         <div class="perfil-box">
             <h3>👤 ${cadastro.nome}</h3>
-            <p><strong>Idade:</strong> ${cadastro.idade}</p>
-            <p><strong>Peso:</strong> ${cadastro.peso} kg</p>
-            <p><strong>Altura:</strong> ${cadastro.altura} m</p>
+            <p><strong>Idade:</strong> ${cadastro.idade || "Não informada"}</p>
+            <p><strong>Peso:</strong> ${cadastro.peso || "Não informado"} kg</p>
+            <p><strong>Altura:</strong> ${cadastro.altura || "Não informada"} m</p>
             <p><strong>Objetivo:</strong> ${formatarObjetivo(cadastro.objetivo)}</p>
-            <p><strong>Modalidade:</strong> ${cadastro.modalidade}</p>
+            <p><strong>Modalidade:</strong> ${cadastro.modalidade || "Não informada"}</p>
         </div>
     `;
-}
-
-function preencherCampo(id, valorCampo) {
-    const campo = document.getElementById(id);
-    if (campo && valorCampo !== undefined) campo.value = valorCampo;
 }
 
 /* ============================
@@ -100,9 +88,7 @@ function aceitarTermo() {
 
     localStorage.setItem("termoAceito", "sim");
 
-    if (status) {
-        status.innerHTML = "<p>✅ Termo aceito com sucesso.</p>";
-    }
+    if (status) status.innerHTML = "<p>✅ Termo aceito com sucesso.</p>";
 }
 
 function carregarTermo() {
@@ -116,7 +102,7 @@ function carregarTermo() {
 }
 
 /* ============================
-   AVALIAÇÃO NUTRICIONAL
+   AVALIAÇÃO FÍSICA E NUTRIÇÃO
 ============================ */
 
 function gerarAvaliacao() {
@@ -133,6 +119,8 @@ function gerarAvaliacao() {
         alert("Preencha cadastro com idade, sexo, altura, peso e objetivo.");
         return;
     }
+
+    const metodo = document.querySelector('input[name="metodoAvaliacao"]:checked')?.value || "Bioimpedância";
 
     const imc = peso / (altura * altura);
 
@@ -194,7 +182,7 @@ function gerarAvaliacao() {
         numero("panturrilha");
 
     const avaliacaoDobras = somaDobras > 0
-        ? `Soma das dobras: ${somaDobras.toFixed(1)} mm. Use essa medida para acompanhar evolução corporal a cada 30 dias.`
+        ? `Soma das dobras: ${somaDobras.toFixed(1)} mm. Método selecionado: ${metodo}.`
         : "Dobras não informadas.";
 
     document.getElementById("resultadoAvaliacao").innerHTML = `
@@ -202,17 +190,23 @@ function gerarAvaliacao() {
         <p><strong>Nome:</strong> ${nome}</p>
         <p><strong>Objetivo:</strong> ${formatarObjetivo(objetivo)}</p>
         <p><strong>Modalidade:</strong> ${valor("modalidade") || cadastro.modalidade || "Não informada"}</p>
+        <p><strong>Método de avaliação:</strong> ${metodo}</p>
         <p><strong>IMC:</strong> ${imc.toFixed(2)} - ${classificacaoIMC}</p>
 
         <h3>⚖️ Avaliação Corporal</h3>
         <p><strong>TMB:</strong> ${Math.round(tmb)} kcal</p>
         <p><strong>Gasto diário estimado:</strong> ${Math.round(gastoDiario)} kcal</p>
         <p><strong>Meta calórica:</strong> ${Math.round(caloriasMeta)} kcal</p>
+        <p><strong>Meta de gordura:</strong> ${numero("metaGordura") || "não informada"}%</p>
         <p><strong>Gordura corporal:</strong> ${numero("gordura") || "não informada"}%</p>
+        <p><strong>Músculo esquelético:</strong> ${numero("musculoEsqueletico") || "não informado"}%</p>
+        <p><strong>Idade corporal:</strong> ${numero("idadeCorporal") || "não informada"} anos</p>
+        <p><strong>Gordura visceral:</strong> ${numero("gorduraVisceral") || "não informada"}</p>
+        <p><strong>Água corporal:</strong> ${numero("aguaCorporal") || "não informada"}%</p>
         <p><strong>Massa muscular:</strong> ${numero("massaMuscular") || "não informada"} kg</p>
+        <p><strong>Massa óssea:</strong> ${numero("massaOssea") || "não informada"} kg</p>
         <p><strong>Massa magra:</strong> ${numero("massaMagra") || "não informada"} kg</p>
         <p><strong>Massa gorda:</strong> ${numero("massaGorda") || "não informada"} kg</p>
-        <p><strong>Gordura visceral:</strong> ${numero("gorduraVisceral") || "não informada"}</p>
         <p><strong>Dobras cutâneas:</strong> ${avaliacaoDobras}</p>
 
         <h3>🥩 Macronutrientes</h3>
@@ -221,7 +215,7 @@ function gerarAvaliacao() {
         <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g/dia</p>
         <p><strong>Água recomendada:</strong> ${aguaRecomendada.toFixed(1)} litros/dia</p>
 
-        <h3>🍽️ Plano Alimentar Personalizado</h3>
+        <h3>🍽️ Plano Alimentar Inicial Gratuito</h3>
         ${gerarPlanoAlimentar(objetivo, orcamento)}
 
         <h3>🥊 Pré-Treino</h3>
@@ -251,9 +245,7 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
         ? "ovos, tofu, lentilha, grão-de-bico, feijão e proteína vegetal"
         : "frango, ovos, patinho, peixe, sardinha e atum";
 
-    if (vegano) {
-        proteinas = "tofu, lentilha, grão-de-bico, feijão, ervilha, soja e proteína vegetal";
-    }
+    if (vegano) proteinas = "tofu, lentilha, grão-de-bico, feijão, ervilha, soja e proteína vegetal";
 
     if (orcamento === "economico") {
         proteinas = vegetariano || vegano
@@ -359,20 +351,9 @@ function atualizarDisplayTimer() {
     const minutos = Math.floor(tempoAtual / 60);
     const segundos = tempoAtual % 60;
 
-    const display = document.getElementById("timerDisplay");
-    if (display) {
-        display.innerText = `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
-    }
-
-    const roundTexto = document.getElementById("roundAtual");
-    if (roundTexto) {
-        roundTexto.innerText = emDescanso ? `Descanso após Round ${roundAtualNumero}` : `Round ${roundAtualNumero}`;
-    }
-
-    const status = document.getElementById("timerStatus");
-    if (status) {
-        status.innerText = emDescanso ? "Descanso" : "Round em andamento";
-    }
+    atualizarTexto("timerDisplay", `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`);
+    atualizarTexto("roundAtual", emDescanso ? `Descanso após Round ${roundAtualNumero}` : `Round ${roundAtualNumero}`);
+    atualizarTexto("timerStatus", emDescanso ? "Descanso" : "Round em andamento");
 }
 
 function iniciarTimer() {
@@ -415,9 +396,7 @@ function iniciarTimer() {
 function pausarTimer() {
     clearInterval(timerInterval);
     timerRodando = false;
-
-    const status = document.getElementById("timerStatus");
-    if (status) status.innerText = "Pausado";
+    atualizarTexto("timerStatus", "Pausado");
 }
 
 function reiniciarTimer() {
@@ -429,20 +408,15 @@ function reiniciarTimer() {
     timerRodando = false;
 
     atualizarDisplayTimer();
-
-    const status = document.getElementById("timerStatus");
-    if (status) status.innerText = "Pronto";
+    atualizarTexto("timerStatus", "Pronto");
 }
 
 function finalizarTimer() {
     clearInterval(timerInterval);
     timerRodando = false;
 
-    const status = document.getElementById("timerStatus");
-    if (status) status.innerText = "Treino finalizado";
-
-    const roundTexto = document.getElementById("roundAtual");
-    if (roundTexto) roundTexto.innerText = "Todos os rounds concluídos";
+    atualizarTexto("timerStatus", "Treino finalizado");
+    atualizarTexto("roundAtual", "Todos os rounds concluídos");
 
     tocarCampainha();
 }
@@ -677,6 +651,7 @@ function confirmarPresenca(id) {
 
             if (!e.participantes.includes(nome)) e.participantes.push(nome);
         }
+
         return e;
     });
 
@@ -733,11 +708,6 @@ function atualizarDashboard() {
     gerarConquistas(totalTreinos, totalKm, totalRounds);
 }
 
-function atualizarTexto(id, texto) {
-    const el = document.getElementById(id);
-    if (el) el.innerText = texto;
-}
-
 function gerarConquistas(totalTreinos, totalKm, totalRounds) {
     const area = document.getElementById("conquistas");
     if (!area) return;
@@ -781,9 +751,7 @@ function salvarSatisfacao() {
     localStorage.setItem("satisfacaoBoxTimer", JSON.stringify(dados));
 
     const area = document.getElementById("resultadoSatisfacao");
-    if (area) {
-        area.innerHTML = `<p>✅ Obrigado pela avaliação: ${nota}</p>`;
-    }
+    if (area) area.innerHTML = `<p>✅ Obrigado pela avaliação: ${nota}</p>`;
 }
 
 /* ============================
