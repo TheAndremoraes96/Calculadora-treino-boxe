@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     background: #0f0f0f;
@@ -75,6 +79,12 @@ header p {
     padding-bottom: 8px;
 }
 
+.card h3 {
+    color: #ffcc00;
+    margin-top: 18px;
+    margin-bottom: 10px;
+}
+
 input,
 select,
 textarea {
@@ -115,6 +125,37 @@ button {
 button:hover {
     background: #d6281f;
     transform: scale(1.01);
+}
+
+.resultado {
+    border-left: 5px solid #ff3b30;
+}
+
+#resultadoAvaliacao {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 18px;
+    margin-top: 10px;
+}
+
+#resultadoAvaliacao h3 {
+    color: #ffcc00;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+#resultadoAvaliacao p {
+    margin-bottom: 8px;
+}
+
+#resultadoAvaliacao ul {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#resultadoAvaliacao li {
+    margin-bottom: 8px;
 }
 
 .perfil-box,
@@ -224,6 +265,30 @@ button:hover {
     margin-bottom: 5px;
 }
 
+#nutricao {
+    border-left: 5px solid #2ecc71;
+}
+
+#avaliacao {
+    border-left: 5px solid #3498db;
+}
+
+#atividade {
+    border-left: 5px solid #ff3b30;
+}
+
+#feed {
+    border-left: 5px solid #ffcc00;
+}
+
+#dashboard {
+    border-left: 5px solid #9b59b6;
+}
+
+#eventos {
+    border-left: 5px solid #e67e22;
+}
+
 @media (min-width: 768px) {
     .dashboard-grid {
         grid-template-columns: repeat(4, 1fr);
@@ -231,6 +296,12 @@ button:hover {
 
     .card {
         padding: 28px;
+    }
+
+    input,
+    select,
+    textarea {
+        font-size: 16px;
     }
 }
 
