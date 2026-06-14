@@ -8,9 +8,7 @@ function numero(id) {
     return el ? parseFloat(el.value) || 0 : 0;
 }
 
-/* ============================
-   PERFIL DO ATLETA
-============================ */
+/* PERFIL */
 
 let perfil = JSON.parse(localStorage.getItem("perfilAtleta")) || {};
 
@@ -51,9 +49,7 @@ function carregarPerfil() {
     `;
 }
 
-/* ============================
-   AVALIAÇÃO NUTRICIONAL
-============================ */
+/* NUTRIÇÃO */
 
 function gerarAvaliacao() {
     const nome = valor("nome") || "Atleta";
@@ -73,7 +69,6 @@ function gerarAvaliacao() {
     const imc = peso / (altura * altura);
 
     let classificacaoIMC = "";
-
     if (imc < 18.5) classificacaoIMC = "Abaixo do peso";
     else if (imc < 25) classificacaoIMC = "Peso normal";
     else if (imc < 30) classificacaoIMC = "Sobrepeso";
@@ -87,7 +82,6 @@ function gerarAvaliacao() {
     if (tmbBio > 0) tmb = tmbBio;
 
     let fatorAtividade = 1.2;
-
     if (frequencia >= 1 && frequencia <= 2) fatorAtividade = 1.375;
     if (frequencia >= 3 && frequencia <= 4) fatorAtividade = 1.55;
     if (frequencia >= 5 && frequencia <= 6) fatorAtividade = 1.725;
@@ -96,7 +90,6 @@ function gerarAvaliacao() {
     const gastoDiario = tmb * fatorAtividade;
 
     let caloriasMeta = gastoDiario;
-
     if (objetivo === "hipertrofia") caloriasMeta += 300;
     if (objetivo === "emagrecimento") caloriasMeta -= 400;
     if (objetivo === "performance") caloriasMeta += 150;
@@ -138,129 +131,146 @@ function gerarAvaliacao() {
         avaliacaoDobras = `Soma das dobras: ${somaDobras.toFixed(1)} mm. Use essa medida para acompanhar evolução corporal a cada 30 dias.`;
     }
 
-    const gordura = numero("gordura") || "não informada";
-    const massaMuscular = numero("massaMuscular") || "não informada";
-    const massaMagra = numero("massaMagra") || "não informada";
-    const massaGorda = numero("massaGorda") || "não informada";
-    const gorduraVisceral = numero("gorduraVisceral") || "não informada";
-
     const resultado = `
         <h3>👤 Resumo do Perfil</h3>
         <p><strong>Nome:</strong> ${nome}</p>
-        <p><strong>Objetivo nutricional:</strong> ${formatarObjetivo(objetivo)}</p>
+        <p><strong>Objetivo:</strong> ${formatarObjetivo(objetivo)}</p>
         <p><strong>IMC:</strong> ${imc.toFixed(2)} - ${classificacaoIMC}</p>
 
         <h3>⚖️ Avaliação Corporal</h3>
-        <p><strong>TMB estimada:</strong> ${Math.round(tmb)} kcal</p>
-        <p><strong>Gasto calórico diário:</strong> ${Math.round(gastoDiario)} kcal</p>
-        <p><strong>Meta calórica diária:</strong> ${Math.round(caloriasMeta)} kcal</p>
-        <p><strong>Gordura corporal:</strong> ${gordura}%</p>
-        <p><strong>Massa muscular:</strong> ${massaMuscular} kg</p>
-        <p><strong>Massa magra:</strong> ${massaMagra} kg</p>
-        <p><strong>Massa gorda:</strong> ${massaGorda} kg</p>
-        <p><strong>Gordura visceral:</strong> ${gorduraVisceral}</p>
-        <p><strong>Dobras cutâneas:</strong> ${avaliacaoDobras}</p>
+        <p><strong>TMB:</strong> ${Math.round(tmb)} kcal</p>
+        <p><strong>Gasto diário:</strong> ${Math.round(gastoDiario)} kcal</p>
+        <p><strong>Meta calórica:</strong> ${Math.round(caloriasMeta)} kcal</p>
+        <p><strong>Gordura corporal:</strong> ${numero("gordura") || "não informada"}%</p>
+        <p><strong>Massa muscular:</strong> ${numero("massaMuscular") || "não informada"} kg</p>
+        <p><strong>Massa magra:</strong> ${numero("massaMagra") || "não informada"} kg</p>
+        <p><strong>Massa gorda:</strong> ${numero("massaGorda") || "não informada"} kg</p>
+        <p><strong>Gordura visceral:</strong> ${numero("gorduraVisceral") || "não informada"}</p>
+        <p><strong>Dobras:</strong> ${avaliacaoDobras}</p>
 
-        <h3>🥩 Macronutrientes Recomendados</h3>
-        <p><strong>Proteínas:</strong> ${Math.round(proteinas)}g por dia</p>
-        <p><strong>Carboidratos:</strong> ${Math.round(carboidratos)}g por dia</p>
-        <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g por dia</p>
-        <p><strong>Água:</strong> ${aguaRecomendada.toFixed(1)} litros por dia</p>
+        <h3>🥩 Macronutrientes</h3>
+        <p><strong>Proteínas:</strong> ${Math.round(proteinas)}g/dia</p>
+        <p><strong>Carboidratos:</strong> ${Math.round(carboidratos)}g/dia</p>
+        <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g/dia</p>
+        <p><strong>Água:</strong> ${aguaRecomendada.toFixed(1)} litros/dia</p>
 
-        <h3>🍽️ Plano Alimentar Diário</h3>
+        <h3>🍽️ Plano Alimentar Personalizado</h3>
         ${gerarPlanoAlimentar(objetivo, orcamento)}
 
-        <h3>🥊 Estratégia Pré-Treino</h3>
+        <h3>🥊 Pré-Treino</h3>
         <p>${estrategiaPreTreino(objetivo)}</p>
 
-        <h3>💪 Estratégia Pós-Treino</h3>
+        <h3>💪 Pós-Treino</h3>
         <p>${estrategiaPosTreino(objetivo)}</p>
 
         <h3>💊 Suplementação Opcional</h3>
-        <p>Creatina, whey protein, cafeína e eletrólitos podem ser úteis dependendo da rotina, tolerância e orientação profissional.</p>
+        <p>Creatina, whey protein, cafeína e eletrólitos podem ser úteis conforme rotina, tolerância e orientação profissional.</p>
 
-        <h3>⚠️ Alertas Importantes</h3>
-        <p>Esta avaliação é uma estimativa educativa e não substitui nutricionista, médico ou avaliação presencial.</p>
-
-        <h3>📅 Próxima Reavaliação</h3>
-        <p>Recomenda-se nova avaliação a cada 30 dias com peso, medidas, bioimpedância, dobras cutâneas e desempenho nos treinos.</p>
+        <h3>⚠️ Alertas</h3>
+        <p>Esta avaliação é educativa e não substitui nutricionista, médico ou avaliação presencial.</p>
     `;
 
     document.getElementById("resultadoAvaliacao").innerHTML = resultado;
 }
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
-    const proteinaBase = orcamento === "economico"
-        ? "ovos, frango, sardinha, patinho, atum e leite"
-        : "frango, peixe, patinho, ovos, iogurte natural, whey protein e cortes magros";
+    const preferencias = valor("preferencias").toLowerCase();
+    const restricoes = valor("restricoes").toLowerCase();
 
-    const carboBase = orcamento === "economico"
-        ? "arroz, feijão, batata-doce, banana, aveia e macarrão"
-        : "arroz integral, batata-doce, mandioca, frutas, aveia e pão integral";
+    const semLactose = restricoes.includes("lactose");
+    const vegetariano = restricoes.includes("vegetariano") || preferencias.includes("vegetariano");
+    const vegano = restricoes.includes("vegano") || preferencias.includes("vegano");
+    const semGluten = restricoes.includes("glúten") || restricoes.includes("gluten");
+
+    let proteinas = vegetariano || vegano
+        ? "ovos, tofu, lentilha, grão-de-bico, feijão e proteína vegetal"
+        : "frango, ovos, patinho, peixe, sardinha e atum";
+
+    if (vegano) {
+        proteinas = "tofu, lentilha, grão-de-bico, feijão, ervilha, soja e proteína vegetal";
+    }
+
+    if (orcamento === "economico") {
+        proteinas = vegetariano || vegano
+            ? "feijão, lentilha, grão-de-bico, soja e tofu"
+            : "ovos, frango, sardinha, fígado, patinho e atum";
+    }
+
+    const carboidratos = semGluten
+        ? "arroz, batata-doce, mandioca, frutas, tapioca e aveia sem glúten"
+        : "arroz, feijão, batata-doce, banana, aveia, pão integral e macarrão";
+
+    const lacteos = semLactose || vegano
+        ? "bebida vegetal, iogurte sem lactose ou proteína vegetal"
+        : "iogurte natural, leite, queijo branco ou whey protein";
 
     if (objetivo === "hipertrofia") {
         return `
             <ul>
-                <li><strong>Café da manhã:</strong> 3 ovos, 60g de aveia, 1 banana e café.</li>
-                <li><strong>Lanche:</strong> Iogurte natural ou whey com fruta.</li>
-                <li><strong>Almoço:</strong> 150g de arroz, 100g de feijão, 180g de frango, salada e azeite.</li>
-                <li><strong>Pré-treino:</strong> Banana com aveia ou pão com ovos.</li>
-                <li><strong>Pós-treino:</strong> 180g de proteína + carboidrato para recuperação.</li>
-                <li><strong>Jantar:</strong> ${proteinaBase} com ${carboBase}.</li>
+                <li><strong>Café:</strong> 3 ovos ou tofu mexido, 60g de aveia, 1 banana e café.</li>
+                <li><strong>Lanche:</strong> ${lacteos} com fruta.</li>
+                <li><strong>Almoço:</strong> 150g de arroz, 100g de feijão, 180g de ${proteinas}, salada e azeite.</li>
+                <li><strong>Pré-treino:</strong> Banana com aveia, tapioca ou pão sem glúten se necessário.</li>
+                <li><strong>Pós-treino:</strong> 180g de ${proteinas} + ${carboidratos}.</li>
+                <li><strong>Jantar:</strong> ${proteinas} com ${carboidratos} e legumes.</li>
             </ul>
+            <p><strong>Estratégia:</strong> superávit calórico, proteína alta e carboidratos para força e recuperação.</p>
         `;
     }
 
     if (objetivo === "emagrecimento") {
         return `
             <ul>
-                <li><strong>Café da manhã:</strong> 2 ovos, fruta e café sem açúcar.</li>
-                <li><strong>Lanche:</strong> Iogurte natural ou fruta.</li>
-                <li><strong>Almoço:</strong> 100g de arroz, 80g de feijão, 160g de frango e bastante salada.</li>
-                <li><strong>Pré-treino:</strong> Fruta ou pequena porção de carboidrato.</li>
-                <li><strong>Pós-treino:</strong> Proteína magra com legumes.</li>
-                <li><strong>Jantar:</strong> Carne magra, ovos ou peixe com salada e legumes.</li>
+                <li><strong>Café:</strong> 2 ovos ou tofu, fruta e café sem açúcar.</li>
+                <li><strong>Lanche:</strong> ${semLactose ? "fruta ou castanhas" : lacteos}.</li>
+                <li><strong>Almoço:</strong> 100g de arroz, 80g de feijão, 160g de ${proteinas} e bastante salada.</li>
+                <li><strong>Pré-treino:</strong> fruta ou pequena porção de ${carboidratos}.</li>
+                <li><strong>Pós-treino:</strong> ${proteinas} com legumes.</li>
+                <li><strong>Jantar:</strong> proteína magra ou vegetal com salada e legumes.</li>
             </ul>
+            <p><strong>Estratégia:</strong> déficit calórico, saciedade, proteína adequada e redução de ultraprocessados.</p>
         `;
     }
 
     if (objetivo === "performance") {
         return `
             <ul>
-                <li><strong>Café da manhã:</strong> Ovos, aveia, banana e mel.</li>
-                <li><strong>Lanche:</strong> Fruta com iogurte ou sanduíche natural.</li>
-                <li><strong>Almoço:</strong> Arroz, feijão, proteína magra, legumes e salada.</li>
-                <li><strong>Pré-treino:</strong> Carboidrato de fácil digestão 60 a 90 minutos antes.</li>
-                <li><strong>Pós-treino:</strong> Proteína + carboidrato para recuperação muscular.</li>
-                <li><strong>Jantar:</strong> Refeição completa com boa fonte de carboidrato e proteína.</li>
+                <li><strong>Café:</strong> ovos/tofu, aveia, banana e mel se permitido.</li>
+                <li><strong>Lanche:</strong> fruta com ${lacteos} ou sanduíche adaptado.</li>
+                <li><strong>Almoço:</strong> arroz, feijão, ${proteinas}, legumes e salada.</li>
+                <li><strong>Pré-treino:</strong> carboidrato de fácil digestão 60 a 90 minutos antes.</li>
+                <li><strong>Pós-treino:</strong> proteína + carboidrato para recuperação.</li>
+                <li><strong>Jantar:</strong> refeição completa com ${proteinas} e ${carboidratos}.</li>
             </ul>
+            <p><strong>Estratégia:</strong> energia para treino, recuperação muscular, hidratação e eletrólitos.</p>
         `;
     }
 
     return `
         <ul>
-            <li><strong>Café da manhã:</strong> Ovos, fruta e aveia.</li>
-            <li><strong>Lanche:</strong> Fruta ou iogurte.</li>
-            <li><strong>Almoço:</strong> Arroz, feijão, proteína magra e salada.</li>
-            <li><strong>Pré-treino:</strong> Banana ou pão com ovos.</li>
-            <li><strong>Pós-treino:</strong> Proteína magra com carboidrato moderado.</li>
-            <li><strong>Jantar:</strong> Refeição equilibrada com legumes, proteína e carboidrato controlado.</li>
+            <li><strong>Café:</strong> ovos/tofu, fruta e aveia.</li>
+            <li><strong>Lanche:</strong> fruta, castanhas ou ${lacteos}.</li>
+            <li><strong>Almoço:</strong> arroz, feijão, ${proteinas} e salada.</li>
+            <li><strong>Pré-treino:</strong> banana, tapioca ou carboidrato leve.</li>
+            <li><strong>Pós-treino:</strong> ${proteinas} com carboidrato moderado.</li>
+            <li><strong>Jantar:</strong> refeição equilibrada com legumes, proteína e carboidrato controlado.</li>
         </ul>
+        <p><strong>Estratégia:</strong> manutenção calórica, qualidade alimentar e estabilidade corporal.</p>
     `;
 }
 
 function estrategiaPreTreino(objetivo) {
-    if (objetivo === "emagrecimento") return "Priorize alimento leve, com carboidrato moderado e boa digestão para manter energia sem exagerar nas calorias.";
-    if (objetivo === "hipertrofia") return "Use carboidratos e proteínas antes do treino para melhorar força, volume de treino e recuperação.";
-    if (objetivo === "performance") return "Priorize carboidratos de fácil digestão, hidratação adequada e eletrólitos em treinos longos ou intensos.";
-    return "Mantenha uma refeição equilibrada 60 a 90 minutos antes do treino.";
+    if (objetivo === "emagrecimento") return "Alimento leve, carboidrato moderado e boa digestão.";
+    if (objetivo === "hipertrofia") return "Carboidratos e proteínas para melhorar força, volume de treino e recuperação.";
+    if (objetivo === "performance") return "Carboidratos de fácil digestão, hidratação e eletrólitos.";
+    return "Refeição equilibrada 60 a 90 minutos antes do treino.";
 }
 
 function estrategiaPosTreino(objetivo) {
-    if (objetivo === "emagrecimento") return "Consuma proteína suficiente após o treino para preservar massa muscular e controlar fome.";
-    if (objetivo === "hipertrofia") return "Priorize proteína e carboidrato após o treino para recuperação, síntese muscular e reposição de energia.";
-    if (objetivo === "performance") return "Reponha carboidratos, proteínas, líquidos e eletrólitos para acelerar recuperação entre sessões.";
-    return "Inclua proteína magra e carboidrato de qualidade após o treino.";
+    if (objetivo === "emagrecimento") return "Proteína suficiente para preservar massa muscular e controlar fome.";
+    if (objetivo === "hipertrofia") return "Proteína e carboidrato para recuperação e síntese muscular.";
+    if (objetivo === "performance") return "Reposição de carboidratos, proteínas, líquidos e eletrólitos.";
+    return "Proteína magra e carboidrato de qualidade após o treino.";
 }
 
 function formatarObjetivo(objetivo) {
@@ -270,9 +280,7 @@ function formatarObjetivo(objetivo) {
     return "Manutenção";
 }
 
-/* ============================
-   FEED DE ATIVIDADES
-============================ */
+/* ATIVIDADES */
 
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
@@ -297,11 +305,7 @@ function publicarAtividade() {
 
     if (arquivo) {
         const reader = new FileReader();
-
-        reader.onload = function (e) {
-            salvarAtividade(nome, tipo, distancia, tempo, calorias, rounds, golpes, carga, comentario, e.target.result);
-        };
-
+        reader.onload = e => salvarAtividade(nome, tipo, distancia, tempo, calorias, rounds, golpes, carga, comentario, e.target.result);
         reader.readAsDataURL(arquivo);
     } else {
         salvarAtividade(nome, tipo, distancia, tempo, calorias, rounds, golpes, carga, comentario, "");
@@ -309,7 +313,7 @@ function publicarAtividade() {
 }
 
 function salvarAtividade(nome, tipo, distancia, tempo, calorias, rounds, golpes, carga, comentario, foto) {
-    const atividade = {
+    atividades.unshift({
         id: Date.now(),
         nome,
         tipo,
@@ -324,32 +328,11 @@ function salvarAtividade(nome, tipo, distancia, tempo, calorias, rounds, golpes,
         curtidas: 0,
         comentarios: [],
         data: new Date().toLocaleString("pt-BR")
-    };
+    });
 
-    atividades.unshift(atividade);
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
-
-    limparFormularioAtividade();
     carregarFeed();
     atualizarDashboard();
-}
-
-function limparFormularioAtividade() {
-    [
-        "atividadeNome",
-        "tipoAtividade",
-        "distancia",
-        "tempo",
-        "calorias",
-        "rounds",
-        "golpes",
-        "carga",
-        "comentarioAtividade",
-        "fotoAtividade"
-    ].forEach(id => {
-        const campo = document.getElementById(id);
-        if (campo) campo.value = "";
-    });
 }
 
 function carregarFeed() {
@@ -363,56 +346,40 @@ function carregarFeed() {
         return;
     }
 
-    atividades.forEach(atividade => {
-        let comentariosHTML = "";
-
-        atividade.comentarios.forEach(comentario => {
-            comentariosHTML += `
-                <div class="comentario">
-                    <strong>${comentario.nome}:</strong> ${comentario.texto}
-                </div>
-            `;
-        });
-
+    atividades.forEach(a => {
         feed.innerHTML += `
             <div class="post">
-                <h3>👤 ${atividade.nome}</h3>
-                <small>📅 ${atividade.data}</small>
+                <h3>👤 ${a.nome}</h3>
+                <small>📅 ${a.data}</small>
+                <p><strong>Atividade:</strong> ${a.tipo}</p>
+                ${a.distancia ? `<p><strong>Distância:</strong> ${a.distancia} km</p>` : ""}
+                <p><strong>Tempo:</strong> ${a.tempo} min</p>
+                ${a.calorias ? `<p><strong>Calorias:</strong> ${a.calorias} kcal</p>` : ""}
+                ${a.rounds ? `<p><strong>Rounds:</strong> ${a.rounds}</p>` : ""}
+                ${a.golpes ? `<p><strong>Golpes:</strong> ${a.golpes}</p>` : ""}
+                ${a.carga ? `<p><strong>Carga/Séries:</strong> ${a.carga}</p>` : ""}
+                ${a.comentario ? `<p>${a.comentario}</p>` : ""}
+                ${a.foto ? `<img src="${a.foto}" class="foto-post">` : ""}
 
-                <p><strong>🏷️ Atividade:</strong> ${atividade.tipo}</p>
-                ${atividade.distancia ? `<p><strong>📍 Distância:</strong> ${atividade.distancia} km</p>` : ""}
-                <p><strong>⏱️ Tempo:</strong> ${atividade.tempo} min</p>
-                ${atividade.calorias ? `<p><strong>🔥 Calorias:</strong> ${atividade.calorias} kcal</p>` : ""}
-                ${atividade.rounds ? `<p><strong>🥊 Rounds:</strong> ${atividade.rounds}</p>` : ""}
-                ${atividade.golpes ? `<p><strong>👊 Golpes:</strong> ${atividade.golpes}</p>` : ""}
-                ${atividade.carga ? `<p><strong>🏋️ Carga/Séries:</strong> ${atividade.carga}</p>` : ""}
-                ${atividade.comentario ? `<p>${atividade.comentario}</p>` : ""}
-
-                ${atividade.foto ? `<img src="${atividade.foto}" class="foto-post">` : ""}
-
-                <button onclick="curtirAtividade(${atividade.id})">
-                    ❤️ Curtir (${atividade.curtidas})
-                </button>
+                <button onclick="curtirAtividade(${a.id})">❤️ Curtir (${a.curtidas})</button>
 
                 <div class="area-comentarios">
-                    <input id="nomeComentario-${atividade.id}" placeholder="Seu nome">
-                    <input id="textoComentario-${atividade.id}" placeholder="Escreva um comentário">
-                    <button onclick="comentarAtividade(${atividade.id})">💬 Comentar</button>
-                    ${comentariosHTML}
+                    <input id="nomeComentario-${a.id}" placeholder="Seu nome">
+                    <input id="textoComentario-${a.id}" placeholder="Comentário">
+                    <button onclick="comentarAtividade(${a.id})">💬 Comentar</button>
+                    ${(a.comentarios || []).map(c => `<div class="comentario"><strong>${c.nome}:</strong> ${c.texto}</div>`).join("")}
                 </div>
 
-                <button class="btn-excluir" onclick="excluirAtividade(${atividade.id})">
-                    🗑️ Excluir atividade
-                </button>
+                <button class="btn-excluir" onclick="excluirAtividade(${a.id})">🗑️ Excluir atividade</button>
             </div>
         `;
     });
 }
 
 function curtirAtividade(id) {
-    atividades = atividades.map(atividade => {
-        if (atividade.id === id) atividade.curtidas++;
-        return atividade;
+    atividades = atividades.map(a => {
+        if (a.id === id) a.curtidas++;
+        return a;
     });
 
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
@@ -428,11 +395,9 @@ function comentarAtividade(id) {
         return;
     }
 
-    atividades = atividades.map(atividade => {
-        if (atividade.id === id) {
-            atividade.comentarios.push({ nome, texto });
-        }
-        return atividade;
+    atividades = atividades.map(a => {
+        if (a.id === id) a.comentarios.push({ nome, texto });
+        return a;
     });
 
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
@@ -442,16 +407,13 @@ function comentarAtividade(id) {
 function excluirAtividade(id) {
     if (!confirm("Deseja excluir esta atividade?")) return;
 
-    atividades = atividades.filter(atividade => atividade.id !== id);
+    atividades = atividades.filter(a => a.id !== id);
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
-
     carregarFeed();
     atualizarDashboard();
 }
 
-/* ============================
-   DASHBOARD
-============================ */
+/* DASHBOARD */
 
 function atualizarDashboard() {
     const totalTreinos = atividades.length;
@@ -460,15 +422,10 @@ function atualizarDashboard() {
     const totalKm = atividades.reduce((soma, item) => soma + (Number(item.distancia) || 0), 0);
     const totalRounds = atividades.reduce((soma, item) => soma + (Number(item.rounds) || 0), 0);
 
-    const elTreinos = document.getElementById("totalTreinos");
-    const elHoras = document.getElementById("totalHoras");
-    const elKm = document.getElementById("totalKm");
-    const elRounds = document.getElementById("totalRounds");
-
-    if (elTreinos) elTreinos.innerText = totalTreinos;
-    if (elHoras) elHoras.innerText = `${totalHoras.toFixed(1)}h`;
-    if (elKm) elKm.innerText = `${totalKm.toFixed(1)} km`;
-    if (elRounds) elRounds.innerText = totalRounds;
+    if (document.getElementById("totalTreinos")) document.getElementById("totalTreinos").innerText = totalTreinos;
+    if (document.getElementById("totalHoras")) document.getElementById("totalHoras").innerText = `${totalHoras.toFixed(1)}h`;
+    if (document.getElementById("totalKm")) document.getElementById("totalKm").innerText = `${totalKm.toFixed(1)} km`;
+    if (document.getElementById("totalRounds")) document.getElementById("totalRounds").innerText = totalRounds;
 
     gerarConquistas(totalTreinos, totalKm, totalRounds);
 }
@@ -479,27 +436,22 @@ function gerarConquistas(totalTreinos, totalKm, totalRounds) {
 
     let conquistas = [];
 
-    if (totalTreinos >= 1) conquistas.push("🏅 Primeiro treino publicado");
-    if (totalTreinos >= 10) conquistas.push("🥉 10 treinos concluídos");
-    if (totalTreinos >= 50) conquistas.push("🥈 50 treinos concluídos");
-    if (totalTreinos >= 100) conquistas.push("🥇 100 treinos concluídos");
-    if (totalKm >= 10) conquistas.push("🏃 10 km acumulados");
-    if (totalKm >= 50) conquistas.push("🔥 50 km acumulados");
-    if (totalKm >= 100) conquistas.push("🚀 100 km acumulados");
-    if (totalRounds >= 50) conquistas.push("🥊 50 rounds realizados");
-    if (totalRounds >= 500) conquistas.push("👑 500 rounds realizados");
+    if (totalTreinos >= 1) conquistas.push("🏅 Primeiro treino");
+    if (totalTreinos >= 10) conquistas.push("🥉 10 treinos");
+    if (totalTreinos >= 50) conquistas.push("🥈 50 treinos");
+    if (totalTreinos >= 100) conquistas.push("🥇 100 treinos");
+    if (totalKm >= 10) conquistas.push("🏃 10 km");
+    if (totalKm >= 50) conquistas.push("🔥 50 km");
+    if (totalKm >= 100) conquistas.push("🚀 100 km");
+    if (totalRounds >= 50) conquistas.push("🥊 50 rounds");
+    if (totalRounds >= 500) conquistas.push("👑 500 rounds");
 
-    if (conquistas.length === 0) {
-        area.innerHTML = "<p>Nenhuma conquista desbloqueada ainda.</p>";
-        return;
-    }
-
-    area.innerHTML = conquistas.map(item => `<span class="badge">${item}</span>`).join("");
+    area.innerHTML = conquistas.length
+        ? conquistas.map(c => `<span class="badge">${c}</span>`).join("")
+        : "<p>Nenhuma conquista desbloqueada ainda.</p>";
 }
 
-/* ============================
-   EVENTOS ESPORTIVOS
-============================ */
+/* EVENTOS */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -513,11 +465,11 @@ function criarEvento() {
     const descricao = valor("eventoDescricao");
 
     if (!tipo || !data || !hora || !local) {
-        alert("Preencha tipo, data, hora e local do evento.");
+        alert("Preencha tipo, data, hora e local.");
         return;
     }
 
-    const evento = {
+    eventos.unshift({
         id: Date.now(),
         organizador,
         tipo,
@@ -527,28 +479,10 @@ function criarEvento() {
         max,
         descricao,
         participantes: []
-    };
-
-    eventos.unshift(evento);
-    localStorage.setItem("eventosBoxTimer", JSON.stringify(eventos));
-
-    limparFormularioEvento();
-    carregarEventos();
-}
-
-function limparFormularioEvento() {
-    [
-        "eventoOrganizador",
-        "eventoTipo",
-        "eventoData",
-        "eventoHora",
-        "eventoLocal",
-        "eventoMax",
-        "eventoDescricao"
-    ].forEach(id => {
-        const campo = document.getElementById(id);
-        if (campo) campo.value = "";
     });
+
+    localStorage.setItem("eventosBoxTimer", JSON.stringify(eventos));
+    carregarEventos();
 }
 
 function carregarEventos() {
@@ -562,29 +496,23 @@ function carregarEventos() {
         return;
     }
 
-    eventos.forEach(evento => {
-        const participantesHTML = evento.participantes.length
-            ? evento.participantes.map(p => `<li>${p}</li>`).join("")
-            : "<li>Nenhum participante confirmado</li>";
-
+    eventos.forEach(e => {
         lista.innerHTML += `
             <div class="evento">
-                <h3>📅 ${evento.tipo}</h3>
-                <p><strong>Organizador:</strong> ${evento.organizador}</p>
-                <p><strong>Data:</strong> ${evento.data} às ${evento.hora}</p>
-                <p><strong>Local:</strong> ${evento.local}</p>
-                ${evento.max ? `<p><strong>Vagas:</strong> ${evento.participantes.length}/${evento.max}</p>` : ""}
-                ${evento.descricao ? `<p>${evento.descricao}</p>` : ""}
+                <h3>📅 ${e.tipo}</h3>
+                <p><strong>Organizador:</strong> ${e.organizador}</p>
+                <p><strong>Data:</strong> ${e.data} às ${e.hora}</p>
+                <p><strong>Local:</strong> ${e.local}</p>
+                ${e.max ? `<p><strong>Vagas:</strong> ${e.participantes.length}/${e.max}</p>` : ""}
+                ${e.descricao ? `<p>${e.descricao}</p>` : ""}
 
-                <input id="participante-${evento.id}" placeholder="Seu nome para confirmar presença">
-                <button onclick="confirmarPresenca(${evento.id})">✅ Confirmar presença</button>
+                <input id="participante-${e.id}" placeholder="Seu nome">
+                <button onclick="confirmarPresenca(${e.id})">✅ Confirmar presença</button>
 
                 <h4>Participantes</h4>
-                <ul>${participantesHTML}</ul>
+                <ul>${e.participantes.length ? e.participantes.map(p => `<li>${p}</li>`).join("") : "<li>Nenhum participante confirmado</li>"}</ul>
 
-                <button class="btn-excluir" onclick="excluirEvento(${evento.id})">
-                    🗑️ Excluir evento
-                </button>
+                <button class="btn-excluir" onclick="excluirEvento(${e.id})">🗑️ Excluir evento</button>
             </div>
         `;
     });
@@ -594,23 +522,21 @@ function confirmarPresenca(id) {
     const nome = valor(`participante-${id}`);
 
     if (!nome.trim()) {
-        alert("Digite seu nome para confirmar presença.");
+        alert("Digite seu nome.");
         return;
     }
 
-    eventos = eventos.map(evento => {
-        if (evento.id === id) {
-            if (evento.max && evento.participantes.length >= evento.max) {
+    eventos = eventos.map(e => {
+        if (e.id === id) {
+            if (e.max && e.participantes.length >= e.max) {
                 alert("Evento lotado.");
-                return evento;
+                return e;
             }
 
-            if (!evento.participantes.includes(nome)) {
-                evento.participantes.push(nome);
-            }
+            if (!e.participantes.includes(nome)) e.participantes.push(nome);
         }
 
-        return evento;
+        return e;
     });
 
     localStorage.setItem("eventosBoxTimer", JSON.stringify(eventos));
@@ -620,14 +546,34 @@ function confirmarPresenca(id) {
 function excluirEvento(id) {
     if (!confirm("Deseja excluir este evento?")) return;
 
-    eventos = eventos.filter(evento => evento.id !== id);
+    eventos = eventos.filter(e => e.id !== id);
     localStorage.setItem("eventosBoxTimer", JSON.stringify(eventos));
     carregarEventos();
 }
 
-/* ============================
-   INICIALIZAÇÃO
-============================ */
+function limparTodasInscricoes() {
+    if (!confirm("Deseja remover todos os participantes inscritos nos eventos?")) return;
+
+    eventos = eventos.map(e => {
+        e.participantes = [];
+        return e;
+    });
+
+    localStorage.setItem("eventosBoxTimer", JSON.stringify(eventos));
+    carregarEventos();
+    alert("Todas as inscrições foram removidas.");
+}
+
+function excluirTodosEventos() {
+    if (!confirm("Deseja excluir todos os eventos criados?")) return;
+
+    eventos = [];
+    localStorage.removeItem("eventosBoxTimer");
+    carregarEventos();
+    alert("Todos os eventos foram excluídos.");
+}
+
+/* INICIALIZAÇÃO */
 
 carregarPerfil();
 carregarFeed();
