@@ -81,13 +81,9 @@
   <section class="card pagina" id="termo">
     <h2>2️⃣ Termo de Responsabilidade</h2>
 
-    <p>
-      Declaro que as informações fornecidas são verdadeiras. Entendo que o BoxTimer Pro Community oferece estimativas educativas sobre treino, nutrição e avaliação física, não substituindo médicos, nutricionistas ou educadores físicos.
-    </p>
+    <p>Declaro que as informações fornecidas são verdadeiras. Entendo que o BoxTimer Pro Community oferece estimativas educativas sobre treino, nutrição e avaliação física, não substituindo médicos, nutricionistas ou educadores físicos.</p>
 
-    <p>
-      Autorizo o uso das informações preenchidas para gerar avaliações, recomendações, histórico esportivo e funcionalidades internas do aplicativo.
-    </p>
+    <p>Autorizo o uso das informações preenchidas para gerar avaliações, recomendações, histórico esportivo e funcionalidades internas do aplicativo.</p>
 
     <label class="checkbox-area">
       <input type="checkbox" id="aceiteTermo">
@@ -101,6 +97,15 @@
 
   <section class="card pagina" id="avaliacao">
     <h2>3️⃣ Avaliação Física e Nutricional</h2>
+
+    <h3>📌 Método de Avaliação</h3>
+
+    <div class="metodos-avaliacao">
+      <label><input type="radio" name="metodoAvaliacao" value="Guedes — 3 dobras"> Guedes — 3 dobras</label>
+      <label><input type="radio" name="metodoAvaliacao" value="Bioimpedância" checked> Bioimpedância</label>
+      <label><input type="radio" name="metodoAvaliacao" value="Weltman — Obesos"> Weltman — Obesos</label>
+      <label><input type="radio" name="metodoAvaliacao" value="Faulkner — 4 dobras"> Faulkner — 4 dobras</label>
+    </div>
 
     <h3>🏋️ Rotina de Treino</h3>
     <input id="frequencia" type="number" placeholder="Treinos por semana">
@@ -116,13 +121,20 @@
 
     <input id="horarioTreino" placeholder="Horário do treino">
 
-    <h3>⚖️ Bioimpedância</h3>
-    <input id="gordura" type="number" step="0.1" placeholder="% de gordura corporal">
-    <input id="massaMuscular" type="number" step="0.1" placeholder="Massa muscular em kg">
-    <input id="massaMagra" type="number" step="0.1" placeholder="Massa magra em kg">
-    <input id="massaGorda" type="number" step="0.1" placeholder="Massa gorda em kg">
-    <input id="gorduraVisceral" type="number" step="0.1" placeholder="Gordura visceral">
-    <input id="tmbBio" type="number" placeholder="TMB da bioimpedância, se tiver">
+    <h3>📏 Medidas</h3>
+    <input id="metaGordura" type="number" step="0.1" value="16" placeholder="Meta de gordura corporal %">
+
+    <h3>⚖️ Dados da Balança / Bioimpedância</h3>
+    <input id="gordura" type="number" step="0.1" placeholder="Gordura corporal %">
+    <input id="musculoEsqueletico" type="number" step="0.1" placeholder="Músculo esquelético %">
+    <input id="idadeCorporal" type="number" placeholder="Idade corporal">
+    <input id="tmbBio" type="number" placeholder="Metabolismo basal kcal">
+    <input id="gorduraVisceral" type="number" step="0.1" placeholder="Gordura visceral nível">
+    <input id="aguaCorporal" type="number" step="0.1" placeholder="Água corporal %">
+    <input id="massaMuscular" type="number" step="0.1" placeholder="Massa muscular kg">
+    <input id="massaOssea" type="number" step="0.1" placeholder="Massa óssea kg">
+    <input id="massaMagra" type="number" step="0.1" placeholder="Massa magra kg">
+    <input id="massaGorda" type="number" step="0.1" placeholder="Massa gorda kg">
 
     <h3>📏 Dobras Cutâneas</h3>
     <input id="peitoral" type="number" step="0.1" placeholder="Peitoral mm">
@@ -132,6 +144,9 @@
     <input id="subescapular" type="number" step="0.1" placeholder="Subescapular mm">
     <input id="suprailiaca" type="number" step="0.1" placeholder="Supra-ilíaca mm">
     <input id="panturrilha" type="number" step="0.1" placeholder="Panturrilha mm">
+
+    <h3>🍽️ Plano Gratuito Inicial</h3>
+    <p class="aviso">O plano gratuito gera dicas iniciais de refeições, pré-treino, pós-treino, hidratação e estratégia alimentar por objetivo.</p>
 
     <h3>💰 Orçamento Alimentar</h3>
     <select id="orcamento">
