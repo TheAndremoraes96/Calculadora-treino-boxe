@@ -1,87 +1,170 @@
-# 🥊 BoxTimer Pro
+🥊 BoxTimer Pro
 
-> Mais do que um cronômetro de boxe.
->
-> Um projeto criado para unir treinamento esportivo, acompanhamento físico, organização alimentar e evolução do atleta em uma única ferramenta.
+Sistema completo para atletas, treinadores e praticantes de boxe, integrando treino, avaliação física e planejamento nutricional esportivo.
 
----
+🚀 Funcionalidades
+🥊 Timer Profissional de Boxe
+Cronômetro de rounds
+Controle de descanso
+Contagem automática de rounds
+Cronômetro de treino
+Preparação para sparring
+Treinos técnicos e condicionamento
+📊 Avaliação Física Completa
+IMC
+Cálculo automático
+Classificação corporal
+Interpretação dos resultados
+Bioimpedância
 
-# 📖 Sobre o Projeto
+Cadastro de:
 
-O BoxTimer Pro nasceu de uma necessidade real.
+Percentual de gordura corporal
+Massa muscular
+Massa magra
+Massa gorda
+Gordura visceral
+Água corporal
+Taxa metabólica basal
+Dobras Cutâneas
 
-Como treinador e atleta de boxe, sempre senti falta de uma ferramenta simples que reunisse informações importantes para acompanhar a evolução de um aluno ou atleta durante sua jornada.
+Registro de:
 
-O projeto começou apenas como uma calculadora de IMC e um cronômetro de rounds.
+Peitoral
+Abdômen
+Coxa
+Tríceps
+Subescapular
+Supra-ilíaca
+Panturrilha
 
-Com o tempo, evoluiu para um sistema mais completo, capaz de auxiliar atletas em diferentes objetivos físicos, respeitando inclusive diferentes realidades financeiras.
+Monitoramento da evolução corporal ao longo do tempo.
 
-Além de ajudar atletas, o BoxTimer Pro também representa minha evolução como estudante de Engenharia de Software, servindo como um projeto prático para aplicar conhecimentos de HTML, CSS e JavaScript.
+📝 Anamnese Nutricional
 
----
+Coleta completa de informações:
 
-# 🎯 Objetivos do Sistema
+Dados pessoais
+Rotina diária
+Horários de refeições
+Consumo de água
+Qualidade do sono
+Nível de estresse
+Preferências alimentares
+Restrições alimentares
+Suplementação
+Histórico de saúde
+🏋️ Avaliação da Rotina de Treino
 
-O BoxTimer Pro foi desenvolvido para ajudar atletas que desejam:
+Cadastro de:
 
-- Ganhar massa muscular
-- Perder peso
-- Manter o condicionamento físico
-- Acompanhar sua evolução corporal
-- Organizar melhor sua alimentação
-- Treinar boxe com controle profissional de rounds
+Modalidade esportiva
+Frequência semanal
+Intensidade do treino
+Duração das sessões
+Horários de treino
+Objetivo esportivo
+🍽️ Nutrição Esportiva Inteligente
 
----
+O sistema gera automaticamente:
 
-# 📊 Avaliação Física
+Hipertrofia
+Superávit calórico controlado
+Distribuição de macronutrientes
+Estratégias pré e pós-treino
+Emagrecimento
+Déficit calórico seguro
+Preservação de massa muscular
+Controle alimentar
+Manutenção
+Equilíbrio energético
+Estabilidade corporal
+Performance
+Estratégias para atletas
+Otimização da recuperação
+Melhora do rendimento esportivo
+📈 Relatório Nutricional
 
-O sistema realiza:
+O aplicativo fornece:
 
-✅ Cálculo automático de IMC
+Diagnóstico inicial
+Estimativa de gasto energético
+Meta calórica diária
+Quantidade de proteínas
+Quantidade de carboidratos
+Quantidade de gorduras
+Quantidade de água recomendada
+🍛 Plano Alimentar
 
-✅ Classificação corporal
+Geração automática de sugestões para:
 
-✅ Histórico de avaliações
+Café da manhã
+Lanche da manhã
+Almoço
+Pré-treino
+Pós-treino
+Jantar
+Ceia
 
-✅ Registro da evolução do atleta
+Com opções:
 
-✅ Gráfico de evolução do IMC
+Econômicas
+Padrão
+💧 Hidratação
 
----
+Cálculo automático da recomendação diária de água com base no peso corporal.
 
-# 🍽️ Alimentação Inteligente
+💊 Suplementação
 
-Uma das principais evoluções do projeto foi a criação de um sistema de sugestões alimentares baseado em:
+Sugestões educacionais de:
 
-### Objetivo
-### Preferência alimentar
-### Orçamento
+Creatina
+Whey Protein
+Cafeína
+Eletrólitos
 
-# 💻 Tecnologias Utilizadas
+Sem prescrição médica.
 
-- HTML5
-- CSS3
-- JavaScript
-- Canvas API
-- LocalStorage
+🛠️ Tecnologias Utilizadas
+HTML5
+CSS3
+JavaScript
+GitHub Pages
+🎯 Público-Alvo
+Atletas de Boxe
+Treinadores
+Lutadores
+Praticantes de Artes Marciais
+Atletas de Performance
+Pessoas em processo de emagrecimento
+Pessoas em busca de hipertrofia
+⚠️ Aviso Importante
 
----
+As informações fornecidas pelo sistema possuem caráter educativo e informativo.
 
-# 🎓 Aprendizado
+O BoxTimer Pro não substitui:
 
-Este projeto faz parte da minha jornada como estudante de Engenharia de Software.
+Nutricionistas
+Médicos
+Educadores físicos
+Avaliações presenciais
 
-Cada nova funcionalidade adicionada representa uma etapa do meu aprendizado em:
+Em casos de doenças, gestação, adolescentes, idosos ou atletas em preparação competitiva, recomenda-se acompanhamento profissional.
 
-- Lógica de programação
-- Manipulação do DOM
-- Estruturas de dados
-- Armazenamento local
-- Interface de usuário
-- Desenvolvimento Web
+🔥 Próximas Atualizações
+Histórico de avaliações
+Gráficos de evolução corporal
+Armazenamento em nuvem
+Exportação em PDF
+Inteligência Artificial para análise nutricional
+Aplicativo PWA
+Dashboard do atleta
+Controle de peso para competições
+Área exclusiva para treinadores
+👨‍💻 Desenvolvedor
 
-# 🥊 BoxTimer Pro
+André Moraes
 
-Desenvolvido para atletas.
-Construído por alguém que vive o esporte.
-Evoluído através da programação.
+Atleta, treinador de boxe e estudante de Engenharia de Software.
+
+Projeto desenvolvido com foco em performance esportiva, evolução física e acompanhamento de atletas.
