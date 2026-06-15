@@ -20,6 +20,10 @@ function preencherCampo(id, valorCampo) {
     }
 }
 
+/* ============================
+   PREMIUM
+============================ */
+
 function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
 }
@@ -62,6 +66,10 @@ function exigirPremium() {
     }
     return true;
 }
+
+/* ============================
+   CADASTRO / FIREBASE
+============================ */
 
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 let atletasFirebase = [];
@@ -124,7 +132,7 @@ function carregarCadastro() {
         return;
     }
 
-    Object.keys(cadastro).forEach(campo => preencherCampo(campo, cadastro[campo]));
+    Object.keys(cadastro).forEach((campo) => preencherCampo(campo, cadastro[campo]));
 
     area.innerHTML = `
         <div class="perfil-box">
@@ -162,7 +170,10 @@ function carregarAtletasFirebase() {
                 });
             });
 
-            atletasFirebase.sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
+            atletasFirebase.sort((a, b) =>
+                String(b.data || "").localeCompare(String(a.data || ""))
+            );
+
             mostrarAtletas(atletasFirebase);
             atualizarDashboardProfissional();
         })
@@ -196,7 +207,10 @@ function carregarAtletasTempoReal() {
                 });
             });
 
-            atletasFirebase.sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
+            atletasFirebase.sort((a, b) =>
+                String(b.data || "").localeCompare(String(a.data || ""))
+            );
+
             mostrarAtletas(atletasFirebase);
             atualizarDashboardProfissional();
         }, (erro) => {
@@ -294,6 +308,10 @@ function excluirAtletaFirebase(id) {
         });
 }
 
+/* ============================
+   TERMO
+============================ */
+
 function aceitarTermo() {
     const aceite = document.getElementById("aceiteTermo");
     const status = document.getElementById("statusTermo");
@@ -319,6 +337,10 @@ function carregarTermo() {
         if (status) status.innerHTML = "<p>✅ Termo já aceito.</p>";
     }
 }
+
+/* ============================
+   AVALIAÇÃO / HISTÓRICO
+============================ */
 
 let ultimaAvaliacao = null;
 
@@ -368,7 +390,12 @@ function gerarAvaliacao() {
     if (objetivo === "emagrecimento") caloriasMeta -= 400;
     if (objetivo === "performance") caloriasMeta += 150;
 
-    const proteinas = objetivo === "emagrecimento" ? peso * 2.2 : objetivo === "performance" ? peso * 1.8 : peso * 2.0;
+    const proteinas = objetivo === "emagrecimento"
+        ? peso * 2.2
+        : objetivo === "performance"
+            ? peso * 1.8
+            : peso * 2.0;
+
     const gorduras = objetivo === "emagrecimento" ? peso * 0.8 : peso * 0.9;
 
     let carboidratos = (caloriasMeta - ((proteinas * 4) + (gorduras * 9))) / 4;
@@ -478,7 +505,7 @@ function carregarHistoricoAvaliacoes() {
         return;
     }
 
-    area.innerHTML = historico.map(av => `
+    area.innerHTML = historico.map((av) => `
         <div class="post">
             <h3>📊 ${av.nome}</h3>
             <small>${av.data}</small>
@@ -495,7 +522,7 @@ function carregarHistoricoAvaliacoes() {
 
 function excluirAvaliacaoHistorico(id) {
     let historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
-    historico = historico.filter(av => av.id !== id);
+    historico = historico.filter((av) => av.id !== id);
     localStorage.setItem("historicoAvaliacoes", JSON.stringify(historico));
     carregarHistoricoAvaliacoes();
     atualizarDashboardProfissional();
@@ -506,6 +533,10 @@ function limparHistoricoAvaliacoes() {
     carregarHistoricoAvaliacoes();
     atualizarDashboardProfissional();
 }
+
+/* ============================
+   ALIMENTAÇÃO
+============================ */
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
     const economico = orcamento === "economico";
@@ -551,6 +582,10 @@ function formatarObjetivo(objetivo) {
     return "Manutenção";
 }
 
+/* ============================
+   TREINADOR
+============================ */
+
 let alunos = JSON.parse(localStorage.getItem("alunosTreinador")) || [];
 
 function cadastrarAluno() {
@@ -591,7 +626,7 @@ function carregarAlunos() {
         return;
     }
 
-    area.innerHTML = alunos.map(aluno => `
+    area.innerHTML = alunos.map((aluno) => `
         <div class="post">
             <h3>👤 ${aluno.nome}</h3>
             <p><strong>Contato:</strong> ${aluno.contato || "Não informado"}</p>
@@ -604,7 +639,7 @@ function carregarAlunos() {
 }
 
 function excluirAluno(id) {
-    alunos = alunos.filter(aluno => aluno.id !== id);
+    alunos = alunos.filter((aluno) => aluno.id !== id);
     localStorage.setItem("alunosTreinador", JSON.stringify(alunos));
     carregarAlunos();
 }
@@ -614,6 +649,10 @@ function limparAlunos() {
     localStorage.removeItem("alunosTreinador");
     carregarAlunos();
 }
+
+/* ============================
+   TIMER
+============================ */
 
 let timerInterval = null;
 let tempoAtual = 180;
@@ -678,6 +717,10 @@ function tocarCampainha() {
     } catch (e) {}
 }
 
+/* ============================
+   FEED / ATIVIDADES
+============================ */
+
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
 function publicarAtividade() {
@@ -717,7 +760,7 @@ function carregarFeed() {
         return;
     }
 
-    feed.innerHTML = atividades.map(a => `
+    feed.innerHTML = atividades.map((a) => `
         <div class="post">
             <h3>👤 ${a.nome}</h3>
             <small>${a.data}</small>
@@ -733,20 +776,25 @@ function carregarFeed() {
 }
 
 function curtirAtividade(id) {
-    atividades = atividades.map(a => {
+    atividades = atividades.map((a) => {
         if (a.id === id) a.curtidas++;
         return a;
     });
+
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
     carregarFeed();
 }
 
 function excluirAtividade(id) {
-    atividades = atividades.filter(a => a.id !== id);
+    atividades = atividades.filter((a) => a.id !== id);
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
     carregarFeed();
     atualizarDashboardProfissional();
 }
+
+/* ============================
+   EVENTOS
+============================ */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -782,7 +830,7 @@ function carregarEventos() {
         return;
     }
 
-    lista.innerHTML = eventos.map(e => `
+    lista.innerHTML = eventos.map((e) => `
         <div class="evento">
             <h3>${e.tipo}</h3>
             <p><strong>Data:</strong> ${e.data} às ${e.hora}</p>
@@ -790,7 +838,7 @@ function carregarEventos() {
             <p>${e.descricao || ""}</p>
             <input id="participante-${e.id}" placeholder="Seu nome">
             <button onclick="confirmarPresenca(${e.id})">Confirmar presença</button>
-            <ul>${e.participantes.map(p => `<li>${p}</li>`).join("")}</ul>
+            <ul>${e.participantes.map((p) => `<li>${p}</li>`).join("")}</ul>
             <button class="btn-excluir" onclick="excluirEvento(${e.id})">Excluir</button>
         </div>
     `).join("");
@@ -800,7 +848,7 @@ function confirmarPresenca(id) {
     const nome = valor(`participante-${id}`);
     if (!nome) return;
 
-    eventos = eventos.map(e => {
+    eventos = eventos.map((e) => {
         if (e.id === id && !e.participantes.includes(nome)) {
             e.participantes.push(nome);
         }
@@ -812,16 +860,17 @@ function confirmarPresenca(id) {
 }
 
 function excluirEvento(id) {
-    eventos = eventos.filter(e => e.id !== id);
+    eventos = eventos.filter((e) => e.id !== id);
     localStorage.setItem("eventosBoxTimer", JSON.stringify(eventos));
     carregarEventos();
 }
 
 function limparTodasInscricoes() {
-    eventos = eventos.map(e => {
+    eventos = eventos.map((e) => {
         e.participantes = [];
         return e;
     });
+
     localStorage.setItem("eventosBoxTimer", JSON.stringify(eventos));
     carregarEventos();
 }
@@ -831,6 +880,10 @@ function excluirTodosEventos() {
     localStorage.removeItem("eventosBoxTimer");
     carregarEventos();
 }
+
+/* ============================
+   DASHBOARD PROFISSIONAL
+============================ */
 
 let graficoEvolucao = null;
 
@@ -859,8 +912,8 @@ function atualizarDashboardProfissional() {
     const totalAtletas = atletasFirebase.length;
 
     const pesosValidos = atletasFirebase
-        .map(a => Number(a.peso) || 0)
-        .filter(p => p > 0);
+        .map((a) => Number(a.peso) || 0)
+        .filter((p) => p > 0);
 
     const pesoMedioValor = pesosValidos.length
         ? pesosValidos.reduce((soma, peso) => soma + peso, 0) / pesosValidos.length
@@ -868,7 +921,7 @@ function atualizarDashboardProfissional() {
 
     const imcsValidos = atletasFirebase
         .map(calcularIMCAtleta)
-        .filter(imc => imc > 0);
+        .filter((imc) => imc > 0);
 
     const imcMedioValor = imcsValidos.length
         ? imcsValidos.reduce((soma, imc) => soma + imc, 0) / imcsValidos.length
@@ -876,7 +929,7 @@ function atualizarDashboardProfissional() {
 
     const objetivos = {};
 
-    atletasFirebase.forEach(atleta => {
+    atletasFirebase.forEach((atleta) => {
         const objetivo = atleta.objetivo || "manutencao";
         objetivos[objetivo] = (objetivos[objetivo] || 0) + 1;
     });
@@ -903,12 +956,11 @@ function gerarGraficoEvolucao() {
     if (!canvas || typeof Chart === "undefined") return;
 
     const historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
-
     const dados = historico.slice().reverse();
 
-    const labels = dados.map(item => item.data || "Sem data");
-    const pesos = dados.map(item => Number(item.peso) || 0);
-    const imcs = dados.map(item => Number(item.imc) || 0);
+    const labels = dados.map((item) => item.data || "Sem data");
+    const pesos = dados.map((item) => Number(item.peso) || 0);
+    const imcs = dados.map((item) => Number(item.imc) || 0);
 
     if (graficoEvolucao) {
         graficoEvolucao.destroy();
@@ -953,6 +1005,10 @@ function gerarGraficoEvolucao() {
         }
     });
 }
+
+/* ============================
+   SATISFAÇÃO / BACKUP / PIX
+============================ */
 
 function salvarSatisfacao() {
     const nota = valor("notaApp");
@@ -1006,6 +1062,10 @@ function copiarPix() {
         .catch(() => alert("Não foi possível copiar o PIX."));
 }
 
+/* ============================
+   INICIALIZAÇÃO
+============================ */
+
 document.addEventListener("DOMContentLoaded", () => {
     carregarCadastro();
     carregarTermo();
@@ -1020,6 +1080,10 @@ document.addEventListener("DOMContentLoaded", () => {
         carregarAtletas();
     }, 1000);
 });
+
+/* ============================
+   FUNÇÕES GLOBAIS
+============================ */
 
 window.salvarCadastro = salvarCadastro;
 window.salvarAtleta = salvarCadastro;
