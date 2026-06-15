@@ -75,7 +75,7 @@ function exigirPremium() {
 
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 
-function salvarCadastro() {
+async function salvarCadastro() {
     cadastro = {
         nome: valor("nome"),
         idade: valor("idade"),
@@ -93,12 +93,21 @@ function salvarCadastro() {
         horarioAcorda: valor("horarioAcorda"),
         horarioDorme: valor("horarioDorme"),
         refeicoesDia: valor("refeicoesDia"),
-        aguaAtual: valor("aguaAtual")
+        aguaAtual: valor("aguaAtual"),
+        data: new Date().toLocaleString("pt-BR")
     };
 
     localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
+
+    try {
+        await db.collection("cadastros").add(cadastro);
+        alert("Cadastro salvo no aparelho e no Firebase!");
+    } catch (erro) {
+        console.error("Erro ao salvar cadastro no Firebase:", erro);
+        alert("Cadastro salvo no aparelho, mas não foi para o Firebase.");
+    }
+
     carregarCadastro();
-    alert("Cadastro salvo com sucesso.");
 }
 
 function carregarCadastro() {
@@ -311,7 +320,7 @@ function gerarAvaliacao() {
     }
 }
 
-function salvarAvaliacaoHistorico() {
+async function salvarAvaliacaoHistorico() {
     if (!exigirPremium()) return;
 
     if (!ultimaAvaliacao) {
@@ -324,8 +333,15 @@ function salvarAvaliacaoHistorico() {
 
     localStorage.setItem("historicoAvaliacoes", JSON.stringify(historico));
 
+    try {
+        await db.collection("avaliacoes").add(ultimaAvaliacao);
+        alert("Avaliação salva no aparelho e no Firebase!");
+    } catch (erro) {
+        console.error("Erro ao salvar avaliação no Firebase:", erro);
+        alert("Avaliação salva no aparelho, mas não foi para o Firebase.");
+    }
+
     carregarHistoricoAvaliacoes();
-    alert("Avaliação salva no histórico.");
 }
 
 function carregarHistoricoAvaliacoes() {
@@ -1018,10 +1034,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
         carregarAlunos();
-        // ===========================
-
+        carregarHistoricoAvaliacoes();
     }, 500);
 });
+
 window.testarFirebase = function () {
     db.collection("avaliacoes").add({
         nome: "Teste BoxTimer Pro",
