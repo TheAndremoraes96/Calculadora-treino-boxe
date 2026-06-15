@@ -173,7 +173,11 @@
 <section class="card pagina" id="termo">
   <h2>2️⃣ Termo de Responsabilidade</h2>
 
-  <p>Declaro que as informações fornecidas são verdadeiras. Entendo que o BoxTimer Pro Community oferece estimativas educativas sobre treino, nutrição e avaliação física, não substituindo médicos, nutricionistas ou educadores físicos.</p>
+  <p>
+    Declaro que as informações fornecidas são verdadeiras. Entendo que o BoxTimer Pro Community
+    oferece estimativas educativas sobre treino, nutrição e avaliação física, não substituindo médicos,
+    nutricionistas ou educadores físicos.
+  </p>
 
   <label class="checkbox-area">
     <input type="checkbox" id="aceiteTermo">
@@ -191,6 +195,7 @@
   <p class="aviso">🔒 Esta área faz parte do Plano Premium.</p>
 
   <h3>📌 Método de Avaliação</h3>
+
   <div class="metodos-avaliacao">
     <label><input type="radio" name="metodoAvaliacao" value="Guedes — 3 dobras"> Guedes — 3 dobras</label>
     <label><input type="radio" name="metodoAvaliacao" value="Bioimpedância" checked> Bioimpedância</label>
@@ -356,7 +361,10 @@
   </div>
 
   <h3>📈 Evolução</h3>
-  <canvas id="graficoEvolucao" height="120"></canvas>
+
+  <div class="grafico-container">
+    <canvas id="graficoEvolucao"></canvas>
+  </div>
 
   <button onclick="atualizarDashboardProfissional()">🔄 Atualizar Dashboard</button>
   <button onclick="exportarBackup()">📥 Fazer Backup dos Dados</button>
