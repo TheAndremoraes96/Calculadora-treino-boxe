@@ -1019,25 +1019,19 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         carregarAlunos();
         // ===========================
-// FIREBASE TESTE
-// ===========================
 
-function testarFirebase() {
-
+    }, 500);
+});
+window.testarFirebase = function () {
     db.collection("avaliacoes").add({
         nome: "Teste BoxTimer Pro",
         data: new Date().toLocaleString("pt-BR")
     })
-
     .then(() => {
         alert("Firebase funcionando!");
     })
-
     .catch((erro) => {
-        console.error(erro);
-        alert("Erro ao salvar.");
+        console.error("Erro ao salvar no Firebase:", erro);
+        alert("Erro ao salvar no Firebase.");
     });
-
-}
-    }, 500);
-});
+};
