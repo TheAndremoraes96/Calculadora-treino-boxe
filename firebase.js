@@ -1,5 +1,5 @@
 // ============================
-// FIREBASE CONFIG
+// CONFIGURAÇÃO DO FIREBASE
 // ============================
 
 const firebaseConfig = {
