@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -5,19 +7,21 @@
   <title>BoxTimer Pro Community</title>
 
   <link rel="stylesheet" href="style.css">
-
   <link rel="manifest" href="manifest.json">
-
   <link rel="icon" type="image/png" href="icon-192.png">
-
   <link rel="apple-touch-icon" href="icon-192.png">
 
   <meta name="theme-color" content="#ff3b30">
-
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 </head>
+
+<body>
+
+<div class="container">
+
+  <header>
     <h1>🥊 BoxTimer Pro Community</h1>
     <p>Treino, nutrição, avaliação física, evolução e comunidade esportiva.</p>
   </header>
@@ -334,6 +338,8 @@
 
     <h3>🏅 Conquistas</h3>
     <div id="conquistas"></div>
+
+    <button onclick="exportarBackup()">📥 Fazer Backup dos Dados</button>
   </section>
 
   <section class="card pagina" id="satisfacao">
