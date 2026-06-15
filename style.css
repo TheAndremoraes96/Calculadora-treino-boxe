@@ -67,6 +67,7 @@ header p {
     border-radius: 999px;
     font-weight: bold;
     transition: .25s;
+    white-space: nowrap;
 }
 
 .menu a:hover {
@@ -132,6 +133,11 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(255,204,0,.15);
 }
 
+input::placeholder,
+textarea::placeholder {
+    color: #aaa;
+}
+
 button {
     border: none;
     border-radius: 12px;
@@ -147,6 +153,10 @@ button {
 button:hover {
     transform: translateY(-2px);
     filter: brightness(1.05);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 .btn-excluir {
@@ -170,6 +180,22 @@ button:hover {
     border-radius: 16px;
     padding: 18px;
     margin-top: 15px;
+}
+
+.post {
+    animation: aparecer .25s ease-in-out;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .checkbox-area {
@@ -199,6 +225,7 @@ button:hover {
     border: 1px solid #333;
     border-radius: 12px;
     padding: 12px;
+    color: #fff;
 }
 
 .metodos-avaliacao input {
@@ -249,6 +276,7 @@ button:hover {
 
 .stat:hover {
     transform: translateY(-3px);
+    border-color: #ffcc00;
 }
 
 .stat h3 {
@@ -259,6 +287,22 @@ button:hover {
 
 .stat p {
     color: #ccc;
+}
+
+.grafico-container {
+    width: 100%;
+    min-height: 450px;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#graficoEvolucao {
+    width: 100% !important;
+    height: 400px !important;
+    display: block;
 }
 
 #meusAtletas {
@@ -274,6 +318,10 @@ button:hover {
 
 #listaAtletasFirebase .post h3 {
     color: #00cec9;
+}
+
+#listaAtletasFirebase button {
+    margin-top: 8px;
 }
 
 #statusPremium {
@@ -300,16 +348,26 @@ button:hover {
     color: #ffcc00;
 }
 
-#graficoEvolucao {
-    background: #101010;
-    border: 1px solid #333;
-    border-radius: 16px;
-    padding: 14px;
-    margin: 15px 0;
-}
-
 small {
     color: #aaa;
+}
+
+::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ffcc00;
 }
 
 @media (max-width: 900px) {
@@ -349,5 +407,14 @@ small {
     button {
         width: 100%;
         margin-right: 0;
+    }
+
+    .grafico-container {
+        min-height: 360px;
+        padding: 12px;
+    }
+
+    #graficoEvolucao {
+        height: 320px !important;
     }
 }
