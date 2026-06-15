@@ -15,12 +15,18 @@ function atualizarTexto(id, texto) {
 
 function preencherCampo(id, valorCampo) {
     const campo = document.getElementById(id);
-    if (campo && valorCampo !== undefined) campo.value = valorCampo;
+    if (campo && valorCampo !== undefined && valorCampo !== null) {
+        campo.value = valorCampo;
+    }
 }
 
 /* ============================
    PREMIUM
 ============================ */
+
+function premiumAtivo() {
+    return localStorage.getItem("premiumAtivo") === "sim";
+}
 
 function verificarPremium() {
     const status = document.getElementById("statusPremium");
@@ -31,6 +37,9 @@ function verificarPremium() {
             ? "<p>✅ Premium ativo. Avaliação completa, histórico e área do treinador liberados.</p>"
             : "<p>🔒 Premium não ativo. Use o código enviado após pagamento.</p>";
     }
+
+    carregarAlunos();
+    carregarHistoricoAvaliacoes();
 }
 
 function ativarPremium() {
@@ -49,10 +58,6 @@ function desativarPremium() {
     localStorage.removeItem("premiumAtivo");
     verificarPremium();
     alert("Premium desativado.");
-}
-
-function premiumAtivo() {
-    return localStorage.getItem("premiumAtivo") === "sim";
 }
 
 function exigirPremium() {
@@ -127,7 +132,7 @@ function aceitarTermo() {
     const aceite = document.getElementById("aceiteTermo");
     const status = document.getElementById("statusTermo");
 
-    if (!aceite.checked) {
+    if (!aceite || !aceite.checked) {
         alert("Você precisa aceitar o termo para continuar.");
         return;
     }
@@ -255,51 +260,55 @@ function gerarAvaliacao() {
         somaDobras: somaDobras.toFixed(1)
     };
 
-    document.getElementById("resultadoAvaliacao").innerHTML = `
-        <h3>👤 Resumo do Atleta</h3>
-        <p><strong>Nome:</strong> ${nome}</p>
-        <p><strong>Objetivo:</strong> ${formatarObjetivo(objetivo)}</p>
-        <p><strong>Modalidade:</strong> ${ultimaAvaliacao.modalidade}</p>
-        <p><strong>Método de avaliação:</strong> ${metodo}</p>
-        <p><strong>IMC:</strong> ${imc.toFixed(2)} - ${classificacaoIMC}</p>
+    const resultado = document.getElementById("resultadoAvaliacao");
 
-        <h3>⚖️ Avaliação Corporal</h3>
-        <p><strong>TMB:</strong> ${Math.round(tmb)} kcal</p>
-        <p><strong>Gasto diário estimado:</strong> ${Math.round(gastoDiario)} kcal</p>
-        <p><strong>Meta calórica:</strong> ${Math.round(caloriasMeta)} kcal</p>
-        <p><strong>Meta de gordura:</strong> ${numero("metaGordura") || "não informada"}%</p>
-        <p><strong>Gordura corporal:</strong> ${numero("gordura") || "não informada"}%</p>
-        <p><strong>Músculo esquelético:</strong> ${numero("musculoEsqueletico") || "não informado"}%</p>
-        <p><strong>Idade corporal:</strong> ${numero("idadeCorporal") || "não informada"} anos</p>
-        <p><strong>Gordura visceral:</strong> ${numero("gorduraVisceral") || "não informada"}</p>
-        <p><strong>Água corporal:</strong> ${numero("aguaCorporal") || "não informada"}%</p>
-        <p><strong>Massa muscular:</strong> ${numero("massaMuscular") || "não informada"} kg</p>
-        <p><strong>Massa óssea:</strong> ${numero("massaOssea") || "não informada"} kg</p>
-        <p><strong>Massa magra:</strong> ${numero("massaMagra") || "não informada"} kg</p>
-        <p><strong>Massa gorda:</strong> ${numero("massaGorda") || "não informada"} kg</p>
-        <p><strong>Dobras cutâneas:</strong> ${avaliacaoDobras}</p>
+    if (resultado) {
+        resultado.innerHTML = `
+            <h3>👤 Resumo do Atleta</h3>
+            <p><strong>Nome:</strong> ${nome}</p>
+            <p><strong>Objetivo:</strong> ${formatarObjetivo(objetivo)}</p>
+            <p><strong>Modalidade:</strong> ${ultimaAvaliacao.modalidade}</p>
+            <p><strong>Método de avaliação:</strong> ${metodo}</p>
+            <p><strong>IMC:</strong> ${imc.toFixed(2)} - ${classificacaoIMC}</p>
 
-        <h3>🥩 Macronutrientes</h3>
-        <p><strong>Proteínas:</strong> ${Math.round(proteinas)}g/dia</p>
-        <p><strong>Carboidratos:</strong> ${Math.round(carboidratos)}g/dia</p>
-        <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g/dia</p>
-        <p><strong>Água recomendada:</strong> ${aguaRecomendada.toFixed(1)} litros/dia</p>
+            <h3>⚖️ Avaliação Corporal</h3>
+            <p><strong>TMB:</strong> ${Math.round(tmb)} kcal</p>
+            <p><strong>Gasto diário estimado:</strong> ${Math.round(gastoDiario)} kcal</p>
+            <p><strong>Meta calórica:</strong> ${Math.round(caloriasMeta)} kcal</p>
+            <p><strong>Meta de gordura:</strong> ${numero("metaGordura") || "não informada"}%</p>
+            <p><strong>Gordura corporal:</strong> ${numero("gordura") || "não informada"}%</p>
+            <p><strong>Músculo esquelético:</strong> ${numero("musculoEsqueletico") || "não informado"}%</p>
+            <p><strong>Idade corporal:</strong> ${numero("idadeCorporal") || "não informada"} anos</p>
+            <p><strong>Gordura visceral:</strong> ${numero("gorduraVisceral") || "não informada"}</p>
+            <p><strong>Água corporal:</strong> ${numero("aguaCorporal") || "não informada"}%</p>
+            <p><strong>Massa muscular:</strong> ${numero("massaMuscular") || "não informada"} kg</p>
+            <p><strong>Massa óssea:</strong> ${numero("massaOssea") || "não informada"} kg</p>
+            <p><strong>Massa magra:</strong> ${numero("massaMagra") || "não informada"} kg</p>
+            <p><strong>Massa gorda:</strong> ${numero("massaGorda") || "não informada"} kg</p>
+            <p><strong>Dobras cutâneas:</strong> ${avaliacaoDobras}</p>
 
-        <h3>🍽️ Plano Alimentar Premium</h3>
-        ${gerarPlanoAlimentar(objetivo, orcamento)}
+            <h3>🥩 Macronutrientes</h3>
+            <p><strong>Proteínas:</strong> ${Math.round(proteinas)}g/dia</p>
+            <p><strong>Carboidratos:</strong> ${Math.round(carboidratos)}g/dia</p>
+            <p><strong>Gorduras:</strong> ${Math.round(gorduras)}g/dia</p>
+            <p><strong>Água recomendada:</strong> ${aguaRecomendada.toFixed(1)} litros/dia</p>
 
-        <h3>🥊 Pré-Treino</h3>
-        <p>${estrategiaPreTreino(objetivo)}</p>
+            <h3>🍽️ Plano Alimentar Premium</h3>
+            ${gerarPlanoAlimentar(objetivo, orcamento)}
 
-        <h3>💪 Pós-Treino</h3>
-        <p>${estrategiaPosTreino(objetivo)}</p>
+            <h3>🥊 Pré-Treino</h3>
+            <p>${estrategiaPreTreino(objetivo)}</p>
 
-        <h3>💊 Suplementação Opcional</h3>
-        <p>Creatina, whey protein, cafeína e eletrólitos podem ser úteis conforme rotina, tolerância e orientação profissional.</p>
+            <h3>💪 Pós-Treino</h3>
+            <p>${estrategiaPosTreino(objetivo)}</p>
 
-        <h3>⚠️ Alerta</h3>
-        <p>Esta avaliação é educativa e não substitui nutricionista, médico ou avaliação presencial.</p>
-    `;
+            <h3>💊 Suplementação Opcional</h3>
+            <p>Creatina, whey protein, cafeína e eletrólitos podem ser úteis conforme rotina, tolerância e orientação profissional.</p>
+
+            <h3>⚠️ Alerta</h3>
+            <p>Esta avaliação é educativa e não substitui nutricionista, médico ou avaliação presencial.</p>
+        `;
+    }
 }
 
 function salvarAvaliacaoHistorico() {
@@ -372,6 +381,10 @@ function limparHistoricoAvaliacoes() {
     alert("Histórico apagado.");
 }
 
+/* ============================
+   PLANO ALIMENTAR
+============================ */
+
 function gerarPlanoAlimentar(objetivo, orcamento) {
     const preferencias = valor("preferencias").toLowerCase();
     const restricoes = valor("restricoes").toLowerCase();
@@ -385,7 +398,9 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
         ? "ovos, tofu, lentilha, grão-de-bico, feijão e proteína vegetal"
         : "frango, ovos, patinho, peixe, sardinha e atum";
 
-    if (vegano) proteinas = "tofu, lentilha, grão-de-bico, feijão, ervilha, soja e proteína vegetal";
+    if (vegano) {
+        proteinas = "tofu, lentilha, grão-de-bico, feijão, ervilha, soja e proteína vegetal";
+    }
 
     if (orcamento === "economico") {
         proteinas = vegetariano || vegano
@@ -661,7 +676,7 @@ function publicarAtividade() {
         return;
     }
 
-    const arquivo = fotoInput.files[0];
+    const arquivo = fotoInput ? fotoInput.files[0] : null;
 
     if (arquivo) {
         const reader = new FileReader();
@@ -963,15 +978,46 @@ function salvarSatisfacao() {
 }
 
 /* ============================
+   BACKUP DOS DADOS
+============================ */
+
+function exportarBackup() {
+    const dados = {
+        cadastro: JSON.parse(localStorage.getItem("cadastroAtleta")) || null,
+        alunos: JSON.parse(localStorage.getItem("alunosTreinador")) || [],
+        historicoAvaliacoes: JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [],
+        atividades: JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [],
+        eventos: JSON.parse(localStorage.getItem("eventosBoxTimer")) || [],
+        satisfacao: JSON.parse(localStorage.getItem("satisfacaoBoxTimer")) || null,
+        premiumAtivo: localStorage.getItem("premiumAtivo") || "nao"
+    };
+
+    const blob = new Blob(
+        [JSON.stringify(dados, null, 2)],
+        { type: "application/json" }
+    );
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "backup-boxtimer-pro.json";
+    link.click();
+}
+
+/* ============================
    INICIALIZAÇÃO
 ============================ */
 
-carregarCadastro();
-carregarTermo();
-reiniciarTimer();
-carregarFeed();
-carregarEventos();
-atualizarDashboard();
-verificarPremium();
-carregarAlunos();
-carregarHistoricoAvaliacoes();
+document.addEventListener("DOMContentLoaded", () => {
+    carregarCadastro();
+    carregarTermo();
+    reiniciarTimer();
+    carregarFeed();
+    carregarEventos();
+    atualizarDashboard();
+    verificarPremium();
+
+    setTimeout(() => {
+        carregarAlunos();
+        carregarHistoricoAvaliacoes();
+    }, 500);
+});
