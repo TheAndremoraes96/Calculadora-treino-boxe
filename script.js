@@ -108,18 +108,7 @@ localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
 
     carregarCadastro();
 }
-    localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
 
-    try {
-        await db.collection("cadastros").add(cadastro);
-        alert("Cadastro salvo no aparelho e no Firebase!");
-    } catch (erro) {
-        console.error("Erro ao salvar cadastro no Firebase:", erro);
-        alert("Cadastro salvo no aparelho, mas não foi para o Firebase.");
-    }
-
-    carregarCadastro();
-}
 
 function carregarCadastro() {
     const area = document.getElementById("cadastroSalvo");
