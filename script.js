@@ -91,6 +91,11 @@ function salvarCadastro() {
         data: new Date().toLocaleString("pt-BR")
     };
 
+    if (!cadastro.nome) {
+        alert("Preencha o nome do atleta.");
+        return;
+    }
+
     localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
     carregarCadastro();
 
@@ -106,7 +111,7 @@ function salvarCadastro() {
                 alert("Cadastro salvo localmente, mas deu erro no Firebase.");
             });
     } else {
-        alert("Cadastro salvo localmente.");
+        alert("Cadastro salvo localmente. Firebase não conectado.");
     }
 }
 
@@ -142,7 +147,6 @@ let atletasFirebase = [];
 
 function carregarAtletasFirebase() {
     const area = document.getElementById("listaAtletasFirebase");
-
     if (!area) return;
 
     area.innerHTML = "<p>Carregando atletas...</p>";
@@ -165,7 +169,6 @@ function carregarAtletasFirebase() {
             });
 
             atletasFirebase.sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
-
             mostrarAtletas(atletasFirebase);
         })
         .catch((erro) => {
@@ -237,6 +240,11 @@ function carregarAtletaNoFormulario(id) {
 
 function excluirAtletaFirebase(id) {
     if (!confirm("Deseja excluir este atleta do Firebase?")) return;
+
+    if (typeof db === "undefined" || !db.collection) {
+        alert("Firebase não conectado.");
+        return;
+    }
 
     db.collection("cadastros")
         .doc(id)
@@ -467,8 +475,6 @@ function limparHistoricoAvaliacoes() {
 /* ALIMENTAÇÃO */
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
-    const economico = orcamento === "economico";
-
     if (objetivo === "hipertrofia") {
         return `
         <ul>
@@ -504,6 +510,7 @@ function formatarObjetivo(objetivo) {
     if (objetivo === "emagrecimento") return "Emagrecimento";
     if (objetivo === "performance") return "Performance";
     if (objetivo === "competicao") return "Competição";
+    if (objetivo === "manutencao") return "Manutenção";
     return "Manutenção";
 }
 
@@ -843,6 +850,24 @@ function exportarBackup() {
     link.click();
 }
 
+/* PIX */
+
+function copiarPix() {
+    const pix = document.getElementById("pixKey");
+
+    if (!pix) {
+        alert("Chave PIX não encontrada.");
+        return;
+    }
+
+    pix.select();
+    pix.setSelectionRange(0, 99999);
+
+    navigator.clipboard.writeText(pix.value)
+        .then(() => alert("Chave PIX copiada!"))
+        .catch(() => alert("Não foi possível copiar o PIX."));
+}
+
 /* INICIALIZAÇÃO */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -862,37 +887,56 @@ document.addEventListener("DOMContentLoaded", () => {
 /* FUNÇÕES GLOBAIS */
 
 window.salvarCadastro = salvarCadastro;
+window.salvarAtleta = salvarCadastro;
+
 window.carregarCadastro = carregarCadastro;
 window.carregarAtletasFirebase = carregarAtletasFirebase;
+window.carregarAtletas = carregarAtletasFirebase;
+
 window.pesquisarAtletas = pesquisarAtletas;
 window.carregarAtletaNoFormulario = carregarAtletaNoFormulario;
 window.excluirAtletaFirebase = excluirAtletaFirebase;
+
 window.aceitarTermo = aceitarTermo;
 window.carregarTermo = carregarTermo;
+
 window.gerarAvaliacao = gerarAvaliacao;
 window.salvarAvaliacaoHistorico = salvarAvaliacaoHistorico;
 window.carregarHistoricoAvaliacoes = carregarHistoricoAvaliacoes;
 window.limparHistoricoAvaliacoes = limparHistoricoAvaliacoes;
+window.excluirAvaliacaoHistorico = excluirAvaliacaoHistorico;
+
 window.ativarPremium = ativarPremium;
 window.desativarPremium = desativarPremium;
+
 window.cadastrarAluno = cadastrarAluno;
 window.limparAlunos = limparAlunos;
 window.excluirAluno = excluirAluno;
+
 window.iniciarTimer = iniciarTimer;
 window.pausarTimer = pausarTimer;
 window.reiniciarTimer = reiniciarTimer;
+
 window.publicarAtividade = publicarAtividade;
 window.curtirAtividade = curtirAtividade;
 window.excluirAtividade = excluirAtividade;
+
 window.criarEvento = criarEvento;
 window.confirmarPresenca = confirmarPresenca;
 window.excluirEvento = excluirEvento;
 window.limparTodasInscricoes = limparTodasInscricoes;
 window.excluirTodosEventos = excluirTodosEventos;
+
 window.salvarSatisfacao = salvarSatisfacao;
 window.exportarBackup = exportarBackup;
+window.copiarPix = copiarPix;
 
 window.testarFirebase = function () {
+    if (typeof db === "undefined" || !db.collection) {
+        alert("Firebase não conectado.");
+        return;
+    }
+
     db.collection("avaliacoes").add({
         nome: "Teste BoxTimer Pro",
         data: new Date().toLocaleString("pt-BR")
