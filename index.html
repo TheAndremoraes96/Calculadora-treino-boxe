@@ -30,6 +30,7 @@
     <a href="#premium">Premium</a>
     <a href="#assinatura">Assinar</a>
     <a href="#cadastro">Cadastro</a>
+    <a href="#meusAtletas">Meus Atletas</a>
     <a href="#termo">Termo</a>
     <a href="#avaliacao">Avaliação</a>
     <a href="#treinador">Treinador</a>
@@ -177,6 +178,19 @@
     <button onclick="salvarCadastro()">Salvar Cadastro</button>
 
     <div id="cadastroSalvo"></div>
+  </section>
+
+  <section class="card pagina" id="meusAtletas">
+    <h2>👥 Meus Atletas</h2>
+
+    <p class="aviso">Lista de atletas salvos no Firebase.</p>
+
+    <input id="pesquisaAtleta" placeholder="Pesquisar atleta por nome">
+
+    <button onclick="carregarAtletasFirebase()">🔄 Carregar Atletas</button>
+    <button onclick="pesquisarAtletas()">🔍 Pesquisar</button>
+
+    <div id="listaAtletasFirebase"></div>
   </section>
 
   <section class="card pagina" id="termo">
