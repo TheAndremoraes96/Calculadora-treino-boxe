@@ -1018,6 +1018,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
         carregarAlunos();
-        carregarHistoricoAvaliacoes();
+        // ===========================
+// FIREBASE TESTE
+// ===========================
+
+function testarFirebase() {
+
+    db.collection("avaliacoes").add({
+        nome: "Teste BoxTimer Pro",
+        data: new Date().toLocaleString("pt-BR")
+    })
+
+    .then(() => {
+        alert("Firebase funcionando!");
+    })
+
+    .catch((erro) => {
+        console.error(erro);
+        alert("Erro ao salvar.");
+    });
+
+}
     }, 500);
 });
