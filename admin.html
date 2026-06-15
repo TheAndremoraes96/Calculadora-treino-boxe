@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Premium - BoxTimer Pro</title>
+
+  <link rel="stylesheet" href="./style.css?v=20260618">
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <h1>🔐 Admin Premium</h1>
+  <p>Gerador de códigos Premium do BoxTimer Pro.</p>
+</header>
+
+<section class="card pagina">
+  <h2>Gerar Código Premium</h2>
+
+  <p class="aviso">
+    Área administrativa. Use somente após confirmar o pagamento PIX.
+  </p>
+
+  <input id="senhaAdmin" type="password" placeholder="Senha administrativa">
+  <input id="novoPremiumNome" placeholder="Nome do assinante">
+  <input id="novoPremiumEmail" type="email" placeholder="E-mail do assinante">
+
+  <select id="novoPremiumPlano">
+    <option value="mensal">Mensal</option>
+    <option value="trimestral">Trimestral</option>
+    <option value="anual">Anual</option>
+    <option value="cortesia">Cortesia</option>
+  </select>
+
+  <button onclick="gerarChavePremiumAdmin()">🔑 Gerar Código Premium</button>
+
+  <div id="codigoPremiumGerado"></div>
+</section>
+
+<section class="card pagina">
+  <h2>Como usar</h2>
+  <p>1. Confirme o pagamento do assinante.</p>
+  <p>2. Digite a senha administrativa.</p>
+  <p>3. Informe nome, e-mail e plano.</p>
+  <p>4. Gere o código e envie para o assinante.</p>
+</section>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="./firebase.js?v=20260618"></script>
+<script src="./admin.js?v=20260618"></script>
+
+</body>
+</html>

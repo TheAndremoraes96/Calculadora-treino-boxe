@@ -22,7 +22,7 @@ function preencherCampo(id, valorCampo) {
 
 /* PREMIUM */
 
-const CODIGO_MASTER_PREMIUM = "BOXTIMER2026";
+const CODIGO_CORTESIA_PREMIUM = "BOXTIMER2026";
 
 function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
@@ -52,14 +52,14 @@ async function ativarPremium() {
         return;
     }
 
-    if (codigo === CODIGO_MASTER_PREMIUM) {
+    if (codigo === CODIGO_CORTESIA_PREMIUM) {
         localStorage.setItem("premiumAtivo", "sim");
         localStorage.setItem("premiumEmail", email || "cortesia");
         localStorage.setItem("premiumPlano", "cortesia");
-        localStorage.setItem("premiumCodigo", CODIGO_MASTER_PREMIUM);
+        localStorage.setItem("premiumCodigo", CODIGO_CORTESIA_PREMIUM);
 
         verificarPremium();
-        alert("Premium ativado com código mestre.");
+        alert("Premium ativado com código de cortesia.");
         return;
     }
 
@@ -139,88 +139,6 @@ function exigirPremium() {
     return true;
 }
 
-function gerarCodigoPremium() {
-    const parte1 = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const parte2 = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const parte3 = Math.random().toString(36).substring(2, 6).toUpperCase();
-
-    return `BOX-${parte1}-${parte2}-${parte3}`;
-}
-
-function calcularDataExpiracao(plano) {
-    const data = new Date();
-
-    if (plano === "mensal") data.setMonth(data.getMonth() + 1);
-    else if (plano === "trimestral") data.setMonth(data.getMonth() + 3);
-    else if (plano === "anual") data.setFullYear(data.getFullYear() + 1);
-    else if (plano === "cortesia") data.setMonth(data.getMonth() + 1);
-    else data.setMonth(data.getMonth() + 1);
-
-    return data.toISOString();
-}
-
-async function gerarChavePremium() {
-    const senhaAdmin = prompt("Digite o código mestre para gerar chave:");
-
-    if (senhaAdmin !== CODIGO_MASTER_PREMIUM) {
-        alert("Acesso negado.");
-        return;
-    }
-
-    const nome = valor("novoPremiumNome").trim();
-    const email = valor("novoPremiumEmail").toLowerCase().trim();
-    const plano = valor("novoPremiumPlano") || "mensal";
-
-    if (!nome || !email) {
-        alert("Preencha nome e e-mail do assinante.");
-        return;
-    }
-
-    if (typeof db === "undefined" || !db.collection) {
-        alert("Firebase não conectado.");
-        return;
-    }
-
-    const codigo = gerarCodigoPremium();
-    const dataCriacao = new Date().toISOString();
-    const dataExpiracao = calcularDataExpiracao(plano);
-
-    const chavePremium = {
-        codigo,
-        nome,
-        email,
-        plano,
-        ativo: true,
-        usado: false,
-        dataCriacao,
-        dataExpiracao
-    };
-
-    try {
-        await db.collection("premiumKeys").doc(codigo).set(chavePremium);
-
-        const area = document.getElementById("codigoPremiumGerado");
-
-        if (area) {
-            area.innerHTML = `
-                <div class="perfil-box">
-                    <h3>✅ Código Premium Gerado</h3>
-                    <p><strong>Nome:</strong> ${nome}</p>
-                    <p><strong>E-mail:</strong> ${email}</p>
-                    <p><strong>Plano:</strong> ${plano}</p>
-                    <p><strong>Código:</strong></p>
-                    <input value="${codigo}" readonly>
-                    <p><strong>Expira em:</strong> ${new Date(dataExpiracao).toLocaleDateString("pt-BR")}</p>
-                </div>
-            `;
-        }
-
-        alert("Código Premium gerado e salvo no Firebase!");
-    } catch (erro) {
-        console.error("Erro ao gerar chave Premium:", erro);
-        alert("Erro ao gerar chave Premium.");
-    }
-}
 
 /* CADASTRO / FIREBASE */
 
@@ -1269,7 +1187,6 @@ window.excluirAvaliacaoHistorico = excluirAvaliacaoHistorico;
 
 window.ativarPremium = ativarPremium;
 window.desativarPremium = desativarPremium;
-window.gerarChavePremium = gerarChavePremium;
 
 window.cadastrarAluno = cadastrarAluno;
 window.carregarAlunos = carregarAlunos;
@@ -1316,4 +1233,4 @@ window.testarFirebase = function () {
     });
 };
 
-console.log("✅ BoxTimer Pro final com Premium por e-mail carregado com sucesso.");
+console.log("✅ BoxTimer Pro final com Premium separado carregado com sucesso.");
