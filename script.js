@@ -22,16 +22,20 @@ function preencherCampo(id, valorCampo) {
 
 /* PREMIUM */
 
+const CODIGO_MASTER_PREMIUM = "BOXTIMER2026";
+
 function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
 }
 
 function verificarPremium() {
     const status = document.getElementById("statusPremium");
+    const email = localStorage.getItem("premiumEmail") || "";
+    const plano = localStorage.getItem("premiumPlano") || "";
 
     if (status) {
         status.innerHTML = premiumAtivo()
-            ? "<p>✅ Premium ativo.</p>"
+            ? `<p>✅ Premium ativo.${email ? `<br><strong>E-mail:</strong> ${email}` : ""}${plano ? `<br><strong>Plano:</strong> ${plano}` : ""}</p>`
             : "<p>🔒 Premium não ativo.</p>";
     }
 
@@ -39,20 +43,90 @@ function verificarPremium() {
     carregarHistoricoAvaliacoes();
 }
 
-function ativarPremium() {
-    const codigo = prompt("Digite o código Premium:");
+async function ativarPremium() {
+    const email = valor("premiumEmail").toLowerCase().trim();
+    const codigo = valor("premiumCodigo").toUpperCase().trim();
 
-    if (codigo === "BOXTIMER2026") {
+    if (!codigo) {
+        alert("Digite o código Premium.");
+        return;
+    }
+
+    if (codigo === CODIGO_MASTER_PREMIUM) {
         localStorage.setItem("premiumAtivo", "sim");
+        localStorage.setItem("premiumEmail", email || "cortesia");
+        localStorage.setItem("premiumPlano", "cortesia");
+        localStorage.setItem("premiumCodigo", CODIGO_MASTER_PREMIUM);
+
+        verificarPremium();
+        alert("Premium ativado com código mestre.");
+        return;
+    }
+
+    if (!email) {
+        alert("Digite o e-mail usado na assinatura.");
+        return;
+    }
+
+    if (typeof db === "undefined" || !db.collection) {
+        alert("Firebase não conectado.");
+        return;
+    }
+
+    try {
+        const doc = await db.collection("premiumKeys").doc(codigo).get();
+
+        if (!doc.exists) {
+            alert("Código Premium não encontrado.");
+            return;
+        }
+
+        const chave = doc.data();
+
+        if (!chave.ativo) {
+            alert("Este código Premium está desativado.");
+            return;
+        }
+
+        if (String(chave.email || "").toLowerCase().trim() !== email) {
+            alert("Este código não pertence a este e-mail.");
+            return;
+        }
+
+        if (chave.dataExpiracao) {
+            const hoje = new Date();
+            const expiracao = new Date(chave.dataExpiracao);
+
+            if (hoje > expiracao) {
+                alert("Este código Premium expirou.");
+                return;
+            }
+        }
+
+        await db.collection("premiumKeys").doc(codigo).update({
+            usado: true,
+            ultimoUso: new Date().toISOString()
+        });
+
+        localStorage.setItem("premiumAtivo", "sim");
+        localStorage.setItem("premiumEmail", email);
+        localStorage.setItem("premiumPlano", chave.plano || "mensal");
+        localStorage.setItem("premiumCodigo", codigo);
+
         verificarPremium();
         alert("Premium ativado com sucesso!");
-    } else {
-        alert("Código inválido.");
+    } catch (erro) {
+        console.error("Erro ao ativar Premium:", erro);
+        alert("Erro ao validar o código Premium.");
     }
 }
 
 function desativarPremium() {
     localStorage.removeItem("premiumAtivo");
+    localStorage.removeItem("premiumEmail");
+    localStorage.removeItem("premiumPlano");
+    localStorage.removeItem("premiumCodigo");
+
     verificarPremium();
     alert("Premium desativado.");
 }
@@ -63,6 +137,89 @@ function exigirPremium() {
         return false;
     }
     return true;
+}
+
+function gerarCodigoPremium() {
+    const parte1 = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const parte2 = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const parte3 = Math.random().toString(36).substring(2, 6).toUpperCase();
+
+    return `BOX-${parte1}-${parte2}-${parte3}`;
+}
+
+function calcularDataExpiracao(plano) {
+    const data = new Date();
+
+    if (plano === "mensal") data.setMonth(data.getMonth() + 1);
+    else if (plano === "trimestral") data.setMonth(data.getMonth() + 3);
+    else if (plano === "anual") data.setFullYear(data.getFullYear() + 1);
+    else if (plano === "cortesia") data.setMonth(data.getMonth() + 1);
+    else data.setMonth(data.getMonth() + 1);
+
+    return data.toISOString();
+}
+
+async function gerarChavePremium() {
+    const senhaAdmin = prompt("Digite o código mestre para gerar chave:");
+
+    if (senhaAdmin !== CODIGO_MASTER_PREMIUM) {
+        alert("Acesso negado.");
+        return;
+    }
+
+    const nome = valor("novoPremiumNome").trim();
+    const email = valor("novoPremiumEmail").toLowerCase().trim();
+    const plano = valor("novoPremiumPlano") || "mensal";
+
+    if (!nome || !email) {
+        alert("Preencha nome e e-mail do assinante.");
+        return;
+    }
+
+    if (typeof db === "undefined" || !db.collection) {
+        alert("Firebase não conectado.");
+        return;
+    }
+
+    const codigo = gerarCodigoPremium();
+    const dataCriacao = new Date().toISOString();
+    const dataExpiracao = calcularDataExpiracao(plano);
+
+    const chavePremium = {
+        codigo,
+        nome,
+        email,
+        plano,
+        ativo: true,
+        usado: false,
+        dataCriacao,
+        dataExpiracao
+    };
+
+    try {
+        await db.collection("premiumKeys").doc(codigo).set(chavePremium);
+
+        const area = document.getElementById("codigoPremiumGerado");
+
+        if (area) {
+            area.innerHTML = `
+                <div class="perfil-box">
+                    <h3>✅ Código Premium Gerado</h3>
+                    <p><strong>Nome:</strong> ${nome}</p>
+                    <p><strong>E-mail:</strong> ${email}</p>
+                    <p><strong>Plano:</strong> ${plano}</p>
+                    <p><strong>Código:</strong></p>
+                    <input value="${codigo}" readonly>
+                    <p><strong>Expira em:</strong> ${new Date(dataExpiracao).toLocaleDateString("pt-BR")}</p>
+                </div>
+            `;
+        }
+
+        alert("Código Premium gerado e salvo no Firebase!");
+    } catch (erro) {
+        console.error("Erro ao gerar chave Premium:", erro);
+        alert("Erro ao gerar chave Premium.");
+    }
 }
 
 /* CADASTRO / FIREBASE */
@@ -1112,6 +1269,7 @@ window.excluirAvaliacaoHistorico = excluirAvaliacaoHistorico;
 
 window.ativarPremium = ativarPremium;
 window.desativarPremium = desativarPremium;
+window.gerarChavePremium = gerarChavePremium;
 
 window.cadastrarAluno = cadastrarAluno;
 window.carregarAlunos = carregarAlunos;
@@ -1158,4 +1316,4 @@ window.testarFirebase = function () {
     });
 };
 
-console.log("✅ BoxTimer Pro final carregado com sucesso.");
+console.log("✅ BoxTimer Pro final com Premium por e-mail carregado com sucesso.");
