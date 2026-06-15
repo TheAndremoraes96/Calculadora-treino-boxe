@@ -75,7 +75,7 @@ function exigirPremium() {
 
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 
-async function salvarCadastro() {
+function salvarCadastro() {
     cadastro = {
         nome: valor("nome"),
         idade: valor("idade"),
@@ -96,19 +96,24 @@ async function salvarCadastro() {
         aguaAtual: valor("aguaAtual"),
         data: new Date().toLocaleString("pt-BR")
     };
-localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
 
-    try {
-        await db.collection("cadastros").add(cadastro);
-        alert("Cadastro salvo no aparelho e no Firebase!");
-    } catch (erro) {
-        console.error("Erro ao salvar cadastro no Firebase:", erro);
-        alert("Cadastro salvo no aparelho, mas não foi para o Firebase.");
-    }
-
+    localStorage.setItem("cadastroAtleta", JSON.stringify(cadastro));
     carregarCadastro();
-}
 
+    if (typeof db !== "undefined" && db.collection) {
+        db.collection("cadastros")
+            .add(cadastro)
+            .then(() => {
+                alert("Cadastro salvo com sucesso no Firebase!");
+            })
+            .catch((erro) => {
+                console.error("Erro ao salvar cadastro:", erro);
+                alert("Cadastro salvo localmente, mas deu erro no Firebase.");
+            });
+    } else {
+        alert("Cadastro salvo localmente.");
+    }
+}
 
 function carregarCadastro() {
     const area = document.getElementById("cadastroSalvo");
@@ -320,7 +325,7 @@ function gerarAvaliacao() {
     }
 }
 
-async function salvarAvaliacaoHistorico() {
+function salvarAvaliacaoHistorico() {
     if (!exigirPremium()) return;
 
     if (!ultimaAvaliacao) {
@@ -332,16 +337,21 @@ async function salvarAvaliacaoHistorico() {
     historico.unshift(ultimaAvaliacao);
 
     localStorage.setItem("historicoAvaliacoes", JSON.stringify(historico));
-
-    try {
-        await db.collection("avaliacoes").add(ultimaAvaliacao);
-        alert("Avaliação salva no aparelho e no Firebase!");
-    } catch (erro) {
-        console.error("Erro ao salvar avaliação no Firebase:", erro);
-        alert("Avaliação salva no aparelho, mas não foi para o Firebase.");
-    }
-
     carregarHistoricoAvaliacoes();
+
+    if (typeof db !== "undefined" && db.collection) {
+        db.collection("avaliacoes")
+            .add(ultimaAvaliacao)
+            .then(() => {
+                alert("Avaliação salva no Firebase!");
+            })
+            .catch((erro) => {
+                console.error("Erro ao salvar avaliação:", erro);
+                alert("Avaliação salva localmente, mas deu erro no Firebase.");
+            });
+    } else {
+        alert("Avaliação salva localmente.");
+    }
 }
 
 function carregarHistoricoAvaliacoes() {
@@ -1037,6 +1047,24 @@ document.addEventListener("DOMContentLoaded", () => {
         carregarHistoricoAvaliacoes();
     }, 500);
 });
+
+window.salvarCadastro = salvarCadastro;
+window.carregarCadastro = carregarCadastro;
+window.aceitarTermo = aceitarTermo;
+window.carregarTermo = carregarTermo;
+window.gerarAvaliacao = gerarAvaliacao;
+window.salvarAvaliacaoHistorico = salvarAvaliacaoHistorico;
+window.carregarHistoricoAvaliacoes = carregarHistoricoAvaliacoes;
+window.ativarPremium = ativarPremium;
+window.desativarPremium = desativarPremium;
+window.cadastrarAluno = cadastrarAluno;
+window.iniciarTimer = iniciarTimer;
+window.pausarTimer = pausarTimer;
+window.reiniciarTimer = reiniciarTimer;
+window.publicarAtividade = publicarAtividade;
+window.criarEvento = criarEvento;
+window.salvarSatisfacao = salvarSatisfacao;
+window.exportarBackup = exportarBackup;
 
 window.testarFirebase = function () {
     db.collection("avaliacoes").add({
