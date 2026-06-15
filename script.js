@@ -18,15 +18,17 @@ function preencherCampo(id, valorCampo) {
     if (campo && valorCampo !== undefined) campo.value = valorCampo;
 }
 
-/* PREMIUM */
+/* ============================
+   PREMIUM
+============================ */
 
 function verificarPremium() {
     const status = document.getElementById("statusPremium");
-    const premiumAtivo = localStorage.getItem("premiumAtivo") === "sim";
+    const ativo = premiumAtivo();
 
     if (status) {
-        status.innerHTML = premiumAtivo
-            ? "<p>✅ Premium ativo. Avaliação completa liberada.</p>"
+        status.innerHTML = ativo
+            ? "<p>✅ Premium ativo. Avaliação completa, histórico e área do treinador liberados.</p>"
             : "<p>🔒 Premium não ativo. Use o código enviado após pagamento.</p>";
     }
 }
@@ -53,7 +55,18 @@ function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
 }
 
-/* CADASTRO */
+function exigirPremium() {
+    if (!premiumAtivo()) {
+        alert("Recurso Premium. Ative o Premium para usar esta função.");
+        return false;
+    }
+
+    return true;
+}
+
+/* ============================
+   CADASTRO
+============================ */
 
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 
@@ -106,7 +119,9 @@ function carregarCadastro() {
     `;
 }
 
-/* TERMO */
+/* ============================
+   TERMO
+============================ */
 
 function aceitarTermo() {
     const aceite = document.getElementById("aceiteTermo");
@@ -118,7 +133,10 @@ function aceitarTermo() {
     }
 
     localStorage.setItem("termoAceito", "sim");
-    if (status) status.innerHTML = "<p>✅ Termo aceito com sucesso.</p>";
+
+    if (status) {
+        status.innerHTML = "<p>✅ Termo aceito com sucesso.</p>";
+    }
 }
 
 function carregarTermo() {
@@ -131,13 +149,14 @@ function carregarTermo() {
     }
 }
 
-/* AVALIAÇÃO PREMIUM */
+/* ============================
+   AVALIAÇÃO PREMIUM
+============================ */
+
+let ultimaAvaliacao = null;
 
 function gerarAvaliacao() {
-    if (!premiumAtivo()) {
-        alert("Recurso Premium. Ative o Premium para gerar avaliação física e nutricional completa.");
-        return;
-    }
+    if (!exigirPremium()) return;
 
     const nome = valor("nome") || cadastro.nome || "Atleta";
     const idade = numero("idade");
@@ -203,11 +222,44 @@ function gerarAvaliacao() {
         ? `Soma das dobras: ${somaDobras.toFixed(1)} mm. Método selecionado: ${metodo}.`
         : "Dobras não informadas.";
 
+    ultimaAvaliacao = {
+        id: Date.now(),
+        data: new Date().toLocaleString("pt-BR"),
+        nome,
+        idade,
+        sexo,
+        peso,
+        altura,
+        objetivo,
+        modalidade: valor("modalidade") || cadastro.modalidade || "Não informada",
+        metodo,
+        imc: imc.toFixed(2),
+        classificacaoIMC,
+        tmb: Math.round(tmb),
+        gastoDiario: Math.round(gastoDiario),
+        caloriasMeta: Math.round(caloriasMeta),
+        proteinas: Math.round(proteinas),
+        carboidratos: Math.round(carboidratos),
+        gorduras: Math.round(gorduras),
+        aguaRecomendada: aguaRecomendada.toFixed(1),
+        metaGordura: numero("metaGordura"),
+        gordura: numero("gordura"),
+        musculoEsqueletico: numero("musculoEsqueletico"),
+        idadeCorporal: numero("idadeCorporal"),
+        gorduraVisceral: numero("gorduraVisceral"),
+        aguaCorporal: numero("aguaCorporal"),
+        massaMuscular: numero("massaMuscular"),
+        massaOssea: numero("massaOssea"),
+        massaMagra: numero("massaMagra"),
+        massaGorda: numero("massaGorda"),
+        somaDobras: somaDobras.toFixed(1)
+    };
+
     document.getElementById("resultadoAvaliacao").innerHTML = `
         <h3>👤 Resumo do Atleta</h3>
         <p><strong>Nome:</strong> ${nome}</p>
         <p><strong>Objetivo:</strong> ${formatarObjetivo(objetivo)}</p>
-        <p><strong>Modalidade:</strong> ${valor("modalidade") || cadastro.modalidade || "Não informada"}</p>
+        <p><strong>Modalidade:</strong> ${ultimaAvaliacao.modalidade}</p>
         <p><strong>Método de avaliação:</strong> ${metodo}</p>
         <p><strong>IMC:</strong> ${imc.toFixed(2)} - ${classificacaoIMC}</p>
 
@@ -248,6 +300,76 @@ function gerarAvaliacao() {
         <h3>⚠️ Alerta</h3>
         <p>Esta avaliação é educativa e não substitui nutricionista, médico ou avaliação presencial.</p>
     `;
+}
+
+function salvarAvaliacaoHistorico() {
+    if (!exigirPremium()) return;
+
+    if (!ultimaAvaliacao) {
+        alert("Gere uma avaliação antes de salvar no histórico.");
+        return;
+    }
+
+    let historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
+    historico.unshift(ultimaAvaliacao);
+
+    localStorage.setItem("historicoAvaliacoes", JSON.stringify(historico));
+
+    carregarHistoricoAvaliacoes();
+    alert("Avaliação salva no histórico.");
+}
+
+function carregarHistoricoAvaliacoes() {
+    const area = document.getElementById("listaHistoricoAvaliacoes");
+    if (!area) return;
+
+    if (!premiumAtivo()) {
+        area.innerHTML = "<p>🔒 Histórico disponível apenas no Premium.</p>";
+        return;
+    }
+
+    const historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
+
+    if (historico.length === 0) {
+        area.innerHTML = "<p>Nenhuma avaliação salva ainda.</p>";
+        return;
+    }
+
+    area.innerHTML = historico.map(av => `
+        <div class="post">
+            <h3>📊 ${av.nome}</h3>
+            <small>${av.data}</small>
+            <p><strong>Peso:</strong> ${av.peso} kg</p>
+            <p><strong>IMC:</strong> ${av.imc} - ${av.classificacaoIMC}</p>
+            <p><strong>Gordura:</strong> ${av.gordura || "não informada"}%</p>
+            <p><strong>Massa muscular:</strong> ${av.massaMuscular || "não informada"} kg</p>
+            <p><strong>Meta calórica:</strong> ${av.caloriasMeta} kcal</p>
+            <p><strong>Proteínas:</strong> ${av.proteinas}g</p>
+            <p><strong>Carboidratos:</strong> ${av.carboidratos}g</p>
+            <p><strong>Gorduras:</strong> ${av.gorduras}g</p>
+            <button class="btn-excluir" onclick="excluirAvaliacaoHistorico(${av.id})">🗑️ Excluir Avaliação</button>
+        </div>
+    `).join("");
+}
+
+function excluirAvaliacaoHistorico(id) {
+    if (!confirm("Deseja excluir esta avaliação do histórico?")) return;
+
+    let historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
+    historico = historico.filter(av => av.id !== id);
+
+    localStorage.setItem("historicoAvaliacoes", JSON.stringify(historico));
+    carregarHistoricoAvaliacoes();
+}
+
+function limparHistoricoAvaliacoes() {
+    if (!exigirPremium()) return;
+
+    if (!confirm("Deseja apagar todo o histórico de avaliações?")) return;
+
+    localStorage.removeItem("historicoAvaliacoes");
+    carregarHistoricoAvaliacoes();
+    alert("Histórico apagado.");
 }
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
@@ -332,10 +454,104 @@ function formatarObjetivo(objetivo) {
     if (objetivo === "hipertrofia") return "Hipertrofia";
     if (objetivo === "emagrecimento") return "Emagrecimento";
     if (objetivo === "performance") return "Performance";
+    if (objetivo === "competicao") return "Competição";
     return "Manutenção";
 }
 
-/* TIMER */
+/* ============================
+   ÁREA DO TREINADOR
+============================ */
+
+let alunos = JSON.parse(localStorage.getItem("alunosTreinador")) || [];
+
+function cadastrarAluno() {
+    if (!exigirPremium()) return;
+
+    const nome = valor("alunoNome");
+    const contato = valor("alunoContato");
+    const peso = numero("alunoPeso");
+    const objetivo = valor("alunoObjetivo");
+    const observacoes = valor("alunoObservacoes");
+
+    if (!nome || !objetivo) {
+        alert("Preencha pelo menos nome e objetivo do aluno.");
+        return;
+    }
+
+    const aluno = {
+        id: Date.now(),
+        nome,
+        contato,
+        peso,
+        objetivo,
+        observacoes,
+        data: new Date().toLocaleString("pt-BR")
+    };
+
+    alunos.unshift(aluno);
+    localStorage.setItem("alunosTreinador", JSON.stringify(alunos));
+
+    limparFormularioAluno();
+    carregarAlunos();
+    alert("Aluno cadastrado com sucesso.");
+}
+
+function limparFormularioAluno() {
+    ["alunoNome", "alunoContato", "alunoPeso", "alunoObjetivo", "alunoObservacoes"].forEach(id => {
+        const campo = document.getElementById(id);
+        if (campo) campo.value = "";
+    });
+}
+
+function carregarAlunos() {
+    const area = document.getElementById("listaAlunos");
+    if (!area) return;
+
+    if (!premiumAtivo()) {
+        area.innerHTML = "<p>🔒 Área do treinador disponível apenas no Premium.</p>";
+        return;
+    }
+
+    if (alunos.length === 0) {
+        area.innerHTML = "<p>Nenhum aluno cadastrado ainda.</p>";
+        return;
+    }
+
+    area.innerHTML = alunos.map(aluno => `
+        <div class="post">
+            <h3>👤 ${aluno.nome}</h3>
+            <small>Cadastrado em ${aluno.data}</small>
+            <p><strong>Contato:</strong> ${aluno.contato || "Não informado"}</p>
+            <p><strong>Peso:</strong> ${aluno.peso || "Não informado"} kg</p>
+            <p><strong>Objetivo:</strong> ${formatarObjetivo(aluno.objetivo)}</p>
+            <p><strong>Observações:</strong> ${aluno.observacoes || "Nenhuma"}</p>
+            <button class="btn-excluir" onclick="excluirAluno(${aluno.id})">🗑️ Excluir Aluno</button>
+        </div>
+    `).join("");
+}
+
+function excluirAluno(id) {
+    if (!confirm("Deseja excluir este aluno?")) return;
+
+    alunos = alunos.filter(aluno => aluno.id !== id);
+    localStorage.setItem("alunosTreinador", JSON.stringify(alunos));
+    carregarAlunos();
+}
+
+function limparAlunos() {
+    if (!exigirPremium()) return;
+
+    if (!confirm("Deseja apagar todos os alunos cadastrados?")) return;
+
+    alunos = [];
+    localStorage.removeItem("alunosTreinador");
+    carregarAlunos();
+    alert("Todos os alunos foram removidos.");
+}
+
+/* ============================
+   TIMER
+============================ */
 
 let timerInterval = null;
 let tempoAtual = 180;
@@ -422,7 +638,9 @@ function tocarCampainha() {
     }
 }
 
-/* ATIVIDADES */
+/* ============================
+   ATIVIDADES E FEED
+============================ */
 
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
@@ -555,7 +773,9 @@ function excluirAtividade(id) {
     atualizarDashboard();
 }
 
-/* EVENTOS */
+/* ============================
+   EVENTOS
+============================ */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -677,7 +897,9 @@ function excluirTodosEventos() {
     alert("Todos os eventos foram excluídos.");
 }
 
-/* DASHBOARD */
+/* ============================
+   DASHBOARD
+============================ */
 
 function atualizarDashboard() {
     const totalTreinos = atividades.length;
@@ -715,7 +937,9 @@ function gerarConquistas(totalTreinos, totalKm, totalRounds) {
         : "<p>Nenhuma conquista desbloqueada ainda.</p>";
 }
 
-/* SATISFAÇÃO */
+/* ============================
+   SATISFAÇÃO
+============================ */
 
 function salvarSatisfacao() {
     const nota = valor("notaApp");
@@ -738,7 +962,9 @@ function salvarSatisfacao() {
     if (area) area.innerHTML = `<p>✅ Obrigado pela avaliação: ${nota}</p>`;
 }
 
-/* INICIALIZAÇÃO */
+/* ============================
+   INICIALIZAÇÃO
+============================ */
 
 carregarCadastro();
 carregarTermo();
@@ -747,3 +973,5 @@ carregarFeed();
 carregarEventos();
 atualizarDashboard();
 verificarPremium();
+carregarAlunos();
+carregarHistoricoAvaliacoes();
