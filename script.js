@@ -20,7 +20,9 @@ function preencherCampo(id, valorCampo) {
     }
 }
 
-/* PREMIUM */
+/* ============================
+   PREMIUM
+============================ */
 
 function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
@@ -65,7 +67,9 @@ function exigirPremium() {
     return true;
 }
 
-/* CADASTRO */
+/* ============================
+   CADASTRO
+============================ */
 
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 
@@ -141,7 +145,9 @@ function carregarCadastro() {
     `;
 }
 
-/* MEUS ATLETAS FIREBASE */
+/* ============================
+   MEUS ATLETAS FIREBASE
+============================ */
 
 let atletasFirebase = [];
 
@@ -168,7 +174,10 @@ function carregarAtletasFirebase() {
                 });
             });
 
-            atletasFirebase.sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
+            atletasFirebase.sort((a, b) =>
+                String(b.data || "").localeCompare(String(a.data || ""))
+            );
+
             mostrarAtletas(atletasFirebase);
         })
         .catch((erro) => {
@@ -259,7 +268,9 @@ function excluirAtletaFirebase(id) {
         });
 }
 
-/* TERMO */
+/* ============================
+   TERMO
+============================ */
 
 function aceitarTermo() {
     const aceite = document.getElementById("aceiteTermo");
@@ -287,7 +298,9 @@ function carregarTermo() {
     }
 }
 
-/* AVALIAÇÃO */
+/* ============================
+   AVALIAÇÃO
+============================ */
 
 let ultimaAvaliacao = null;
 
@@ -337,8 +350,14 @@ function gerarAvaliacao() {
     if (objetivo === "emagrecimento") caloriasMeta -= 400;
     if (objetivo === "performance") caloriasMeta += 150;
 
-    const proteinas = objetivo === "emagrecimento" ? peso * 2.2 : objetivo === "performance" ? peso * 1.8 : peso * 2.0;
+    const proteinas = objetivo === "emagrecimento"
+        ? peso * 2.2
+        : objetivo === "performance"
+            ? peso * 1.8
+            : peso * 2.0;
+
     const gorduras = objetivo === "emagrecimento" ? peso * 0.8 : peso * 0.9;
+
     let carboidratos = (caloriasMeta - ((proteinas * 4) + (gorduras * 9))) / 4;
     if (carboidratos < 0) carboidratos = 0;
 
@@ -472,17 +491,22 @@ function limparHistoricoAvaliacoes() {
     carregarHistoricoAvaliacoes();
 }
 
-/* ALIMENTAÇÃO */
+/* ============================
+   ALIMENTAÇÃO
+============================ */
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
+    const economico = orcamento === "economico";
+
     if (objetivo === "hipertrofia") {
         return `
         <ul>
-            <li>Café: 3 ovos, 60g de aveia, 1 banana.</li>
-            <li>Almoço: 150g arroz, 100g feijão, 180g frango ou carne.</li>
+            <li>Café: 3 ovos, 60g de aveia e 1 banana.</li>
+            <li>Almoço: 150g de arroz, 100g de feijão e 180g de frango ou carne.</li>
             <li>Pré-treino: banana com aveia ou tapioca.</li>
-            <li>Pós-treino: 180g proteína + carboidrato.</li>
+            <li>Pós-treino: 180g de proteína com carboidrato.</li>
             <li>Jantar: proteína, arroz/batata e legumes.</li>
+            <li>${economico ? "Opção econômica: ovos, frango, arroz, feijão, banana e aveia." : "Opção padrão: frango, carne magra, peixe, iogurte e castanhas."}</li>
         </ul>`;
     }
 
@@ -490,9 +514,10 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
         return `
         <ul>
             <li>Café: 2 ovos, fruta e café sem açúcar.</li>
-            <li>Almoço: 100g arroz, 80g feijão, 160g proteína e salada.</li>
+            <li>Almoço: 100g de arroz, 80g de feijão, 160g de proteína e salada.</li>
             <li>Pré-treino: fruta ou carboidrato leve.</li>
             <li>Jantar: proteína magra com legumes.</li>
+            <li>${economico ? "Opção econômica: ovos, sardinha, frango, legumes e frutas." : "Opção padrão: frango, peixe, patinho, iogurte natural e saladas variadas."}</li>
         </ul>`;
     }
 
@@ -501,7 +526,7 @@ function gerarPlanoAlimentar(objetivo, orcamento) {
         <li>Café: ovos, fruta e aveia.</li>
         <li>Almoço: arroz, feijão, proteína e salada.</li>
         <li>Lanche: fruta, iogurte ou castanhas.</li>
-        <li>Jantar: refeição equilibrada.</li>
+        <li>Jantar: refeição equilibrada com proteína, carboidrato e legumes.</li>
     </ul>`;
 }
 
@@ -514,7 +539,9 @@ function formatarObjetivo(objetivo) {
     return "Manutenção";
 }
 
-/* TREINADOR */
+/* ============================
+   TREINADOR
+============================ */
 
 let alunos = JSON.parse(localStorage.getItem("alunosTreinador")) || [];
 
@@ -559,8 +586,8 @@ function carregarAlunos() {
     area.innerHTML = alunos.map(aluno => `
         <div class="post">
             <h3>👤 ${aluno.nome}</h3>
-            <p><strong>Contato:</strong> ${aluno.contato}</p>
-            <p><strong>Peso:</strong> ${aluno.peso} kg</p>
+            <p><strong>Contato:</strong> ${aluno.contato || "Não informado"}</p>
+            <p><strong>Peso:</strong> ${aluno.peso || "Não informado"} kg</p>
             <p><strong>Objetivo:</strong> ${formatarObjetivo(aluno.objetivo)}</p>
             <p>${aluno.observacoes || ""}</p>
             <button class="btn-excluir" onclick="excluirAluno(${aluno.id})">Excluir</button>
@@ -580,7 +607,9 @@ function limparAlunos() {
     carregarAlunos();
 }
 
-/* TIMER */
+/* ============================
+   TIMER
+============================ */
 
 let timerInterval = null;
 let tempoAtual = 180;
@@ -645,7 +674,9 @@ function tocarCampainha() {
     } catch (e) {}
 }
 
-/* FEED */
+/* ============================
+   FEED
+============================ */
 
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
@@ -692,6 +723,8 @@ function carregarFeed() {
             <small>${a.data}</small>
             <p><strong>Atividade:</strong> ${a.tipo}</p>
             <p><strong>Tempo:</strong> ${a.tempo} min</p>
+            <p><strong>Distância:</strong> ${a.distancia || 0} km</p>
+            <p><strong>Rounds:</strong> ${a.rounds || 0}</p>
             <p>${a.comentario || ""}</p>
             <button onclick="curtirAtividade(${a.id})">❤️ Curtir (${a.curtidas})</button>
             <button class="btn-excluir" onclick="excluirAtividade(${a.id})">Excluir</button>
@@ -712,9 +745,12 @@ function excluirAtividade(id) {
     atividades = atividades.filter(a => a.id !== id);
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
     carregarFeed();
+    atualizarDashboard();
 }
 
-/* EVENTOS */
+/* ============================
+   EVENTOS
+============================ */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -753,8 +789,8 @@ function carregarEventos() {
     lista.innerHTML = eventos.map(e => `
         <div class="evento">
             <h3>${e.tipo}</h3>
-            <p>${e.data} às ${e.hora}</p>
-            <p>${e.local}</p>
+            <p><strong>Data:</strong> ${e.data} às ${e.hora}</p>
+            <p><strong>Local:</strong> ${e.local}</p>
             <p>${e.descricao || ""}</p>
             <input id="participante-${e.id}" placeholder="Seu nome">
             <button onclick="confirmarPresenca(${e.id})">Confirmar presença</button>
@@ -769,7 +805,9 @@ function confirmarPresenca(id) {
     if (!nome) return;
 
     eventos = eventos.map(e => {
-        if (e.id === id && !e.participantes.includes(nome)) e.participantes.push(nome);
+        if (e.id === id && !e.participantes.includes(nome)) {
+            e.participantes.push(nome);
+        }
         return e;
     });
 
@@ -798,7 +836,9 @@ function excluirTodosEventos() {
     carregarEventos();
 }
 
-/* DASHBOARD */
+/* ============================
+   DASHBOARD
+============================ */
 
 function atualizarDashboard() {
     const totalTreinos = atividades.length;
@@ -812,7 +852,9 @@ function atualizarDashboard() {
     atualizarTexto("totalRounds", totalRounds);
 }
 
-/* SATISFAÇÃO */
+/* ============================
+   SATISFAÇÃO / BACKUP / PIX
+============================ */
 
 function salvarSatisfacao() {
     const nota = valor("notaApp");
@@ -850,8 +892,6 @@ function exportarBackup() {
     link.click();
 }
 
-/* PIX */
-
 function copiarPix() {
     const pix = document.getElementById("pixKey");
 
@@ -868,7 +908,9 @@ function copiarPix() {
         .catch(() => alert("Não foi possível copiar o PIX."));
 }
 
-/* INICIALIZAÇÃO */
+/* ============================
+   INICIALIZAÇÃO
+============================ */
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarCadastro();
@@ -884,7 +926,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
 });
 
-/* FUNÇÕES GLOBAIS */
+/* ============================
+   FUNÇÕES GLOBAIS
+============================ */
 
 window.salvarCadastro = salvarCadastro;
 window.salvarAtleta = salvarCadastro;
@@ -910,6 +954,7 @@ window.ativarPremium = ativarPremium;
 window.desativarPremium = desativarPremium;
 
 window.cadastrarAluno = cadastrarAluno;
+window.carregarAlunos = carregarAlunos;
 window.limparAlunos = limparAlunos;
 window.excluirAluno = excluirAluno;
 
@@ -918,15 +963,18 @@ window.pausarTimer = pausarTimer;
 window.reiniciarTimer = reiniciarTimer;
 
 window.publicarAtividade = publicarAtividade;
+window.carregarFeed = carregarFeed;
 window.curtirAtividade = curtirAtividade;
 window.excluirAtividade = excluirAtividade;
 
 window.criarEvento = criarEvento;
+window.carregarEventos = carregarEventos;
 window.confirmarPresenca = confirmarPresenca;
 window.excluirEvento = excluirEvento;
 window.limparTodasInscricoes = limparTodasInscricoes;
 window.excluirTodosEventos = excluirTodosEventos;
 
+window.atualizarDashboard = atualizarDashboard;
 window.salvarSatisfacao = salvarSatisfacao;
 window.exportarBackup = exportarBackup;
 window.copiarPix = copiarPix;
@@ -947,3 +995,5 @@ window.testarFirebase = function () {
         alert("Erro ao salvar no Firebase.");
     });
 };
+
+console.log("✅ script.js carregado corretamente - BoxTimer Pro");
