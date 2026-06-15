@@ -1,439 +1,136 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ============================
+   MEUS ATLETAS FIREBASE
+============================ */
+
+#meusAtletas {
+    border-left: 5px solid #00cec9;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #0f0f0f;
-    color: #f5f5f5;
-    line-height: 1.6;
-}
-
-.container {
-    width: 95%;
-    max-width: 1150px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-header {
-    text-align: center;
-    padding: 32px 15px;
-    margin-bottom: 18px;
-    background: linear-gradient(135deg, #1a1a1a, #2b0000);
-    border-radius: 20px;
-    border: 1px solid #ff3b30;
-}
-
-header h1 {
-    font-size: 2.2rem;
-    color: #ff3b30;
-}
-
-header p {
-    color: #ddd;
-    margin-top: 8px;
-}
-
-.menu {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-}
-
-.menu a {
-    color: white;
-    text-decoration: none;
-    background: #1f1f1f;
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid #333;
-    white-space: nowrap;
-}
-
-.menu a:hover {
-    background: #ff3b30;
-}
-
-.card {
-    background: #1b1b1b;
-    padding: 22px;
-    margin-bottom: 20px;
-    border-radius: 18px;
-    border: 1px solid #333;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-}
-
-.pagina {
-    scroll-margin-top: 20px;
-}
-
-.card h2 {
-    color: #ffcc00;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 8px;
-}
-
-.card h3 {
-    color: #ffcc00;
-    margin-top: 18px;
-    margin-bottom: 10px;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 13px;
-    margin-bottom: 12px;
-    border: 1px solid #444;
-    border-radius: 12px;
-    background: #0f0f0f;
-    color: white;
-    font-size: 15px;
-}
-
-textarea {
-    min-height: 95px;
-    resize: vertical;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: #aaa;
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    background: #ff3b30;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #d6281f;
-    transform: scale(1.01);
-}
-
-.checkbox-area {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    background: #111;
-    border: 1px solid #333;
-    padding: 14px;
-    border-radius: 12px;
-    margin: 15px 0;
-}
-
-.checkbox-area input {
-    width: auto;
-    margin: 0;
-}
-
-/* MÉTODOS DE AVALIAÇÃO */
-
-.metodos-avaliacao {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin-bottom: 18px;
-}
-
-.metodos-avaliacao label {
-    background: #111;
-    border: 1px solid #444;
-    padding: 14px;
-    border-radius: 14px;
-    cursor: pointer;
-    color: #f5f5f5;
-    transition: 0.3s;
-}
-
-.metodos-avaliacao label:hover {
-    border-color: #ff3b30;
-    background: #1f1f1f;
-}
-
-.metodos-avaliacao input {
-    width: auto;
-    margin-right: 8px;
-    accent-color: #ff3b30;
-}
-
-.aviso {
-    background: #111;
-    border-left: 4px solid #2ecc71;
-    padding: 14px;
-    border-radius: 12px;
-    color: #ddd;
-    margin-bottom: 12px;
-}
-
-/* TIMER */
-
-.timer-box {
-    text-align: center;
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 18px;
-    padding: 25px;
-    margin: 18px 0;
-}
-
-.timer-box h1 {
-    font-size: 4rem;
-    color: #ff3b30;
-    margin: 10px 0;
-}
-
-.timer-box h3 {
-    color: #ffcc00;
-}
-
-.timer-box p {
-    font-size: 1.2rem;
-    color: #ddd;
-}
-
-/* RESULTADOS */
-
-#resultadoAvaliacao,
-#statusTermo,
-#resultadoSatisfacao {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 16px;
-    padding: 18px;
-    margin-top: 12px;
-}
-
-#resultadoAvaliacao h3 {
-    color: #ffcc00;
+#listaAtletasFirebase {
     margin-top: 20px;
-    margin-bottom: 8px;
 }
 
-#resultadoAvaliacao p {
-    margin-bottom: 8px;
-}
-
-#resultadoAvaliacao ul {
-    margin-left: 20px;
-    margin-top: 10px;
-}
-
-#resultadoAvaliacao li {
-    margin-bottom: 8px;
-}
-
-/* CARDS INTERNOS */
-
-.perfil-box,
-.post,
-.evento {
+#listaAtletasFirebase .post {
     background: #111;
     border: 1px solid #333;
     border-radius: 16px;
     padding: 18px;
-    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
-.perfil-box h3,
-.post h3,
-.evento h3 {
-    color: #ffcc00;
-    margin-bottom: 8px;
-}
-
-.post small {
-    color: #aaa;
-    display: block;
+#listaAtletasFirebase .post h3 {
+    color: #00cec9;
     margin-bottom: 10px;
 }
 
-.post p,
-.evento p,
-.perfil-box p {
-    margin-bottom: 8px;
-}
-
-.foto-post {
-    width: 100%;
-    max-width: 480px;
-    border-radius: 16px;
-    border: 1px solid #333;
-    margin: 14px 0;
-    display: block;
-}
-
-.area-comentarios {
-    margin-top: 15px;
-    padding: 14px;
-    background: #181818;
-    border-radius: 14px;
-    border: 1px solid #333;
-}
-
-.comentario {
-    background: #0f0f0f;
-    border-left: 4px solid #ffcc00;
-    padding: 10px;
-    border-radius: 10px;
+#listaAtletasFirebase button {
     margin-top: 8px;
-    color: #ddd;
 }
 
-.btn-excluir {
-    background: #555;
+/* ============================
+   PREMIUM
+============================ */
+
+#statusPremium {
+    margin-top: 15px;
 }
 
-.btn-excluir:hover {
-    background: #333;
+#statusPremium p {
+    background: #111;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #333;
 }
 
-/* DASHBOARD */
+/* ============================
+   HISTÓRICO
+============================ */
+
+#listaHistoricoAvaliacoes {
+    margin-top: 15px;
+}
+
+/* ============================
+   DASHBOARD MELHORADO
+============================ */
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin-bottom: 20px;
+    gap: 15px;
 }
 
 .stat {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 16px;
-    text-align: center;
-    padding: 20px;
+    transition: 0.3s;
+}
+
+.stat:hover {
+    transform: translateY(-3px);
 }
 
 .stat h3 {
-    font-size: 1.8rem;
-    color: #ff3b30;
-}
-
-.stat p {
-    color: #ccc;
-}
-
-.badge {
-    display: inline-block;
-    background: #2b0000;
-    color: #ffcc00;
-    border: 1px solid #ff3b30;
-    padding: 8px 12px;
-    margin: 6px;
-    border-radius: 999px;
+    font-size: 2rem;
     font-weight: bold;
 }
 
-/* EVENTOS */
+/* ============================
+   FEED
+============================ */
 
-.evento ul {
-    margin-left: 20px;
-    margin-top: 8px;
+#feedAtividades {
+    margin-top: 15px;
 }
 
-.evento li {
-    margin-bottom: 5px;
+.post button {
+    margin-right: 8px;
 }
 
-/* CORES DAS PÁGINAS */
+/* ============================
+   EVENTOS
+============================ */
 
-#cadastro {
-    border-left: 5px solid #2ecc71;
+#listaEventos {
+    margin-top: 15px;
 }
 
-#termo {
-    border-left: 5px solid #f1c40f;
+.evento input {
+    margin-top: 10px;
 }
 
-#avaliacao {
-    border-left: 5px solid #3498db;
+/* ============================
+   RESULTADOS DA AVALIAÇÃO
+============================ */
+
+#resultadoAvaliacao {
+    overflow-x: auto;
 }
 
-#timer {
-    border-left: 5px solid #ff3b30;
+#resultadoAvaliacao strong {
+    color: #ffcc00;
 }
 
-#atividade {
-    border-left: 5px solid #e67e22;
-}
+/* ============================
+   RESPONSIVO EXTRA
+============================ */
 
-#feed {
-    border-left: 5px solid #ffcc00;
-}
+@media (max-width: 768px) {
 
-#eventos {
-    border-left: 5px solid #1abc9c;
-}
+    .menu {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
 
-#dashboard {
-    border-left: 5px solid #9b59b6;
-}
-
-#satisfacao {
-    border-left: 5px solid #e84393;
-}
-
-/* RESPONSIVO */
-
-@media (min-width: 768px) {
     .dashboard-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .card {
-        padding: 28px;
-    }
-
-    input,
-    select,
-    textarea {
-        font-size: 16px;
-    }
-}
-
-@media (max-width: 600px) {
-    .container {
-        padding: 12px;
-    }
-
-    header h1 {
-        font-size: 1.6rem;
-    }
-
-    .card {
-        padding: 16px;
+        grid-template-columns: 1fr;
     }
 
     .timer-box h1 {
-        font-size: 3rem;
+        font-size: 2.8rem;
     }
 
-    button {
-        font-size: 15px;
-    }
-
-    .metodos-avaliacao {
-        grid-template-columns: 1fr;
+    #listaAtletasFirebase .post,
+    .post,
+    .evento,
+    .perfil-box {
+        padding: 14px;
     }
 }
