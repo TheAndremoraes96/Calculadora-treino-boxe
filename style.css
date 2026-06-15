@@ -300,6 +300,14 @@ button:hover {
     color: #ffcc00;
 }
 
+#graficoEvolucao {
+    background: #101010;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 14px;
+    margin: 15px 0;
+}
+
 small {
     color: #aaa;
 }
