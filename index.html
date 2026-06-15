@@ -28,6 +28,7 @@
 
   <nav class="menu">
     <a href="#premium">Premium</a>
+    <a href="#assinatura">Assinar</a>
     <a href="#cadastro">Cadastro</a>
     <a href="#termo">Termo</a>
     <a href="#avaliacao">Avaliação</a>
@@ -71,6 +72,43 @@
     <button onclick="desativarPremium()">🔒 Desativar Premium</button>
 
     <div id="statusPremium"></div>
+  </section>
+
+  <section class="card pagina" id="assinatura">
+    <h2>💳 Assinar Premium</h2>
+
+    <div class="perfil-box">
+      <h3>🥊 BoxTimer Pro Premium</h3>
+
+      <p><strong>Valor:</strong> R$ 14,90/mês</p>
+
+      <ul>
+        <li>✅ Avaliação física completa</li>
+        <li>✅ Bioimpedância</li>
+        <li>✅ Dobras cutâneas</li>
+        <li>✅ Dieta personalizada</li>
+        <li>✅ Macronutrientes em gramas</li>
+        <li>✅ Histórico ilimitado</li>
+        <li>✅ Área do treinador</li>
+        <li>✅ Backup dos dados</li>
+      </ul>
+
+      <h3>💰 Pagamento PIX</h3>
+
+      <p>Chave PIX:</p>
+      <input type="text" value="COLOQUE_SUA_CHAVE_PIX_AQUI" readonly>
+
+      <p>WhatsApp para envio do comprovante:</p>
+      <input type="text" value="COLOQUE_SEU_WHATSAPP_AQUI" readonly>
+
+      <button onclick="window.open('https://wa.me/55SEUNUMERO', '_blank')">
+        📲 Enviar Comprovante pelo WhatsApp
+      </button>
+
+      <p class="aviso">
+        Após confirmar o pagamento, o usuário recebe o código Premium para liberar os recursos avançados.
+      </p>
+    </div>
   </section>
 
   <section class="card pagina" id="cadastro">
