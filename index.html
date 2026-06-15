@@ -6,7 +6,7 @@
 
   <title>BoxTimer Pro Community</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260615">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -423,8 +423,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<script src="firebase.js"></script>
-<script src="script.js"></script>
+<script src="firebase.js?v=20260615"></script>
+<script src="script.js?v=20260615"></script>
 
 <script>
 function copiarPix() {
@@ -443,10 +443,13 @@ function copiarPix() {
     .catch(() => alert("Não foi possível copiar o PIX."));
 }
 
+/* Remove cache antigo do PWA para carregar os arquivos novos */
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./service-worker.js")
-    .then(() => console.log("Service Worker registrado"))
-    .catch(err => console.log(err));
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  });
 }
 </script>
 
