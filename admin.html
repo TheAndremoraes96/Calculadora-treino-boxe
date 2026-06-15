@@ -4,57 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Premium - BoxTimer Pro</title>
-
-  <link rel="stylesheet" href="./style.css?v=20260618">
+  <link rel="stylesheet" href="./style.css?v=20260619">
 </head>
-
 <body>
 <div class="container">
-
 <header>
   <h1>🔐 Admin Premium</h1>
-  <p>Gerador de códigos Premium do BoxTimer Pro.</p>
+  <p>Gerador e painel de assinantes Premium do BoxTimer Pro.</p>
 </header>
-
 <section class="card pagina">
   <h2>Gerar Código Premium</h2>
-
-  <p class="aviso">
-    Área administrativa. Use somente após confirmar o pagamento PIX.
-  </p>
-
+  <p class="aviso">Área administrativa. Use somente após confirmar o pagamento PIX.</p>
   <input id="senhaAdmin" type="password" placeholder="Senha administrativa">
   <input id="novoPremiumNome" placeholder="Nome do assinante">
   <input id="novoPremiumEmail" type="email" placeholder="E-mail do assinante">
-
   <select id="novoPremiumPlano">
     <option value="mensal">Mensal</option>
     <option value="trimestral">Trimestral</option>
     <option value="anual">Anual</option>
     <option value="cortesia">Cortesia</option>
   </select>
-
   <button onclick="gerarChavePremiumAdmin()">🔑 Gerar Código Premium</button>
-
   <div id="codigoPremiumGerado"></div>
 </section>
-
+<section class="card pagina">
+  <h2>📋 Painel de Assinantes</h2>
+  <p class="aviso">Digite a senha administrativa e clique em carregar para ver assinantes ativos, vencidos e desativados.</p>
+  <input id="senhaPainelAdmin" type="password" placeholder="Senha administrativa">
+  <button onclick="carregarAssinantesPremium()">🔄 Carregar Assinantes</button>
+  <div class="dashboard-grid">
+    <div class="stat"><h3 id="assinantesTotal">0</h3><p>Total</p></div>
+    <div class="stat"><h3 id="assinantesAtivos">0</h3><p>Ativos</p></div>
+    <div class="stat"><h3 id="assinantesVencidos">0</h3><p>Vencidos</p></div>
+    <div class="stat"><h3 id="assinantesInativos">0</h3><p>Inativos</p></div>
+  </div>
+  <div id="listaAssinantesPremium"></div>
+</section>
 <section class="card pagina">
   <h2>Como usar</h2>
   <p>1. Confirme o pagamento do assinante.</p>
   <p>2. Digite a senha administrativa.</p>
   <p>3. Informe nome, e-mail e plano.</p>
   <p>4. Gere o código e envie para o assinante.</p>
+  <p>5. O assinante ativa no app usando o mesmo e-mail + código gerado.</p>
 </section>
-
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-<script src="./firebase.js?v=20260618"></script>
-<script src="./admin.js?v=20260618"></script>
-
+<script src="./firebase.js?v=20260619"></script>
+<script src="./admin.js?v=20260619"></script>
 </body>
 </html>

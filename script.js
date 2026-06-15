@@ -24,6 +24,17 @@ function preencherCampo(id, valorCampo) {
 
 const CODIGO_CORTESIA_PREMIUM = "BOXTIMER2026";
 
+function obterDeviceIdPremium() {
+    let deviceId = localStorage.getItem("premiumDeviceId");
+
+    if (!deviceId) {
+        deviceId = "DEV-" + Math.random().toString(36).substring(2, 10).toUpperCase() + "-" + Date.now();
+        localStorage.setItem("premiumDeviceId", deviceId);
+    }
+
+    return deviceId;
+}
+
 function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
 }
@@ -32,10 +43,11 @@ function verificarPremium() {
     const status = document.getElementById("statusPremium");
     const email = localStorage.getItem("premiumEmail") || "";
     const plano = localStorage.getItem("premiumPlano") || "";
+    const validade = localStorage.getItem("premiumValidade") || "";
 
     if (status) {
         status.innerHTML = premiumAtivo()
-            ? `<p>✅ Premium ativo.${email ? `<br><strong>E-mail:</strong> ${email}` : ""}${plano ? `<br><strong>Plano:</strong> ${plano}` : ""}</p>`
+            ? `<p>✅ Premium ativo.${email ? `<br><strong>E-mail:</strong> ${email}` : ""}${plano ? `<br><strong>Plano:</strong> ${plano}` : ""}${validade ? `<br><strong>Validade:</strong> ${new Date(validade).toLocaleDateString("pt-BR")}` : ""}</p>`
             : "<p>🔒 Premium não ativo.</p>";
     }
 
@@ -43,9 +55,60 @@ function verificarPremium() {
     carregarHistoricoAvaliacoes();
 }
 
+async function validarPremiumAtivo() {
+    const codigo = localStorage.getItem("premiumCodigo") || "";
+    const email = localStorage.getItem("premiumEmail") || "";
+    const deviceId = localStorage.getItem("premiumDeviceId") || "";
+
+    if (!premiumAtivo()) return;
+
+    if (codigo === CODIGO_CORTESIA_PREMIUM) {
+        verificarPremium();
+        return;
+    }
+
+    if (!codigo || !email || typeof db === "undefined" || !db.collection) return;
+
+    try {
+        const doc = await db.collection("premiumKeys").doc(codigo).get();
+
+        if (!doc.exists) {
+            desativarPremiumSilencioso();
+            alert("Seu Premium foi desativado porque o código não existe mais.");
+            return;
+        }
+
+        const chave = doc.data();
+
+        if (!chave.ativo) {
+            desativarPremiumSilencioso();
+            alert("Seu Premium foi desativado porque sua assinatura está inativa.");
+            return;
+        }
+
+        if (chave.dataExpiracao && new Date() > new Date(chave.dataExpiracao)) {
+            await db.collection("premiumKeys").doc(codigo).update({ ativo: false, status: "vencido" });
+            desativarPremiumSilencioso();
+            alert("Seu Premium expirou. Renove sua assinatura.");
+            return;
+        }
+
+        if (chave.activationDeviceId && deviceId && chave.activationDeviceId !== deviceId) {
+            desativarPremiumSilencioso();
+            alert("Este código Premium já está vinculado a outro dispositivo.");
+            return;
+        }
+
+        verificarPremium();
+    } catch (erro) {
+        console.error("Erro ao validar Premium ativo:", erro);
+    }
+}
+
 async function ativarPremium() {
     const email = valor("premiumEmail").toLowerCase().trim();
     const codigo = valor("premiumCodigo").toUpperCase().trim();
+    const deviceId = obterDeviceIdPremium();
 
     if (!codigo) {
         alert("Digite o código Premium.");
@@ -57,6 +120,7 @@ async function ativarPremium() {
         localStorage.setItem("premiumEmail", email || "cortesia");
         localStorage.setItem("premiumPlano", "cortesia");
         localStorage.setItem("premiumCodigo", CODIGO_CORTESIA_PREMIUM);
+        localStorage.removeItem("premiumValidade");
 
         verificarPremium();
         alert("Premium ativado com código de cortesia.");
@@ -84,7 +148,7 @@ async function ativarPremium() {
         const chave = doc.data();
 
         if (!chave.ativo) {
-            alert("Este código Premium está desativado.");
+            alert("Este código Premium está desativado ou vencido.");
             return;
         }
 
@@ -93,25 +157,41 @@ async function ativarPremium() {
             return;
         }
 
-        if (chave.dataExpiracao) {
-            const hoje = new Date();
-            const expiracao = new Date(chave.dataExpiracao);
+        if (chave.dataExpiracao && new Date() > new Date(chave.dataExpiracao)) {
+            await db.collection("premiumKeys").doc(codigo).update({ ativo: false, status: "vencido" });
+            alert("Este código Premium expirou.");
+            return;
+        }
 
-            if (hoje > expiracao) {
-                alert("Este código Premium expirou.");
-                return;
-            }
+        if (chave.activationDeviceId && chave.activationDeviceId !== deviceId) {
+            alert("Este código já está vinculado a outro dispositivo.");
+            return;
         }
 
         await db.collection("premiumKeys").doc(codigo).update({
             usado: true,
+            status: "ativo",
+            activationDeviceId: deviceId,
             ultimoUso: new Date().toISOString()
         });
+
+        await db.collection("assinantes").doc(codigo).set({
+            codigo,
+            nome: chave.nome || "",
+            email,
+            plano: chave.plano || "mensal",
+            ativo: true,
+            status: "ativo",
+            dataCriacao: chave.dataCriacao || new Date().toISOString(),
+            dataExpiracao: chave.dataExpiracao || "",
+            ultimoUso: new Date().toISOString()
+        }, { merge: true });
 
         localStorage.setItem("premiumAtivo", "sim");
         localStorage.setItem("premiumEmail", email);
         localStorage.setItem("premiumPlano", chave.plano || "mensal");
         localStorage.setItem("premiumCodigo", codigo);
+        localStorage.setItem("premiumValidade", chave.dataExpiracao || "");
 
         verificarPremium();
         alert("Premium ativado com sucesso!");
@@ -121,13 +201,17 @@ async function ativarPremium() {
     }
 }
 
-function desativarPremium() {
+function desativarPremiumSilencioso() {
     localStorage.removeItem("premiumAtivo");
     localStorage.removeItem("premiumEmail");
     localStorage.removeItem("premiumPlano");
     localStorage.removeItem("premiumCodigo");
-
+    localStorage.removeItem("premiumValidade");
     verificarPremium();
+}
+
+function desativarPremium() {
+    desativarPremiumSilencioso();
     alert("Premium desativado.");
 }
 
@@ -1155,6 +1239,7 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarEventos();
     atualizarDashboardProfissional();
     verificarPremium();
+    validarPremiumAtivo();
 
     setTimeout(() => {
         carregarAtletasTempoReal();
@@ -1187,6 +1272,7 @@ window.excluirAvaliacaoHistorico = excluirAvaliacaoHistorico;
 
 window.ativarPremium = ativarPremium;
 window.desativarPremium = desativarPremium;
+window.validarPremiumAtivo = validarPremiumAtivo;
 
 window.cadastrarAluno = cadastrarAluno;
 window.carregarAlunos = carregarAlunos;
@@ -1233,4 +1319,4 @@ window.testarFirebase = function () {
     });
 };
 
-console.log("✅ BoxTimer Pro final com Premium separado carregado com sucesso.");
+console.log("✅ BoxTimer Pro v1.1 com assinantes Premium carregado com sucesso.");
