@@ -95,19 +95,39 @@
 
       <h3>💰 Pagamento PIX</h3>
 
-      <p>Chave PIX:</p>
-      <input type="text" value="COLOQUE_SUA_CHAVE_PIX_AQUI" readonly>
+      <p><strong>Chave PIX:</strong></p>
 
-      <p>WhatsApp para envio do comprovante:</p>
-      <input type="text" value="COLOQUE_SEU_WHATSAPP_AQUI" readonly>
+      <input
+        id="pixKey"
+        type="text"
+        value="COLOQUE_SUA_CHAVE_PIX_AQUI"
+        readonly
+      >
+
+      <button onclick="copiarPix()">
+        📋 Copiar Chave PIX
+      </button>
+
+      <p><strong>WhatsApp para envio do comprovante:</strong></p>
+
+      <input
+        type="text"
+        value="COLOQUE_SEU_WHATSAPP_AQUI"
+        readonly
+      >
 
       <button onclick="window.open('https://wa.me/55SEUNUMERO', '_blank')">
         📲 Enviar Comprovante pelo WhatsApp
       </button>
 
-      <p class="aviso">
-        Após confirmar o pagamento, o usuário recebe o código Premium para liberar os recursos avançados.
-      </p>
+      <div class="perfil-box">
+        <h3>Como funciona?</h3>
+
+        <p>1️⃣ Realize o pagamento via PIX.</p>
+        <p>2️⃣ Envie o comprovante pelo WhatsApp.</p>
+        <p>3️⃣ Após a confirmação, você recebe o código Premium.</p>
+        <p>4️⃣ Use o código na área Premium para liberar os recursos avançados.</p>
+      </div>
     </div>
   </section>
 
@@ -404,6 +424,22 @@
 <script src="script.js"></script>
 
 <script>
+function copiarPix() {
+  const pix = document.getElementById("pixKey");
+
+  if (!pix) {
+    alert("Chave PIX não encontrada.");
+    return;
+  }
+
+  pix.select();
+  pix.setSelectionRange(0, 99999);
+
+  navigator.clipboard.writeText(pix.value)
+    .then(() => alert("Chave PIX copiada!"))
+    .catch(() => alert("Não foi possível copiar o PIX."));
+}
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./service-worker.js")
     .then(() => console.log("Service Worker registrado"))
