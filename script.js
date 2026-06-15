@@ -20,10 +20,6 @@ function preencherCampo(id, valorCampo) {
     }
 }
 
-/* ============================
-   PREMIUM
-============================ */
-
 function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
 }
@@ -67,11 +63,9 @@ function exigirPremium() {
     return true;
 }
 
-/* ============================
-   CADASTRO
-============================ */
-
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
+let atletasFirebase = [];
+let unsubscribeAtletas = null;
 
 function salvarCadastro() {
     cadastro = {
@@ -108,7 +102,7 @@ function salvarCadastro() {
             .add(cadastro)
             .then(() => {
                 alert("Cadastro salvo com sucesso no Firebase!");
-                carregarAtletasFirebase();
+                carregarAtletas();
             })
             .catch((erro) => {
                 console.error("Erro ao salvar cadastro:", erro);
@@ -145,12 +139,6 @@ function carregarCadastro() {
     `;
 }
 
-/* ============================
-   MEUS ATLETAS FIREBASE
-============================ */
-
-let atletasFirebase = [];
-
 function carregarAtletasFirebase() {
     const area = document.getElementById("listaAtletasFirebase");
     if (!area) return;
@@ -174,16 +162,51 @@ function carregarAtletasFirebase() {
                 });
             });
 
-            atletasFirebase.sort((a, b) =>
-                String(b.data || "").localeCompare(String(a.data || ""))
-            );
-
+            atletasFirebase.sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
             mostrarAtletas(atletasFirebase);
+            atualizarDashboardProfissional();
         })
         .catch((erro) => {
             console.error("Erro ao carregar atletas:", erro);
             area.innerHTML = "<p>Erro ao carregar atletas.</p>";
         });
+}
+
+function carregarAtletasTempoReal() {
+    const area = document.getElementById("listaAtletasFirebase");
+    if (!area) return;
+
+    if (typeof db === "undefined" || !db.collection) {
+        area.innerHTML = "<p>Firebase não conectado.</p>";
+        return;
+    }
+
+    if (unsubscribeAtletas) return;
+
+    area.innerHTML = "<p>Sincronizando atletas em tempo real...</p>";
+
+    unsubscribeAtletas = db.collection("cadastros")
+        .onSnapshot((snapshot) => {
+            atletasFirebase = [];
+
+            snapshot.forEach((doc) => {
+                atletasFirebase.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+
+            atletasFirebase.sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
+            mostrarAtletas(atletasFirebase);
+            atualizarDashboardProfissional();
+        }, (erro) => {
+            console.error("Erro no tempo real:", erro);
+            area.innerHTML = "<p>Erro ao sincronizar atletas.</p>";
+        });
+}
+
+function carregarAtletas() {
+    carregarAtletasFirebase();
 }
 
 function mostrarAtletas(lista) {
@@ -221,7 +244,10 @@ function pesquisarAtletas() {
     }
 
     const filtrados = atletasFirebase.filter((atleta) =>
-        String(atleta.nome || "").toLowerCase().includes(termo)
+        String(atleta.nome || "").toLowerCase().includes(termo) ||
+        String(atleta.cidade || "").toLowerCase().includes(termo) ||
+        String(atleta.modalidade || "").toLowerCase().includes(termo) ||
+        String(atleta.objetivo || "").toLowerCase().includes(termo)
     );
 
     mostrarAtletas(filtrados);
@@ -260,17 +286,13 @@ function excluirAtletaFirebase(id) {
         .delete()
         .then(() => {
             alert("Atleta excluído com sucesso.");
-            carregarAtletasFirebase();
+            carregarAtletas();
         })
         .catch((erro) => {
             console.error("Erro ao excluir atleta:", erro);
             alert("Erro ao excluir atleta.");
         });
 }
-
-/* ============================
-   TERMO
-============================ */
 
 function aceitarTermo() {
     const aceite = document.getElementById("aceiteTermo");
@@ -297,10 +319,6 @@ function carregarTermo() {
         if (status) status.innerHTML = "<p>✅ Termo já aceito.</p>";
     }
 }
-
-/* ============================
-   AVALIAÇÃO
-============================ */
 
 let ultimaAvaliacao = null;
 
@@ -350,12 +368,7 @@ function gerarAvaliacao() {
     if (objetivo === "emagrecimento") caloriasMeta -= 400;
     if (objetivo === "performance") caloriasMeta += 150;
 
-    const proteinas = objetivo === "emagrecimento"
-        ? peso * 2.2
-        : objetivo === "performance"
-            ? peso * 1.8
-            : peso * 2.0;
-
+    const proteinas = objetivo === "emagrecimento" ? peso * 2.2 : objetivo === "performance" ? peso * 1.8 : peso * 2.0;
     const gorduras = objetivo === "emagrecimento" ? peso * 0.8 : peso * 0.9;
 
     let carboidratos = (caloriasMeta - ((proteinas * 4) + (gorduras * 9))) / 4;
@@ -434,6 +447,7 @@ function salvarAvaliacaoHistorico() {
     localStorage.setItem("historicoAvaliacoes", JSON.stringify(historico));
 
     carregarHistoricoAvaliacoes();
+    atualizarDashboardProfissional();
 
     if (typeof db !== "undefined" && db.collection) {
         db.collection("avaliacoes")
@@ -484,16 +498,14 @@ function excluirAvaliacaoHistorico(id) {
     historico = historico.filter(av => av.id !== id);
     localStorage.setItem("historicoAvaliacoes", JSON.stringify(historico));
     carregarHistoricoAvaliacoes();
+    atualizarDashboardProfissional();
 }
 
 function limparHistoricoAvaliacoes() {
     localStorage.removeItem("historicoAvaliacoes");
     carregarHistoricoAvaliacoes();
+    atualizarDashboardProfissional();
 }
-
-/* ============================
-   ALIMENTAÇÃO
-============================ */
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
     const economico = orcamento === "economico";
@@ -538,10 +550,6 @@ function formatarObjetivo(objetivo) {
     if (objetivo === "manutencao") return "Manutenção";
     return "Manutenção";
 }
-
-/* ============================
-   TREINADOR
-============================ */
 
 let alunos = JSON.parse(localStorage.getItem("alunosTreinador")) || [];
 
@@ -607,10 +615,6 @@ function limparAlunos() {
     carregarAlunos();
 }
 
-/* ============================
-   TIMER
-============================ */
-
 let timerInterval = null;
 let tempoAtual = 180;
 let roundAtualNumero = 1;
@@ -674,10 +678,6 @@ function tocarCampainha() {
     } catch (e) {}
 }
 
-/* ============================
-   FEED
-============================ */
-
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
 function publicarAtividade() {
@@ -705,7 +705,7 @@ function publicarAtividade() {
     atividades.unshift(atividade);
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
     carregarFeed();
-    atualizarDashboard();
+    atualizarDashboardProfissional();
 }
 
 function carregarFeed() {
@@ -745,12 +745,8 @@ function excluirAtividade(id) {
     atividades = atividades.filter(a => a.id !== id);
     localStorage.setItem("atividadesBoxTimer", JSON.stringify(atividades));
     carregarFeed();
-    atualizarDashboard();
+    atualizarDashboardProfissional();
 }
-
-/* ============================
-   EVENTOS
-============================ */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -836,9 +832,7 @@ function excluirTodosEventos() {
     carregarEventos();
 }
 
-/* ============================
-   DASHBOARD
-============================ */
+let graficoEvolucao = null;
 
 function atualizarDashboard() {
     const totalTreinos = atividades.length;
@@ -852,9 +846,113 @@ function atualizarDashboard() {
     atualizarTexto("totalRounds", totalRounds);
 }
 
-/* ============================
-   SATISFAÇÃO / BACKUP / PIX
-============================ */
+function calcularIMCAtleta(atleta) {
+    const peso = Number(atleta.peso) || 0;
+    const altura = Number(atleta.altura) || 0;
+
+    if (!peso || !altura) return 0;
+
+    return peso / (altura * altura);
+}
+
+function atualizarDashboardProfissional() {
+    const totalAtletas = atletasFirebase.length;
+
+    const pesosValidos = atletasFirebase
+        .map(a => Number(a.peso) || 0)
+        .filter(p => p > 0);
+
+    const pesoMedioValor = pesosValidos.length
+        ? pesosValidos.reduce((soma, peso) => soma + peso, 0) / pesosValidos.length
+        : 0;
+
+    const imcsValidos = atletasFirebase
+        .map(calcularIMCAtleta)
+        .filter(imc => imc > 0);
+
+    const imcMedioValor = imcsValidos.length
+        ? imcsValidos.reduce((soma, imc) => soma + imc, 0) / imcsValidos.length
+        : 0;
+
+    const objetivos = {};
+
+    atletasFirebase.forEach(atleta => {
+        const objetivo = atleta.objetivo || "manutencao";
+        objetivos[objetivo] = (objetivos[objetivo] || 0) + 1;
+    });
+
+    let objetivoMaisComum = "-";
+
+    if (Object.keys(objetivos).length > 0) {
+        objetivoMaisComum = Object.keys(objetivos).reduce((a, b) =>
+            objetivos[a] > objetivos[b] ? a : b
+        );
+    }
+
+    atualizarTexto("totalAtletas", totalAtletas);
+    atualizarTexto("pesoMedio", `${pesoMedioValor.toFixed(1)} kg`);
+    atualizarTexto("imcMedio", imcMedioValor.toFixed(2));
+    atualizarTexto("objetivoMaisComum", formatarObjetivo(objetivoMaisComum));
+
+    atualizarDashboard();
+    gerarGraficoEvolucao();
+}
+
+function gerarGraficoEvolucao() {
+    const canvas = document.getElementById("graficoEvolucao");
+    if (!canvas || typeof Chart === "undefined") return;
+
+    const historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
+
+    const dados = historico.slice().reverse();
+
+    const labels = dados.map(item => item.data || "Sem data");
+    const pesos = dados.map(item => Number(item.peso) || 0);
+    const imcs = dados.map(item => Number(item.imc) || 0);
+
+    if (graficoEvolucao) {
+        graficoEvolucao.destroy();
+    }
+
+    graficoEvolucao = new Chart(canvas, {
+        type: "line",
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: "Peso",
+                    data: pesos,
+                    tension: 0.3
+                },
+                {
+                    label: "IMC",
+                    data: imcs,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "#ffffff"
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: "#ffffff" },
+                    grid: { color: "#333333" }
+                },
+                y: {
+                    ticks: { color: "#ffffff" },
+                    grid: { color: "#333333" }
+                }
+            }
+        }
+    });
+}
 
 function salvarSatisfacao() {
     const nota = valor("notaApp");
@@ -908,34 +1006,28 @@ function copiarPix() {
         .catch(() => alert("Não foi possível copiar o PIX."));
 }
 
-/* ============================
-   INICIALIZAÇÃO
-============================ */
-
 document.addEventListener("DOMContentLoaded", () => {
     carregarCadastro();
     carregarTermo();
     reiniciarTimer();
     carregarFeed();
     carregarEventos();
-    atualizarDashboard();
+    atualizarDashboardProfissional();
     verificarPremium();
 
     setTimeout(() => {
-        carregarAtletasFirebase();
+        carregarAtletasTempoReal();
+        carregarAtletas();
     }, 1000);
 });
-
-/* ============================
-   FUNÇÕES GLOBAIS
-============================ */
 
 window.salvarCadastro = salvarCadastro;
 window.salvarAtleta = salvarCadastro;
 
 window.carregarCadastro = carregarCadastro;
 window.carregarAtletasFirebase = carregarAtletasFirebase;
-window.carregarAtletas = carregarAtletasFirebase;
+window.carregarAtletasTempoReal = carregarAtletasTempoReal;
+window.carregarAtletas = carregarAtletas;
 
 window.pesquisarAtletas = pesquisarAtletas;
 window.carregarAtletaNoFormulario = carregarAtletaNoFormulario;
@@ -975,6 +1067,7 @@ window.limparTodasInscricoes = limparTodasInscricoes;
 window.excluirTodosEventos = excluirTodosEventos;
 
 window.atualizarDashboard = atualizarDashboard;
+window.atualizarDashboardProfissional = atualizarDashboardProfissional;
 window.salvarSatisfacao = salvarSatisfacao;
 window.exportarBackup = exportarBackup;
 window.copiarPix = copiarPix;
@@ -996,4 +1089,4 @@ window.testarFirebase = function () {
     });
 };
 
-console.log("✅ script.js carregado corretamente - BoxTimer Pro");
+console.log("✅ BoxTimer Pro final carregado com sucesso.");
