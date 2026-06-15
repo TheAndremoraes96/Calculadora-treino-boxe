@@ -6,7 +6,7 @@
 
   <title>BoxTimer Pro Community</title>
 
-  <link rel="stylesheet" href="./style.css?v=20260617">
+  <link rel="stylesheet" href="./style.css?v=20260618">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" href="./icon-192.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
@@ -68,10 +68,34 @@
 
   <p><strong>Sugestão de preço:</strong> R$ 14,90/mês</p>
 
+  <h3>🔓 Ativar Premium</h3>
+
+  <input id="premiumEmail" type="email" placeholder="E-mail do assinante">
+  <input id="premiumCodigo" placeholder="Código Premium recebido">
+
   <button onclick="ativarPremium()">🔓 Ativar Premium</button>
   <button onclick="desativarPremium()">🔒 Desativar Premium</button>
 
   <div id="statusPremium"></div>
+
+  <hr>
+
+  <h3>🔐 Gerar Código Premium</h3>
+  <p class="aviso">Área administrativa. Use apenas após confirmar o PIX do assinante.</p>
+
+  <input id="novoPremiumNome" placeholder="Nome do assinante">
+  <input id="novoPremiumEmail" type="email" placeholder="E-mail do assinante">
+
+  <select id="novoPremiumPlano">
+    <option value="mensal">Mensal</option>
+    <option value="trimestral">Trimestral</option>
+    <option value="anual">Anual</option>
+    <option value="cortesia">Cortesia</option>
+  </select>
+
+  <button onclick="gerarChavePremium()">🔑 Gerar Chave Premium</button>
+
+  <div id="codigoPremiumGerado"></div>
 </section>
 
 <section class="card pagina" id="assinatura">
@@ -396,8 +420,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script src="./firebase.js?v=20260617"></script>
-<script src="./script.js?v=20260617"></script>
+<script src="./firebase.js?v=20260618"></script>
+<script src="./script.js?v=20260618"></script>
 
 <script>
 if ("serviceWorker" in navigator) {
