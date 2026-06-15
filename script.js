@@ -20,9 +20,7 @@ function preencherCampo(id, valorCampo) {
     }
 }
 
-/* ============================
-   PREMIUM
-============================ */
+/* PREMIUM */
 
 function premiumAtivo() {
     return localStorage.getItem("premiumAtivo") === "sim";
@@ -67,9 +65,7 @@ function exigirPremium() {
     return true;
 }
 
-/* ============================
-   CADASTRO / FIREBASE
-============================ */
+/* CADASTRO / FIREBASE */
 
 let cadastro = JSON.parse(localStorage.getItem("cadastroAtleta")) || {};
 let atletasFirebase = [];
@@ -308,9 +304,7 @@ function excluirAtletaFirebase(id) {
         });
 }
 
-/* ============================
-   TERMO
-============================ */
+/* TERMO */
 
 function aceitarTermo() {
     const aceite = document.getElementById("aceiteTermo");
@@ -338,9 +332,7 @@ function carregarTermo() {
     }
 }
 
-/* ============================
-   AVALIAÇÃO / HISTÓRICO
-============================ */
+/* AVALIAÇÃO */
 
 let ultimaAvaliacao = null;
 
@@ -534,9 +526,7 @@ function limparHistoricoAvaliacoes() {
     atualizarDashboardProfissional();
 }
 
-/* ============================
-   ALIMENTAÇÃO
-============================ */
+/* ALIMENTAÇÃO */
 
 function gerarPlanoAlimentar(objetivo, orcamento) {
     const economico = orcamento === "economico";
@@ -582,9 +572,7 @@ function formatarObjetivo(objetivo) {
     return "Manutenção";
 }
 
-/* ============================
-   TREINADOR
-============================ */
+/* TREINADOR */
 
 let alunos = JSON.parse(localStorage.getItem("alunosTreinador")) || [];
 
@@ -650,9 +638,7 @@ function limparAlunos() {
     carregarAlunos();
 }
 
-/* ============================
-   TIMER
-============================ */
+/* TIMER */
 
 let timerInterval = null;
 let tempoAtual = 180;
@@ -717,9 +703,7 @@ function tocarCampainha() {
     } catch (e) {}
 }
 
-/* ============================
-   FEED / ATIVIDADES
-============================ */
+/* FEED */
 
 let atividades = JSON.parse(localStorage.getItem("atividadesBoxTimer")) || [];
 
@@ -792,9 +776,7 @@ function excluirAtividade(id) {
     atualizarDashboardProfissional();
 }
 
-/* ============================
-   EVENTOS
-============================ */
+/* EVENTOS */
 
 let eventos = JSON.parse(localStorage.getItem("eventosBoxTimer")) || [];
 
@@ -881,9 +863,7 @@ function excluirTodosEventos() {
     carregarEventos();
 }
 
-/* ============================
-   DASHBOARD PROFISSIONAL
-============================ */
+/* DASHBOARD */
 
 let graficoEvolucao = null;
 
@@ -953,14 +933,26 @@ function atualizarDashboardProfissional() {
 
 function gerarGraficoEvolucao() {
     const canvas = document.getElementById("graficoEvolucao");
-    if (!canvas || typeof Chart === "undefined") return;
 
-    const historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
-    const dados = historico.slice().reverse();
+    if (!canvas || typeof Chart === "undefined") {
+        console.log("Canvas ou Chart não encontrado.");
+        return;
+    }
 
-    const labels = dados.map((item) => item.data || "Sem data");
-    const pesos = dados.map((item) => Number(item.peso) || 0);
-    const imcs = dados.map((item) => Number(item.imc) || 0);
+    let historico = JSON.parse(localStorage.getItem("historicoAvaliacoes")) || [];
+    historico = historico.slice().reverse();
+
+    if (historico.length === 0 && atletasFirebase.length > 0) {
+        historico = atletasFirebase.map((atleta) => ({
+            data: atleta.data || atleta.nome || "Atleta",
+            peso: Number(atleta.peso) || 0,
+            imc: calcularIMCAtleta(atleta).toFixed(2)
+        }));
+    }
+
+    const labels = historico.map((item, index) => item.data || `Registro ${index + 1}`);
+    const pesos = historico.map((item) => Number(item.peso) || 0);
+    const imcs = historico.map((item) => Number(item.imc) || 0);
 
     if (graficoEvolucao) {
         graficoEvolucao.destroy();
@@ -972,23 +964,38 @@ function gerarGraficoEvolucao() {
             labels,
             datasets: [
                 {
-                    label: "Peso",
+                    label: "Peso (kg)",
                     data: pesos,
-                    tension: 0.3
+                    borderColor: "#00cec9",
+                    backgroundColor: "#00cec9",
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    tension: 0.4
                 },
                 {
                     label: "IMC",
                     data: imcs,
-                    tension: 0.3
+                    borderColor: "#ff7675",
+                    backgroundColor: "#ff7675",
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    tension: 0.4
                 }
             ]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     labels: {
-                        color: "#ffffff"
+                        color: "#ffffff",
+                        font: {
+                            size: 14,
+                            weight: "bold"
+                        }
                     }
                 }
             },
@@ -998,17 +1005,18 @@ function gerarGraficoEvolucao() {
                     grid: { color: "#333333" }
                 },
                 y: {
+                    beginAtZero: false,
                     ticks: { color: "#ffffff" },
                     grid: { color: "#333333" }
                 }
             }
         }
     });
+
+    console.log("✅ Gráfico atualizado com sucesso.");
 }
 
-/* ============================
-   SATISFAÇÃO / BACKUP / PIX
-============================ */
+/* SATISFAÇÃO / BACKUP / PIX */
 
 function salvarSatisfacao() {
     const nota = valor("notaApp");
@@ -1062,9 +1070,7 @@ function copiarPix() {
         .catch(() => alert("Não foi possível copiar o PIX."));
 }
 
-/* ============================
-   INICIALIZAÇÃO
-============================ */
+/* INICIALIZAÇÃO */
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarCadastro();
@@ -1081,9 +1087,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
 });
 
-/* ============================
-   FUNÇÕES GLOBAIS
-============================ */
+/* FUNÇÕES GLOBAIS */
 
 window.salvarCadastro = salvarCadastro;
 window.salvarAtleta = salvarCadastro;
@@ -1132,6 +1136,7 @@ window.excluirTodosEventos = excluirTodosEventos;
 
 window.atualizarDashboard = atualizarDashboard;
 window.atualizarDashboardProfissional = atualizarDashboardProfissional;
+window.gerarGraficoEvolucao = gerarGraficoEvolucao;
 window.salvarSatisfacao = salvarSatisfacao;
 window.exportarBackup = exportarBackup;
 window.copiarPix = copiarPix;
