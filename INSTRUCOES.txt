@@ -1,30 +1,56 @@
-BOXTIMER PRO - ATUALIZAÇÃO SEGURA v1.2
+BOXTIMER PRO v2 - PACOTE PARA VENDA COM ADMIN PROTEGIDO
 
-Arquivos para enviar ao GitHub:
+ARQUIVOS PARA ENVIAR AO GITHUB:
 - index.html
 - script.js
 - admin.html
 - admin.js
 
-Senha administrativa:
-André37035515
+ARQUIVO PARA FIREBASE:
+- firestore.rules
 
-Código de cortesia:
+PASSO 1 — GitHub
+1. Extraia este ZIP.
+2. No GitHub, clique em Add file > Upload files.
+3. Envie: index.html, script.js, admin.html, admin.js.
+4. Clique em Commit changes.
+5. Aguarde 2 minutos.
+
+PASSO 2 — Firebase Authentication
+1. Abra Firebase Console.
+2. Vá em Authentication.
+3. Clique em Get started / Começar.
+4. Vá em Sign-in method.
+5. Ative Email/Password.
+6. Vá em Users.
+7. Adicione o usuário administrador:
+   Email: alucasdemoraes96@gmail.com
+   Senha: use uma senha forte que só você sabe.
+8. Salve.
+
+PASSO 3 — Firestore Rules
+1. Vá em Firestore Database > Regras.
+2. Apague as regras atuais.
+3. Cole o conteúdo de firestore.rules.
+4. Clique em Publicar.
+
+PASSO 4 — Teste Admin
+1. Abra:
+   https://theandremoraes96.github.io/Calculadora-treino-boxe/admin.html
+2. Faça login com:
+   Email: alucasdemoraes96@gmail.com
+   Senha: a senha criada no Firebase Authentication
+3. Gere um código Premium.
+
+PASSO 5 — Teste Cliente
+1. Abra o app normal.
+2. Vá em Premium.
+3. Use o e-mail do assinante e o código gerado.
+4. Clique em Ativar Premium.
+
+CÓDIGO DE CORTESIA:
 8563
 
-Regras do Firebase:
-Copie o conteúdo de firestore.rules e cole em:
-Firebase Console > Firestore Database > Regras > Publicar
-
-Depois de subir os arquivos:
-1. Aguarde 1 a 2 minutos.
-2. Abra o app normal.
-3. Teste Premium com:
-   E-mail: teste@email.com
-   Código: 8563
-4. Abra admin.html.
-5. Gere uma chave usando:
-   Senha administrativa: André37035515
-
 IMPORTANTE:
-Esta versão é um MVP endurecido. Para segurança profissional real, o próximo passo obrigatório é Firebase Authentication com usuário administrador por UID.
+A senha "André37035515" não foi colocada no código por segurança. O admin agora usa Firebase Authentication.
+Isso é muito mais seguro do que senha fixa no JavaScript.

@@ -3,39 +3,50 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Cadastros de atletas
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "alucasdemoraes96@gmail.com";
+    }
+
+    // App público: cadastro de atletas
     match /cadastros/{id} {
-      allow read, write: if true;
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
     }
 
-    // Chaves Premium
+    // Premium: usuário pode ler para validar código; somente admin cria/altera/remove
     match /premiumKeys/{codigo} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
     }
 
-    // Assinantes Premium
+    // Assinantes: somente admin gerencia
     match /assinantes/{codigo} {
-      allow read, write: if true;
+      allow read, write: if isAdmin();
     }
 
-    // Avaliações físicas
+    // Avaliações: app pode criar, admin gerencia
     match /avaliacoes/{id} {
-      allow read, write: if true;
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
     }
 
-    // Histórico de avaliações
+    // Histórico
     match /historicoAvaliacoes/{id} {
-      allow read, write: if true;
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
     }
 
     // Feed
     match /feed/{id} {
-      allow read, write: if true;
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
     }
 
     // Eventos
     match /eventos/{id} {
-      allow read, write: if true;
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
     }
 
     // Bloqueia qualquer coleção fora do app
