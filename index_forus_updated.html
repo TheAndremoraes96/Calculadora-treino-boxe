@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ForUs BoxTimer Pro</title>
+
+  <link rel="stylesheet" href="./style.css?v=20260622">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-512.png">
+
+  <meta name="theme-color" content="#ff3b30">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <img
+    src="./icon-512.png"
+    alt="ForUs BoxTimer Pro"
+    style="
+      width:140px;
+      height:140px;
+      display:block;
+      margin:0 auto 20px;
+      border-radius:24px;
+      box-shadow:0 0 25px rgba(255,215,0,.4);
+    "
+  >
+
+  <h1>🥊 ForUs BoxTimer Pro</h1>
+  <p>Treino, nutrição, avaliação física, evolução e comunidade esportiva.</p>
+</header>
+
+<nav class="menu">
+  <a href="#premium">Premium</a>
+  <a href="#assinatura">Assinar</a>
+  <a href="#cadastro">Cadastro</a>
+  <a href="#meusAtletas">Meus Atletas</a>
+  <a href="#termo">Termo</a>
+  <a href="#avaliacao">Avaliação</a>
+  <a href="#treinador">Treinador</a>
+  <a href="#historicoAvaliacoes">Histórico</a>
+  <a href="#timer">Timer</a>
+  <a href="#atividade">Atividade</a>
+  <a href="#feed">Feed</a>
+  <a href="#eventos">Eventos</a>
+  <a href="#dashboard">Dashboard</a>
+  <a href="#satisfacao">Satisfação</a>
+</nav>
+
+<section class="card pagina" id="premium">
+  <h2>💎 Planos ForUs BoxTimer Pro</h2>
+
+  <h3>Plano Gratuito</h3>
+  <ul>
+    <li>✅ Cadastro do atleta</li>
+    <li>✅ Timer de rounds</li>
+    <li>✅ Registro de atividades</li>
+    <li>✅ Feed da comunidade</li>
+    <li>✅ Eventos esportivos</li>
+    <li>✅ Dashboard simples</li>
+  </ul>
+
+  <h3>Plano Premium</h3>
+  <ul>
+    <li>✅ Avaliação física completa</li>
+    <li>✅ Bioimpedância</li>
+    <li>✅ Dobras cutâneas</li>
+    <li>✅ Plano alimentar personalizado</li>
+    <li>✅ Macronutrientes em gramas</li>
+    <li>✅ Histórico de avaliações</li>
+    <li>✅ Área do treinador</li>
+    <li>✅ Dashboard profissional</li>
+  </ul>
+
+  <p><strong>Sugestão de preço:</strong> R$ 14,90/mês</p>
+
+  <h3>🔓 Ativar Premium</h3>
+
+  <input id="premiumEmail" type="email" placeholder="E-mail do assinante">
+  <input id="premiumCodigo" placeholder="Código Premium recebido">
+
+  <button onclick="ativarPremium()">🔓 Ativar Premium</button>
+  <button onclick="desativarPremium()">🔒 Desativar Premium</button>
+
+  <div id="statusPremium"></div>
+</section>
+
+<section class="card pagina" id="assinatura">
+  <h2>💳 Assinar Premium</h2>
+
+  <div class="perfil-box">
+    <h3>🥊 ForUs BoxTimer Pro Premium</h3>
+    <p><strong>Valor:</strong> R$ 14,90/mês</p>
+
+    <ul>
+      <li>✅ Avaliação física completa</li>
+      <li>✅ Dieta personalizada</li>
+      <li>✅ Histórico ilimitado</li>
+      <li>✅ Área do treinador</li>
+      <li>✅ Backup dos dados</li>
+    </ul>
+
+    <h3>💰 Pagamento PIX</h3>
+    <p><strong>Chave PIX:</strong></p>
+
+    <input id="pixKey" type="text" value="d83c8d92-3e39-4d6b-8cc8-6a9333600625" readonly>
+
+    <button onclick="copiarPix()">📋 Copiar Chave PIX</button>
+
+    <p><strong>WhatsApp para envio do comprovante:</strong></p>
+    <input type="text" value="21993084718" readonly>
+
+    <button onclick="window.open('https://wa.me/5521993084718', '_blank')">
+      📲 Enviar Comprovante pelo WhatsApp
+    </button>
+  </div>
+</section>
+
+<section class="card pagina" id="cadastro">
+  <h2>1️⃣ Cadastro do Atleta</h2>
+
+  <input id="nome" placeholder="Nome completo">
+  <input id="idade" type="number" placeholder="Idade">
+
+  <select id="sexo">
+    <option value="">Sexo</option>
+    <option value="masculino">Masculino</option>
+    <option value="feminino">Feminino</option>
+  </select>
+
+  <input id="peso" type="number" step="0.1" placeholder="Peso atual em kg">
+  <input id="altura" type="number" step="0.01" placeholder="Altura em metros. Ex: 1.75">
+  <input id="cidade" placeholder="Cidade">
+
+  <select id="objetivo">
+    <option value="">Objetivo principal</option>
+    <option value="hipertrofia">Hipertrofia</option>
+    <option value="emagrecimento">Emagrecimento</option>
+    <option value="manutencao">Manutenção</option>
+    <option value="performance">Performance</option>
+    <option value="competicao">Competição</option>
+  </select>
+
+  <select id="modalidade">
+    <option value="">Modalidade principal</option>
+    <option>Boxe</option>
+    <option>Corrida</option>
+    <option>Caminhada</option>
+    <option>Musculação</option>
+    <option>HIIT</option>
+    <option>Natação</option>
+    <option>Cross Training</option>
+  </select>
+
+  <textarea id="restricoes" placeholder="Restrições alimentares, alergias ou intolerâncias"></textarea>
+  <textarea id="lesoes" placeholder="Lesões, dores ou limitações físicas"></textarea>
+  <textarea id="medicamentos" placeholder="Medicamentos em uso"></textarea>
+  <textarea id="historico" placeholder="Histórico esportivo"></textarea>
+  <textarea id="preferencias" placeholder="Preferências alimentares"></textarea>
+
+  <input id="horarioAcorda" placeholder="Horário que acorda">
+  <input id="horarioDorme" placeholder="Horário que dorme">
+  <input id="refeicoesDia" type="number" placeholder="Quantidade de refeições por dia">
+  <input id="aguaAtual" type="number" step="0.1" placeholder="Água atual por dia em litros">
+
+  <button onclick="salvarCadastro()">Salvar Cadastro</button>
+
+  <div id="cadastroSalvo"></div>
+</section>
+
+<section class="card pagina" id="meusAtletas">
+  <h2>👥 Meus Atletas</h2>
+
+  <p class="aviso">Lista de atletas salvos no Firebase em tempo real.</p>
+
+  <input id="pesquisaAtleta" placeholder="Pesquisar por nome, cidade, objetivo ou modalidade">
+
+  <button onclick="carregarAtletas()">🔄 Carregar Atletas</button>
+  <button onclick="pesquisarAtletas()">🔍 Pesquisar</button>
+
+  <div id="listaAtletasFirebase"></div>
+</section>
+
+<section class="card pagina" id="termo">
+  <h2>2️⃣ Termo de Responsabilidade</h2>
+
+  <p>
+    Declaro que as informações fornecidas são verdadeiras. Entendo que o BoxTimer Pro Community
+    oferece estimativas educativas sobre treino, nutrição e avaliação física, não substituindo médicos,
+    nutricionistas ou educadores físicos.
+  </p>
+
+  <label class="checkbox-area">
+    <input type="checkbox" id="aceiteTermo">
+    Li e aceito o termo de responsabilidade.
+  </label>
+
+  <button onclick="aceitarTermo()">Aceitar Termo</button>
+
+  <div id="statusTermo"></div>
+</section>
+
+<section class="card pagina" id="avaliacao">
+  <h2>3️⃣ Avaliação Física e Nutricional Premium</h2>
+
+  <p class="aviso">🔒 Esta área faz parte do Plano Premium.</p>
+
+  <h3>📌 Método de Avaliação</h3>
+
+  <div class="metodos-avaliacao">
+    <label><input type="radio" name="metodoAvaliacao" value="Guedes — 3 dobras"> Guedes — 3 dobras</label>
+    <label><input type="radio" name="metodoAvaliacao" value="Bioimpedância" checked> Bioimpedância</label>
+    <label><input type="radio" name="metodoAvaliacao" value="Faulkner — 4 dobras"> Faulkner — 4 dobras</label>
+  </div>
+
+  <h3>🏋️ Rotina de Treino</h3>
+  <input id="frequencia" type="number" placeholder="Treinos por semana">
+  <input id="duracao" type="number" placeholder="Duração média do treino em minutos">
+
+  <h3>⚖️ Dados da Balança / Bioimpedância</h3>
+  <input id="gordura" type="number" step="0.1" placeholder="Gordura corporal %">
+  <input id="massaMuscular" type="number" step="0.1" placeholder="Massa muscular kg">
+  <input id="tmbBio" type="number" placeholder="Metabolismo basal kcal">
+
+  <h3>📏 Dobras Cutâneas</h3>
+  <input id="peitoral" type="number" step="0.1" placeholder="Peitoral mm">
+  <input id="abdomen" type="number" step="0.1" placeholder="Abdômen mm">
+  <input id="coxa" type="number" step="0.1" placeholder="Coxa mm">
+  <input id="triceps" type="number" step="0.1" placeholder="Tríceps mm">
+  <input id="subescapular" type="number" step="0.1" placeholder="Subescapular mm">
+  <input id="suprailiaca" type="number" step="0.1" placeholder="Supra-ilíaca mm">
+  <input id="panturrilha" type="number" step="0.1" placeholder="Panturrilha mm">
+
+  <h3>💰 Orçamento Alimentar</h3>
+  <select id="orcamento">
+    <option value="economico">Econômico</option>
+    <option value="padrao">Padrão</option>
+  </select>
+
+  <button onclick="gerarAvaliacao()">Gerar Avaliação Nutricional</button>
+  <button onclick="salvarAvaliacaoHistorico()">💾 Salvar Avaliação no Histórico</button>
+
+  <div id="resultadoAvaliacao">Ative o Premium para gerar a avaliação completa.</div>
+</section>
+
+<section class="card pagina" id="treinador">
+  <h2>👨‍🏫 Área do Treinador Premium</h2>
+
+  <input id="alunoNome" placeholder="Nome do aluno">
+  <input id="alunoContato" placeholder="Contato do aluno">
+  <input id="alunoPeso" type="number" step="0.1" placeholder="Peso do aluno em kg">
+
+  <select id="alunoObjetivo">
+    <option value="">Objetivo do aluno</option>
+    <option value="hipertrofia">Hipertrofia</option>
+    <option value="emagrecimento">Emagrecimento</option>
+    <option value="manutencao">Manutenção</option>
+    <option value="performance">Performance</option>
+    <option value="competicao">Competição</option>
+  </select>
+
+  <textarea id="alunoObservacoes" placeholder="Observações do treinador"></textarea>
+
+  <button onclick="cadastrarAluno()">➕ Cadastrar Aluno</button>
+  <button onclick="limparAlunos()">🗑️ Limpar Todos os Alunos</button>
+
+  <div id="listaAlunos"></div>
+</section>
+
+<section class="card pagina" id="historicoAvaliacoes">
+  <h2>📊 Histórico de Avaliações Premium</h2>
+
+  <button onclick="carregarHistoricoAvaliacoes()">🔄 Atualizar Histórico</button>
+  <button onclick="limparHistoricoAvaliacoes()">🗑️ Limpar Histórico</button>
+
+  <div id="listaHistoricoAvaliacoes"></div>
+</section>
+
+<section class="card pagina" id="timer">
+  <h2>4️⃣ Timer de Rounds</h2>
+
+  <input id="totalRoundsConfig" type="number" value="12" placeholder="Quantidade de rounds">
+  <input id="tempoRoundConfig" type="number" value="180" placeholder="Tempo do round em segundos">
+  <input id="tempoDescansoConfig" type="number" value="60" placeholder="Descanso em segundos">
+
+  <div class="timer-box">
+    <h3 id="timerStatus">Pronto</h3>
+    <h1 id="timerDisplay">03:00</h1>
+    <p id="roundAtual">Round 1</p>
+  </div>
+
+  <button onclick="iniciarTimer()">▶️ Iniciar</button>
+  <button onclick="pausarTimer()">⏸️ Pausar</button>
+  <button onclick="reiniciarTimer()">🔄 Reiniciar</button>
+</section>
+
+<section class="card pagina" id="atividade">
+  <h2>5️⃣ Registrar Atividade</h2>
+
+  <input id="atividadeNome" placeholder="Nome do atleta">
+
+  <select id="tipoAtividade">
+    <option value="">Tipo de atividade</option>
+    <option>Boxe</option>
+    <option>Sparring</option>
+    <option>Corrida</option>
+    <option>Caminhada</option>
+    <option>Musculação</option>
+    <option>HIIT</option>
+    <option>Natação</option>
+    <option>Cross Training</option>
+  </select>
+
+  <input id="distancia" type="number" step="0.1" placeholder="Distância em km">
+  <input id="tempo" type="number" placeholder="Tempo em minutos">
+  <input id="calorias" type="number" placeholder="Calorias estimadas">
+  <input id="rounds" type="number" placeholder="Rounds">
+  <input id="golpes" type="number" placeholder="Golpes estimados">
+  <input id="carga" placeholder="Carga, séries ou repetições">
+
+  <textarea id="comentarioAtividade" placeholder="Como foi o treino?"></textarea>
+
+  <button onclick="publicarAtividade()">Publicar Atividade</button>
+</section>
+
+<section class="card pagina" id="feed">
+  <h2>6️⃣ Feed da Comunidade</h2>
+  <div id="feedAtividades"></div>
+</section>
+
+<section class="card pagina" id="eventos">
+  <h2>7️⃣ Eventos Esportivos</h2>
+
+  <input id="eventoOrganizador" placeholder="Organizador">
+
+  <select id="eventoTipo">
+    <option value="">Tipo de evento</option>
+    <option>Corrida</option>
+    <option>Caminhada</option>
+    <option>Natação</option>
+    <option>HIIT</option>
+    <option>Boxe</option>
+    <option>Sparring</option>
+    <option>Treino coletivo</option>
+  </select>
+
+  <input id="eventoData" type="date">
+  <input id="eventoHora" type="time">
+  <input id="eventoLocal" placeholder="Local">
+  <input id="eventoMax" type="number" placeholder="Número máximo de participantes">
+  <textarea id="eventoDescricao" placeholder="Descrição do evento"></textarea>
+
+  <button onclick="criarEvento()">Criar Evento</button>
+  <button onclick="limparTodasInscricoes()">🧹 Limpar inscrições</button>
+  <button onclick="excluirTodosEventos()">🗑️ Excluir eventos</button>
+
+  <div id="listaEventos"></div>
+</section>
+
+<section class="card pagina" id="dashboard">
+  <h2>8️⃣ Dashboard Profissional</h2>
+
+  <div class="dashboard-grid">
+    <div class="stat"><h3 id="totalAtletas">0</h3><p>Atletas</p></div>
+    <div class="stat"><h3 id="totalTreinos">0</h3><p>Treinos</p></div>
+    <div class="stat"><h3 id="pesoMedio">0 kg</h3><p>Peso médio</p></div>
+    <div class="stat"><h3 id="imcMedio">0</h3><p>IMC médio</p></div>
+    <div class="stat"><h3 id="totalHoras">0h</h3><p>Horas treinadas</p></div>
+    <div class="stat"><h3 id="totalKm">0 km</h3><p>Distância</p></div>
+    <div class="stat"><h3 id="totalRounds">0</h3><p>Rounds</p></div>
+    <div class="stat"><h3 id="objetivoMaisComum">-</h3><p>Objetivo principal</p></div>
+  </div>
+
+  <h3>📈 Evolução</h3>
+
+  <div class="grafico-container">
+    <canvas id="graficoEvolucao"></canvas>
+  </div>
+
+  <button onclick="atualizarDashboardProfissional()">🔄 Atualizar Dashboard</button>
+  <button onclick="exportarBackup()">📥 Fazer Backup dos Dados</button>
+</section>
+
+<section class="card pagina" id="satisfacao">
+  <h2>9️⃣ Pesquisa de Satisfação</h2>
+
+  <select id="notaApp">
+    <option value="">Nota para o aplicativo</option>
+    <option>⭐</option>
+    <option>⭐⭐</option>
+    <option>⭐⭐⭐</option>
+    <option>⭐⭐⭐⭐</option>
+    <option>⭐⭐⭐⭐⭐</option>
+  </select>
+
+  <textarea id="avaliacaoApp" placeholder="O que você achou do app?"></textarea>
+
+  <button onclick="salvarSatisfacao()">Enviar Avaliação</button>
+
+  <div id="resultadoSatisfacao"></div>
+</section>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="./firebase.js?v=20260622"></script>
+<script src="./script.js?v=20260622"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    registrations.forEach(function(registration) {
+      registration.unregister();
+    });
+  });
+}
+</script>
+
+</body>
+</html>
