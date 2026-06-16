@@ -8,48 +8,68 @@ service cloud.firestore {
         && request.auth.token.email == "alucasdemoraes96@gmail.com";
     }
 
-    // App público: cadastro de atletas
+    function publicPremiumActivationOnly() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(["usado", "status", "activationDeviceId", "ultimoUso"])
+        && resource.data.ativo == true
+        && (
+          !("dataExpiracao" in resource.data)
+          || request.time < timestamp(resource.data.dataExpiracao)
+        );
+    }
+
+    // Cadastro público de atletas.
+    // Público pode criar e ler. Só o admin altera/exclui.
     match /cadastros/{id} {
-      allow read, create: if true;
+      allow read: if true;
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
-    // Premium: usuário pode ler para validar código; somente admin cria/altera/remove
+    // Chaves Premium.
+    // Cliente pode buscar um código específico e ativar somente campos permitidos.
+    // Só admin cria, renova, desativa ou exclui.
     match /premiumKeys/{codigo} {
-      allow read: if true;
-      allow create, update, delete: if isAdmin();
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || publicPremiumActivationOnly();
     }
 
-    // Assinantes: somente admin gerencia
+    // Assinantes: somente admin.
     match /assinantes/{codigo} {
       allow read, write: if isAdmin();
     }
 
-    // Avaliações: app pode criar, admin gerencia
+    // Avaliações.
     match /avaliacoes/{id} {
-      allow read, create: if true;
+      allow read: if true;
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
-    // Histórico
+    // Histórico de avaliações.
     match /historicoAvaliacoes/{id} {
-      allow read, create: if true;
+      allow read: if true;
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
-    // Feed
+    // Feed.
     match /feed/{id} {
-      allow read, create: if true;
+      allow read: if true;
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
-    // Eventos
+    // Eventos.
     match /eventos/{id} {
-      allow read, create: if true;
+      allow read: if true;
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
-    // Bloqueia qualquer coleção fora do app
+    // Bloqueia qualquer coleção fora do app.
     match /{document=**} {
       allow read, write: if false;
     }

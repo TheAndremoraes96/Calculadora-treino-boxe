@@ -1319,4 +1319,4 @@ window.testarFirebase = function () {
     });
 };
 
-console.log("✅ BoxTimer Pro v1.3 venda com Premium validado carregado com sucesso.");
+console.log("✅ BoxTimer Pro v3 produção segura carregado com sucesso.");

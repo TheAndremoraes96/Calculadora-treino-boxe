@@ -1,56 +1,74 @@
-BOXTIMER PRO v2 - PACOTE PARA VENDA COM ADMIN PROTEGIDO
+BOXTIMER PRO v3 - PACOTE DE PRODUÇÃO MAIS SEGURO
 
 ARQUIVOS PARA ENVIAR AO GITHUB:
 - index.html
 - script.js
 - admin.html
 - admin.js
+- gestao-premium-btp.html
 
 ARQUIVO PARA FIREBASE:
 - firestore.rules
 
-PASSO 1 — GitHub
+IMPORTANTE SOBRE SEGURANÇA:
+1. O antigo admin.html foi desativado.
+2. O painel real agora fica em:
+   https://theandremoraes96.github.io/Calculadora-treino-boxe/gestao-premium-btp.html
+3. O painel usa Firebase Authentication.
+4. Não há senha administrativa fixa no JavaScript.
+5. O código de cortesia do app é:
+   8563
+
+PASSO 1 — GITHUB
 1. Extraia este ZIP.
-2. No GitHub, clique em Add file > Upload files.
-3. Envie: index.html, script.js, admin.html, admin.js.
-4. Clique em Commit changes.
-5. Aguarde 2 minutos.
+2. Envie para o GitHub:
+   index.html
+   script.js
+   admin.html
+   admin.js
+   gestao-premium-btp.html
+3. Clique em Commit changes.
+4. Aguarde 2 minutos.
 
-PASSO 2 — Firebase Authentication
-1. Abra Firebase Console.
-2. Vá em Authentication.
-3. Clique em Get started / Começar.
-4. Vá em Sign-in method.
-5. Ative Email/Password.
-6. Vá em Users.
-7. Adicione o usuário administrador:
-   Email: alucasdemoraes96@gmail.com
-   Senha: use uma senha forte que só você sabe.
-8. Salve.
+PASSO 2 — FIREBASE AUTHENTICATION
+1. Firebase Console > Authentication.
+2. Confirme que Email/Senha está ativado.
+3. Confirme que existe o usuário:
+   alucasdemoraes96@gmail.com
+4. Use uma senha forte no Firebase Auth.
 
-PASSO 3 — Firestore Rules
-1. Vá em Firestore Database > Regras.
+PASSO 3 — FIRESTORE RULES
+1. Firebase Console > Firestore Database > Regras.
 2. Apague as regras atuais.
 3. Cole o conteúdo de firestore.rules.
 4. Clique em Publicar.
 
-PASSO 4 — Teste Admin
+PASSO 4 — TESTE ADMIN
 1. Abra:
-   https://theandremoraes96.github.io/Calculadora-treino-boxe/admin.html
+   https://theandremoraes96.github.io/Calculadora-treino-boxe/gestao-premium-btp.html
 2. Faça login com:
-   Email: alucasdemoraes96@gmail.com
-   Senha: a senha criada no Firebase Authentication
+   alucasdemoraes96@gmail.com
+   sua senha do Firebase Auth
 3. Gere um código Premium.
 
-PASSO 5 — Teste Cliente
-1. Abra o app normal.
+PASSO 5 — TESTE CLIENTE
+1. Abra:
+   https://theandremoraes96.github.io/Calculadora-treino-boxe/
 2. Vá em Premium.
-3. Use o e-mail do assinante e o código gerado.
-4. Clique em Ativar Premium.
+3. Ative com:
+   e-mail do assinante
+   código gerado
 
-CÓDIGO DE CORTESIA:
-8563
+PASSO 6 — FLUXO DE VENDA
+1. Cliente paga via PIX.
+2. Você confirma comprovante.
+3. Você gera código no painel.
+4. Envia ao cliente:
+   - link do app
+   - e-mail cadastrado
+   - código Premium
+5. Cliente ativa Premium.
 
-IMPORTANTE:
-A senha "André37035515" não foi colocada no código por segurança. O admin agora usa Firebase Authentication.
-Isso é muito mais seguro do que senha fixa no JavaScript.
+OBSERVAÇÃO:
+Este é o máximo de segurança viável em GitHub Pages + Firebase sem backend próprio.
+Para risco ainda menor em escala, o próximo passo técnico é Cloud Functions para validar ativações no servidor.

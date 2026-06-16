@@ -1,0 +1,17 @@
+CHECKLIST FINAL ANTES DE VENDER
+
+[ ] GitHub recebeu index.html, script.js, admin.html, admin.js e gestao-premium-btp.html
+[ ] Firestore rules foram publicadas
+[ ] Firebase Auth tem o usuário alucasdemoraes96@gmail.com
+[ ] admin.html antigo mostra rota desativada
+[ ] gestao-premium-btp.html abre tela de login
+[ ] login do admin funciona
+[ ] gerar código Premium funciona
+[ ] premiumKeys recebe o código
+[ ] assinantes recebe o assinante
+[ ] cliente ativa Premium no app
+[ ] código de cortesia 8563 ativa Premium
+[ ] cadastro de atleta salva no Firebase
+[ ] Meus Atletas carrega dados
+[ ] Dashboard atualiza
+[ ] Exportar CSV funciona no painel

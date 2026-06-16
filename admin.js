@@ -411,4 +411,4 @@ window.liberarDispositivo = liberarDispositivo;
 window.exportarAssinantesCSV = exportarAssinantesCSV;
 window.exportarCadastrosCSV = exportarCadastrosCSV;
 
-console.log("✅ Admin Premium v2 protegido por Firebase Auth carregado.");
+console.log("✅ Gestão Premium v3 protegida por Firebase Auth carregada.");

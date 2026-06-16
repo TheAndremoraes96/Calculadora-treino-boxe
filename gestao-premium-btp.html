@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão Premium - BoxTimer Pro</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="stylesheet" href="./style.css?v=20260622">
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <h1>🔐 Gestão Premium</h1>
+  <p>Painel administrativo protegido por Firebase Auth.</p>
+</header>
+
+<section class="card pagina" id="loginAdmin">
+  <h2>Login do Administrador</h2>
+
+  <p class="aviso">
+    Acesso restrito. Entre com o e-mail administrador cadastrado no Firebase Authentication.
+  </p>
+
+  <input id="adminEmail" type="email" placeholder="E-mail administrador">
+  <input id="adminSenha" type="password" placeholder="Senha do administrador">
+
+  <button onclick="loginAdmin()">Entrar</button>
+
+  <div id="statusLoginAdmin"></div>
+</section>
+
+<section class="card pagina" id="painelAdmin" style="display:none;">
+  <h2>Gerar Código Premium</h2>
+
+  <p class="aviso">
+    Use somente após confirmar o pagamento PIX.
+  </p>
+
+  <input id="novoPremiumNome" placeholder="Nome do assinante">
+  <input id="novoPremiumEmail" type="email" placeholder="E-mail do assinante">
+
+  <select id="novoPremiumPlano">
+    <option value="mensal">Mensal</option>
+    <option value="trimestral">Trimestral</option>
+    <option value="anual">Anual</option>
+    <option value="cortesia">Cortesia</option>
+  </select>
+
+  <button onclick="gerarChavePremiumAdmin()">🔑 Gerar Código Premium</button>
+  <button onclick="logoutAdmin()">Sair</button>
+
+  <div id="codigoPremiumGerado"></div>
+</section>
+
+<section class="card pagina" id="painelAssinantes" style="display:none;">
+  <h2>📋 Painel de Assinantes</h2>
+
+  <button onclick="carregarAssinantesPremium()">🔄 Carregar Assinantes</button>
+  <button onclick="exportarAssinantesCSV()">📥 Exportar Assinantes CSV</button>
+  <button onclick="exportarCadastrosCSV()">📥 Exportar Atletas CSV</button>
+
+  <div class="dashboard-grid">
+    <div class="stat"><h3 id="assinantesTotal">0</h3><p>Total</p></div>
+    <div class="stat"><h3 id="assinantesAtivos">0</h3><p>Ativos</p></div>
+    <div class="stat"><h3 id="assinantesVencidos">0</h3><p>Vencidos</p></div>
+    <div class="stat"><h3 id="receitaMensal">R$ 0,00</h3><p>Receita estimada</p></div>
+  </div>
+
+  <div id="listaAssinantesPremium"></div>
+</section>
+
+<section class="card pagina">
+  <h2>Procedimento de venda</h2>
+  <p>1. Confirme o pagamento via PIX.</p>
+  <p>2. Gere o código com nome, e-mail e plano do assinante.</p>
+  <p>3. Envie ao cliente o mesmo e-mail usado + código Premium.</p>
+  <p>4. O cliente ativa no app em Premium.</p>
+</section>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="./firebase.js?v=20260622"></script>
+<script src="./admin.js?v=20260622"></script>
+
+</body>
+</html>
