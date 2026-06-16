@@ -1,0 +1,30 @@
+BOXTIMER PRO - ATUALIZAÇÃO SEGURA v1.2
+
+Arquivos para enviar ao GitHub:
+- index.html
+- script.js
+- admin.html
+- admin.js
+
+Senha administrativa:
+André37035515
+
+Código de cortesia:
+8563
+
+Regras do Firebase:
+Copie o conteúdo de firestore.rules e cole em:
+Firebase Console > Firestore Database > Regras > Publicar
+
+Depois de subir os arquivos:
+1. Aguarde 1 a 2 minutos.
+2. Abra o app normal.
+3. Teste Premium com:
+   E-mail: teste@email.com
+   Código: 8563
+4. Abra admin.html.
+5. Gere uma chave usando:
+   Senha administrativa: André37035515
+
+IMPORTANTE:
+Esta versão é um MVP endurecido. Para segurança profissional real, o próximo passo obrigatório é Firebase Authentication com usuário administrador por UID.

@@ -1,4 +1,4 @@
-const CODIGO_ADMIN_PREMIUM = "BOXADMIN2026";
+const CODIGO_ADMIN_PREMIUM = "André37035515";
 function valor(id){const el=document.getElementById(id);return el?el.value:"";}
 function atualizarTexto(id,texto){const el=document.getElementById(id);if(el)el.innerText=texto;}
 function gerarCodigoPremium(){const p1=Math.random().toString(36).substring(2,6).toUpperCase();const p2=Math.random().toString(36).substring(2,6).toUpperCase();const p3=Math.random().toString(36).substring(2,6).toUpperCase();return `BOX-${p1}-${p2}-${p3}`;}

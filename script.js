@@ -22,7 +22,7 @@ function preencherCampo(id, valorCampo) {
 
 /* PREMIUM */
 
-const CODIGO_CORTESIA_PREMIUM = "BOXTIMER2026";
+const CODIGO_CORTESIA_PREMIUM = "8563";
 
 function obterDeviceIdPremium() {
     let deviceId = localStorage.getItem("premiumDeviceId");

@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Cadastros de atletas
+    match /cadastros/{id} {
+      allow read, write: if true;
+    }
+
+    // Chaves Premium
+    match /premiumKeys/{codigo} {
+      allow read, write: if true;
+    }
+
+    // Assinantes Premium
+    match /assinantes/{codigo} {
+      allow read, write: if true;
+    }
+
+    // Avaliações físicas
+    match /avaliacoes/{id} {
+      allow read, write: if true;
+    }
+
+    // Histórico de avaliações
+    match /historicoAvaliacoes/{id} {
+      allow read, write: if true;
+    }
+
+    // Feed
+    match /feed/{id} {
+      allow read, write: if true;
+    }
+
+    // Eventos
+    match /eventos/{id} {
+      allow read, write: if true;
+    }
+
+    // Bloqueia qualquer coleção fora do app
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
